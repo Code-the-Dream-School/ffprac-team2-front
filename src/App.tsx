@@ -1,23 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import './App.css';
 import { getAllData } from './util/index';
 
 const URL = 'http://localhost:8000/api/v1/';
 
-function App() {
-  
-  const [message, setMessage] = useState(''); 
+const App = () => {
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
-
     (async () => {
-      const myData = await getAllData(URL)
+      const myData = await getAllData(URL);
       setMessage(myData.data);
     })();
-      
+
     return () => {
       console.log('unmounting');
-    }
-
+    };
   }, []);
 
   return (
@@ -25,7 +23,6 @@ function App() {
       <h1>{message}</h1>
     </>
   );
+};
 
-}
-
-export default App
+export default App;
