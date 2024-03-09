@@ -18,7 +18,7 @@ import {
   VStack,
   Spacer,
 } from '@chakra-ui/react';
-import girl from '../assets/girl.jpg';
+import avatar from '../assets/avatar.jpg';
 import { EditIcon, CalendarIcon, EmailIcon, DeleteIcon } from '@chakra-ui/icons';
 
 interface StudentCardProps {
@@ -30,7 +30,7 @@ const StudentCard: React.FC<StudentCardProps> = ({ student }) => {
     <Box boxShadow="md" p="6" rounded="md" bg="white" w="90%" m="1rem auto">
       <Flex gap="8">
         <HStack spacing="24px">
-          <Image borderRadius="full" boxSize="250px" alt={student.name} src={girl} />
+          <Image borderRadius="full" boxSize="250px" alt={student.name} src={avatar} />
           <Box>
             <Heading as="h4" size="md">
               {student.name}
