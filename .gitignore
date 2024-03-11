@@ -25,4 +25,5 @@ dist-ssr
 
 /node_modules
 .DS_STORE
-.gitignore
+.env.local
+package-lock.json
