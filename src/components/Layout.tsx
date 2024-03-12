@@ -1,17 +1,16 @@
+import { Flex } from '@chakra-ui/react';
 import Footer from './Footer';
 import Header from './Header';
 import { Outlet } from 'react-router-dom';
-
 const Layout: React.FC = () => {
     return (
-        <div className="layout">
+        <Flex w="full" direction="column" className="layout">
             <Header />
-            <main className="main-content">
+            <Flex direction="column" w="full" className="main-content">
                 <Outlet />
-            </main>
+            </Flex>
             <Footer />
-        </div>
+        </Flex>
     );
 };
-
 export default Layout;

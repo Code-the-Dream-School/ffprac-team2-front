@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosRequestConfig } from 'axios';
 
 // note: not used, but could be used with GET with params
-const getData = async (url: string, params: AxiosRequestConfig<any> | undefined) => {
+const getData = async (url: string, params: AxiosRequestConfig) => {
     try {
         const res = await axios.get(url, params);
         const data = await res.data;
@@ -12,9 +11,9 @@ const getData = async (url: string, params: AxiosRequestConfig<any> | undefined)
     }
 };
 
-const getAllData = async (url: string) => {
+const getAllData = async (url: string, headers?: AxiosRequestConfig['headers']) => {
     try {
-        const res = await axios.get(url);
+        const res = await axios.get(url, { headers });
         const data = await res.data;
         return data;
     } catch (error) {
