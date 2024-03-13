@@ -11,7 +11,12 @@ const getData = async (url: string, params: AxiosRequestConfig) => {
     }
 };
 
-const getAllData = async (url: string, headers?: AxiosRequestConfig['headers']) => {
+const getAllData = async (url: string) => {
+    const token = localStorage.getItem('token');
+
+    const headers = {
+        Authorization: `Bearer ${token}`,
+    };
     try {
         const res = await axios.get(url, { headers });
         const data = await res.data;

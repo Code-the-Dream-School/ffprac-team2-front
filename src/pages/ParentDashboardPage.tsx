@@ -8,16 +8,10 @@ const ParentDashboardPage: React.FC = () => {
     const [students, setStudents] = useState<Student[] | []>([]);
     const [errMsg, setErrMsg] = useState<string | null>(null);
 
-    const token = localStorage.getItem('token');
-
-    const headers = {
-        Authorization: `Bearer ${token}`,
-    };
-
     useEffect(() => {
         const fetchStudent = async () => {
             try {
-                const data = await getAllData(`${import.meta.env.VITE_REACT_URL}students`, headers);
+                const data = await getAllData(`${import.meta.env.VITE_REACT_URL}students`);
                 console.log(data);
                 setStudents(data.students);
             } catch (error) {
