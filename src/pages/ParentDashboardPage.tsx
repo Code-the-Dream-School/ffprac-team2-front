@@ -15,7 +15,7 @@ const ParentDashboardPage: React.FC = () => {
     };
 
     useEffect(() => {
-        const fetchProduct = async () => {
+        const fetchStudent = async () => {
             try {
                 const data = await getAllData(`${import.meta.env.VITE_REACT_URL}students`, headers);
                 console.log(data);
@@ -25,7 +25,7 @@ const ParentDashboardPage: React.FC = () => {
                 setErrMsg('Something went wrong. Please try again later.');
             }
         };
-        fetchProduct();
+        fetchStudent();
     }, []);
     return (
         <Flex direction="column" justify="flex-end" w="full">
