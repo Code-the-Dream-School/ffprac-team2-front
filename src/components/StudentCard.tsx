@@ -102,7 +102,13 @@ const StudentCard: React.FC<StudentCardProps> = ({ student }) => {
                 </CardBody>
 
                 <CardFooter display={'flex'} alignItems={'flex-end'} justifyContent={'flex-end'}>
-                    <Button leftIcon={<EditIcon />} colorScheme="teal" size="lg" variant="solid">
+                    <Button
+                        leftIcon={<EditIcon />}
+                        backgroundColor="#59D3C8"
+                        size="lg"
+                        variant="solid"
+                        color="black"
+                    >
                         Edit Student
                     </Button>
                 </CardFooter>
