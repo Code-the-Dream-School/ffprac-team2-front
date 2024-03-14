@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import Layout from './components/Layout';
 import ParentDashboardPage from './pages/ParentDashboardPage';
+import TutorCard from './components/TutorCard';
 
 // import { useEffect, useState } from 'react';
 
@@ -19,6 +20,7 @@ const App = () => {
                     {/* <Route index element={<HomePage />} /> */}
                     {/* <Route path="/login" element={<LoginForm />} /> */}
                     <Route path="/parent-dashboard" element={<ParentDashboardPage />} />
+                    <Route path="/tutorcard" element={<TutorCard />} />
                     {/* <Route path="*" element={<NotFoundPage />} /> */}
                 </Route>
             </Routes>
