@@ -1,10 +1,4 @@
 import {
-    AlertDialog,
-    AlertDialogBody,
-    AlertDialogContent,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogOverlay,
     Button,
     FormControl,
     FormErrorMessage,
@@ -18,7 +12,6 @@ import {
     ModalHeader,
     ModalOverlay,
     Select,
-    useDisclosure,
 } from '@chakra-ui/react';
 import { Field, Formik, FormikHelpers } from 'formik';
 import React from 'react';
@@ -26,7 +19,7 @@ import { Student, StudentRequest } from '../models/interfaces';
 import axios from 'axios';
 import { studentSchema } from '../validationSchemas';
 import { headers } from '../util';
-import { DeleteIcon } from '@chakra-ui/icons';
+import AlertPopUp from './AlertPopUp';
 
 interface StudentFormProps {
     isOpenForm: boolean;
@@ -43,8 +36,8 @@ const StudentForm: React.FC<StudentFormProps> = ({
     student,
     setNeedUpdate,
 }) => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const cancelRef = React.useRef<HTMLButtonElement>(null);
+    // const { isOpen, onOpen, onClose } = useDisclosure();
+    // const cancelRef = React.useRef<HTMLButtonElement>(null);
 
     const handleSubmit = async (values: StudentRequest, actions: FormikHelpers<StudentRequest>) => {
         const newStudent: StudentRequest = {
@@ -174,55 +167,7 @@ const StudentForm: React.FC<StudentFormProps> = ({
                                         >
                                             Cancel
                                         </Button>
-                                        {student && (
-                                            <>
-                                                <Button
-                                                    backgroundColor="#E7E0D6"
-                                                    // onClick={deleteStudent}
-                                                    onClick={onOpen}
-                                                >
-                                                    <DeleteIcon />
-                                                </Button>
-                                                <AlertDialog
-                                                    isOpen={isOpen}
-                                                    leastDestructiveRef={cancelRef}
-                                                    onClose={onClose}
-                                                    isCentered
-                                                >
-                                                    <AlertDialogOverlay>
-                                                        <AlertDialogContent>
-                                                            <AlertDialogHeader
-                                                                fontSize="lg"
-                                                                fontWeight="bold"
-                                                            >
-                                                                Delete Student
-                                                            </AlertDialogHeader>
-
-                                                            <AlertDialogBody>
-                                                                Are you sure? You can't undo this
-                                                                action afterwards.
-                                                            </AlertDialogBody>
-
-                                                            <AlertDialogFooter>
-                                                                <Button
-                                                                    ref={cancelRef}
-                                                                    onClick={onClose}
-                                                                >
-                                                                    Cancel
-                                                                </Button>
-                                                                <Button
-                                                                    colorScheme="red"
-                                                                    onClick={deleteStudent}
-                                                                    ml={3}
-                                                                >
-                                                                    Delete
-                                                                </Button>
-                                                            </AlertDialogFooter>
-                                                        </AlertDialogContent>
-                                                    </AlertDialogOverlay>
-                                                </AlertDialog>
-                                            </>
-                                        )}
+                                        {student && <AlertPopUp onClick={deleteStudent} />}
                                     </ModalFooter>
                                 </form>
                             </ModalContent>
