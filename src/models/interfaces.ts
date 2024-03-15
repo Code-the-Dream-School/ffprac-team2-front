@@ -10,3 +10,8 @@ export interface Student {
     _id: string;
     tutorInfo?: StudentTutorInfo;
 }
+
+export interface StudentRequest {
+    name: string;
+    grade: string;
+}
