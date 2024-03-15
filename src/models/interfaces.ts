@@ -6,9 +6,12 @@ interface StudentTutorInfo {
 
 export interface Student {
     name: string;
-    grade: string | number;
+    grade: string;
     _id: string;
-    tutorInfo?: StudentTutorInfo;
+    createdAt: string;
+    parentId: string;
+    updatedAt: string;
+    tutorInfo?: StudentTutorInfo[];
 }
 
 export interface StudentRequest {

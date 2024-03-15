@@ -16,13 +16,18 @@ import {
     CardBody,
     CardFooter,
     Stack,
+    useDisclosure,
 } from '@chakra-ui/react';
 import avatar from '../assets/avatar.jpg';
 import { EditIcon, CalendarIcon, EmailIcon, DeleteIcon } from '@chakra-ui/icons';
+import StudentForm from './StudentForm';
+
 interface StudentCardProps {
     student: Student;
+    setNeedUpdate: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const StudentCard: React.FC<StudentCardProps> = ({ student }) => {
+const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
     return (
         <Card
             direction={{ base: 'column', sm: 'row' }}
@@ -108,9 +113,17 @@ const StudentCard: React.FC<StudentCardProps> = ({ student }) => {
                         size="lg"
                         variant="solid"
                         color="black"
+                        onClick={onOpen}
                     >
                         Edit Student
                     </Button>
+                    <StudentForm
+                        isOpen={isOpen}
+                        onClose={onClose}
+                        title="Edit Student"
+                        student={student}
+                        setNeedUpdate={setNeedUpdate}
+                    />
                 </CardFooter>
             </Stack>
         </Card>

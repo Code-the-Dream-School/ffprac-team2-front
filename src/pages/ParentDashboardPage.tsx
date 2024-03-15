@@ -9,6 +9,7 @@ const ParentDashboardPage: React.FC = () => {
     const [students, setStudents] = useState<Student[] | []>([]);
     const [errMsg, setErrMsg] = useState<string | null>(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const [needUpdate, setNeedUpdate] = useState(false);
 
     useEffect(() => {
         const fetchStudent = async () => {
@@ -16,13 +17,14 @@ const ParentDashboardPage: React.FC = () => {
                 const data = await getAllData(`${import.meta.env.VITE_REACT_URL}students`);
                 console.log(data);
                 setStudents(data.students);
+                setNeedUpdate(false);
             } catch (error) {
                 console.error(error);
                 setErrMsg('Something went wrong. Please try again later.');
             }
         };
         fetchStudent();
-    }, []);
+    }, [needUpdate]);
     return (
         <Flex direction="column" justify="flex-end" w="full">
             <Stack spacing={4} direction="row" align="center" justify="end" w="full" display="flex">
@@ -35,13 +37,23 @@ const ParentDashboardPage: React.FC = () => {
                 >
                     Add Student
                 </Button>
-                <StudentForm isOpen={isOpen} onClose={onClose} title="Add Student" />
+                <StudentForm
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    title="Add Student"
+                    student={null}
+                    setNeedUpdate={setNeedUpdate}
+                />
             </Stack>
             {/* <StudentCard student={{ name: 'Ira', grade: '6', _id: 'fgskjg' }} /> */}
             {students && students.length > 0 ? (
                 <Stack direction="column">
                     {students.map((student) => (
-                        <StudentCard key={student._id} student={student} />
+                        <StudentCard
+                            key={student._id}
+                            student={student}
+                            setNeedUpdate={setNeedUpdate}
+                        />
                     ))}
                 </Stack>
             ) : (
