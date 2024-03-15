@@ -1,4 +1,10 @@
 import {
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogContent,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogOverlay,
     Button,
     FormControl,
     FormErrorMessage,
@@ -12,6 +18,7 @@ import {
     ModalHeader,
     ModalOverlay,
     Select,
+    useDisclosure,
 } from '@chakra-ui/react';
 import { Field, Formik, FormikHelpers } from 'formik';
 import React from 'react';
@@ -22,20 +29,23 @@ import { headers } from '../util';
 import { DeleteIcon } from '@chakra-ui/icons';
 
 interface StudentFormProps {
-    isOpen: boolean;
-    onClose: () => void;
+    isOpenForm: boolean;
+    onCloseForm: () => void;
     title: string;
     student: Student | null;
     setNeedUpdate: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const StudentForm: React.FC<StudentFormProps> = ({
-    isOpen,
-    onClose,
+    isOpenForm,
+    onCloseForm,
     title,
     student,
     setNeedUpdate,
 }) => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const cancelRef = React.useRef<HTMLButtonElement>(null);
+
     const handleSubmit = async (values: StudentRequest, actions: FormikHelpers<StudentRequest>) => {
         const newStudent: StudentRequest = {
             name: values.name,
@@ -59,7 +69,7 @@ const StudentForm: React.FC<StudentFormProps> = ({
             const studentData = response?.data;
             console.log(studentData);
             actions.resetForm();
-            onClose();
+            onCloseForm();
             setNeedUpdate(true);
         } catch (error) {
             console.error('Error submitting form:', error);
@@ -71,7 +81,7 @@ const StudentForm: React.FC<StudentFormProps> = ({
             await axios.delete(`${import.meta.env.VITE_REACT_URL}students/${student?._id}`, {
                 headers,
             });
-            onClose();
+            onCloseForm();
             setNeedUpdate(true);
         } catch (error) {
             console.error('Error deleting product:', error);
@@ -80,8 +90,8 @@ const StudentForm: React.FC<StudentFormProps> = ({
 
     return (
         <>
-            {isOpen && (
-                <Modal isOpen={isOpen} onClose={onClose} size="lg">
+            {isOpenForm && (
+                <Modal isOpen={isOpenForm} onClose={onCloseForm} size="lg" isCentered>
                     <ModalOverlay />
                     <Formik
                         onSubmit={handleSubmit}
@@ -157,16 +167,61 @@ const StudentForm: React.FC<StudentFormProps> = ({
                                         <Button colorScheme="yellow" mr={3} type="submit">
                                             Save
                                         </Button>
-                                        <Button backgroundColor="#59D3C8" mr={3} onClick={onClose}>
+                                        <Button
+                                            backgroundColor="#59D3C8"
+                                            mr={3}
+                                            onClick={onCloseForm}
+                                        >
                                             Cancel
                                         </Button>
                                         {student && (
-                                            <Button
-                                                // backgroundColor="#59D3C8"
-                                                onClick={deleteStudent}
-                                            >
-                                                <DeleteIcon />
-                                            </Button>
+                                            <>
+                                                <Button
+                                                    backgroundColor="#E7E0D6"
+                                                    // onClick={deleteStudent}
+                                                    onClick={onOpen}
+                                                >
+                                                    <DeleteIcon />
+                                                </Button>
+                                                <AlertDialog
+                                                    isOpen={isOpen}
+                                                    leastDestructiveRef={cancelRef}
+                                                    onClose={onClose}
+                                                    isCentered
+                                                >
+                                                    <AlertDialogOverlay>
+                                                        <AlertDialogContent>
+                                                            <AlertDialogHeader
+                                                                fontSize="lg"
+                                                                fontWeight="bold"
+                                                            >
+                                                                Delete Student
+                                                            </AlertDialogHeader>
+
+                                                            <AlertDialogBody>
+                                                                Are you sure? You can't undo this
+                                                                action afterwards.
+                                                            </AlertDialogBody>
+
+                                                            <AlertDialogFooter>
+                                                                <Button
+                                                                    ref={cancelRef}
+                                                                    onClick={onClose}
+                                                                >
+                                                                    Cancel
+                                                                </Button>
+                                                                <Button
+                                                                    colorScheme="red"
+                                                                    onClick={deleteStudent}
+                                                                    ml={3}
+                                                                >
+                                                                    Delete
+                                                                </Button>
+                                                            </AlertDialogFooter>
+                                                        </AlertDialogContent>
+                                                    </AlertDialogOverlay>
+                                                </AlertDialog>
+                                            </>
                                         )}
                                     </ModalFooter>
                                 </form>

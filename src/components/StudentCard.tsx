@@ -118,8 +118,8 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => 
                         Edit Student
                     </Button>
                     <StudentForm
-                        isOpen={isOpen}
-                        onClose={onClose}
+                        isOpenForm={isOpen}
+                        onCloseForm={onClose}
                         title="Edit Student"
                         student={student}
                         setNeedUpdate={setNeedUpdate}

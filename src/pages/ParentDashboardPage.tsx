@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Flex, Stack, useDisclosure } from '@chakra-ui/react';
+import { Button, Flex, Heading, Spinner, Stack, useDisclosure } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { Student } from '../models/interfaces';
 import StudentCard from '../components/StudentCard';
@@ -10,6 +10,7 @@ const ParentDashboardPage: React.FC = () => {
     const [errMsg, setErrMsg] = useState<string | null>(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [needUpdate, setNeedUpdate] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchStudent = async () => {
@@ -18,6 +19,7 @@ const ParentDashboardPage: React.FC = () => {
                 console.log(data);
                 setStudents(data.students);
                 setNeedUpdate(false);
+                setIsLoading(false);
             } catch (error) {
                 console.error(error);
                 setErrMsg('Something went wrong. Please try again later.');
@@ -38,14 +40,25 @@ const ParentDashboardPage: React.FC = () => {
                     Add Student
                 </Button>
                 <StudentForm
-                    isOpen={isOpen}
-                    onClose={onClose}
+                    isOpenForm={isOpen}
+                    onCloseForm={onClose}
                     title="Add Student"
                     student={null}
                     setNeedUpdate={setNeedUpdate}
                 />
             </Stack>
             {/* <StudentCard student={{ name: 'Ira', grade: '6', _id: 'fgskjg' }} /> */}
+            {isLoading && (
+                <Flex justifyContent="center" alignItems="center">
+                    <Spinner
+                        thickness="4px"
+                        speed="0.65s"
+                        emptyColor="gray.200"
+                        color="#59D3C8"
+                        size="xl"
+                    />
+                </Flex>
+            )}
             {students && students.length > 0 ? (
                 <Stack direction="column">
                     {students.map((student) => (
@@ -57,7 +70,13 @@ const ParentDashboardPage: React.FC = () => {
                     ))}
                 </Stack>
             ) : (
-                <p>{errMsg}</p>
+                <Flex justifyContent="center" alignItems="center">
+                    {!errMsg && students.length === 0 ? (
+                        <Heading size="md">You haven't add student yet.</Heading>
+                    ) : (
+                        <Heading size="md">{errMsg}</Heading>
+                    )}
+                </Flex>
             )}
         </Flex>
     );
