@@ -20,11 +20,7 @@ const AlertPopUp: React.FC<AlertPopUpProps> = ({ onClick }) => {
     const cancelRef = React.useRef<HTMLButtonElement>(null);
     return (
         <>
-            <Button
-                backgroundColor="#E7E0D6"
-                // onClick={deleteStudent}
-                onClick={onOpen}
-            >
+            <Button backgroundColor="#E7E0D6" onClick={onOpen}>
                 <DeleteIcon />
             </Button>
             <AlertDialog

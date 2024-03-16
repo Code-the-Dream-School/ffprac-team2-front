@@ -36,9 +36,6 @@ const StudentForm: React.FC<StudentFormProps> = ({
     student,
     setNeedUpdate,
 }) => {
-    // const { isOpen, onOpen, onClose } = useDisclosure();
-    // const cancelRef = React.useRef<HTMLButtonElement>(null);
-
     const handleSubmit = async (values: StudentRequest, actions: FormikHelpers<StudentRequest>) => {
         const newStudent: StudentRequest = {
             name: values.name,
