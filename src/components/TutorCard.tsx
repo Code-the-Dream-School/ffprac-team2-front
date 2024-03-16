@@ -17,7 +17,8 @@ const TutorCard: React.FC = () => {
   
 
   return (
-<Box borderWidth='1px' borderRadius='md' boxShadow='md' ml='70'>
+  <Box mt='30px' w='100%'>
+{/* <Box borderWidth='0px' borderRadius='md' boxShadow='md' ml='70'> */}
   <Card maxW={{ base: '90%', md: '500px' }} bg={theme.colors.customWhite}>
     <Flex justify="flex-end" mb="4" mt='20px'>
   <ButtonGroup
@@ -28,8 +29,8 @@ const TutorCard: React.FC = () => {
     <Button
       variant='solid'
       bg={theme.dashboardButtons.buttonYellow.bg}
-      mt={{ base: '15px', md: '0' }} 
-      mx={{ base: '15px', md: '0' }} 
+      mt={{ base: '10px', md: '0', sm: '10px' }} 
+      mx={{ base: '10px', md: '0', sm: '10px' }} 
       px={{ base: '30px', md: '20px', sm: '10px' }}
       size={useBreakpointValue({ base: 'sm', md: 'md', lg: 'lg' })}
       height={theme.dashboardButtons.height}
@@ -64,6 +65,7 @@ const TutorCard: React.FC = () => {
         />
       </Stack>
           <Text mt='4'
+            w='100%'
             fontSize={theme.dashboardButtons.fontSize}>
             Lorem ipsum dolor sit amet,consectetur adipiscing elit, sed do eiusmod tempor incididunnim ad minim veniam, quis nost
             quip ex ea commodo consequat
@@ -97,29 +99,29 @@ const TutorCard: React.FC = () => {
             <Image src={iconCalendar} alt='Calendar' w='20px' h='20px' mr='2' />
           </Flex>
         <Grid
-              templateColumns={{ base: 'repeat(2, 1fr)', md: 'repeat(7, 1fr)' }}
+              templateColumns={{ base: 'repeat(4, 1fr)', sm: 'repeat(7, 1fr)', md: 'repeat(7, 1fr)' }}
               gap="1"
               justifyItems="center"
         >
-            <Button variant='solid' bg="green.400" m="0" w="80%" _hover={{ bg: "green.400" }}>
+            <Button variant='solid' bg='green.400' m='0' w='50%' _hover={{ bg: 'green.400' }}>
               <Text color="white" pointer-events="none" fontSize={theme.styles.global.body.fontSize}>Mon</Text>
             </Button>
-            <Button variant="solid" bg="green.400" m="0" w="80%" _hover={{ bg: "green.400" }}>
-              <Text color="white" fontSize={theme.styles.global.body.fontSize} >Tue</Text>
+            <Button variant='solid' bg='green.400' m='0' w='50%' _hover={{ bg: 'green.400' }}>
+              <Text color='white' fontSize={theme.styles.global.body.fontSize} >Tue</Text>
             </Button>
-            <Button variant="solid" bg="green.400" m="0" w="80%" _hover={{ bg: "green.400" }}>
+            <Button variant='solid' bg='green.400' m="0" w='50%' _hover={{ bg: 'green.400' }}>
               <Text color="white" fontSize={theme.styles.global.body.fontSize}>Wed</Text>
             </Button>
-            <Button variant="solid" bg="green.400" m="0" w="80%" _hover={{ bg: "green.400" }}>
+            <Button variant='solid' bg='green.400' m='0' w='50%' _hover={{ bg: 'green.400' }}>
               <Text color="white" fontSize={theme.styles.global.body.fontSize}>Thu</Text>
             </Button>
-            <Button variant="solid" bg="red.500" m="0" w="80%" _hover={{ bg: "red.500" }}>
+            <Button variant='solid' bg='red.500' m="0" w="50%" _hover={{ bg: 'red.500' }}>
               <Text color="white" fontSize={theme.styles.global.body.fontSize}>Fri</Text>
             </Button>
-            <Button variant="solid" bg="red.500" m="0" w="80%" _hover={{ bg: "red.500" }}>
+            <Button variant="solid" bg="red.500" m="0" w="50%" _hover={{ bg: 'red.500' }}>
               <Text color="white" fontSize={theme.styles.global.body.fontSize}>Sat</Text>
             </Button>
-            <Button variant="solid" bg="red.500" m="0" w="80%" _hover={{ bg: "red.500" }}>
+            <Button variant="solid" bg="red.500" m="0" w="50%" _hover={{ bg: 'red.500' }}>
               <Text color="white" fontSize={theme.styles.global.body.fontSize}>Sun</Text>
             </Button>
         </Grid>

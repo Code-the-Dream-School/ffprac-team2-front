@@ -8,10 +8,10 @@ export const theme = extendTheme({
             body: {
                 bg: '#E7E0D6',
                 color: '#000000',
-                fontSize: '12px'
+                fontSize: '11px'
             },
         },
-
+    },
         //styles for Dashboard
         colors: {
             customWhite: '#FFFFFF'
@@ -33,7 +33,7 @@ export const theme = extendTheme({
             fontSize: '12px',
             fontWeight: '700'
         }
-    }
+    
 });
 
 // Default braikpoints for informational purposes
