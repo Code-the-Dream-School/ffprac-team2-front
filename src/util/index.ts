@@ -1,5 +1,11 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
+const token = localStorage.getItem('token');
+
+export const headers = {
+    Authorization: `Bearer ${token}`,
+};
+
 // note: not used, but could be used with GET with params
 const getData = async (url: string, params: AxiosRequestConfig) => {
     try {
@@ -12,11 +18,6 @@ const getData = async (url: string, params: AxiosRequestConfig) => {
 };
 
 const getAllData = async (url: string) => {
-    const token = localStorage.getItem('token');
-
-    const headers = {
-        Authorization: `Bearer ${token}`,
-    };
     try {
         const res = await axios.get(url, { headers });
         const data = await res.data;

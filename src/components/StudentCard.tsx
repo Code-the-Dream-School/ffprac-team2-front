@@ -16,13 +16,18 @@ import {
     CardBody,
     CardFooter,
     Stack,
+    useDisclosure,
 } from '@chakra-ui/react';
 import avatar from '../assets/avatar.jpg';
 import { EditIcon, CalendarIcon, EmailIcon, DeleteIcon } from '@chakra-ui/icons';
+import StudentForm from './StudentForm';
+
 interface StudentCardProps {
     student: Student;
+    setNeedUpdate: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const StudentCard: React.FC<StudentCardProps> = ({ student }) => {
+const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
     return (
         <Card
             direction={{ base: 'column', sm: 'row' }}
@@ -39,7 +44,7 @@ const StudentCard: React.FC<StudentCardProps> = ({ student }) => {
                 justifyContent={'center'}
                 w={{ base: '100%', sm: '30%' }}
             >
-                <Avatar size="2xl" name="Ira Kolh" src={avatar} />
+                <Avatar size={{ base: 'xl', md: '2xl' }} name={student.name} src={avatar} />
                 <Stack direction={{ base: 'row', sm: 'column' }}>
                     <Heading as="h4" size="md">
                         {student.name}
@@ -49,7 +54,7 @@ const StudentCard: React.FC<StudentCardProps> = ({ student }) => {
             </Stack>
 
             <Stack
-                w={{ base: '100%', sm: '70%' }}
+                w={{ base: '100%', sm: '75%' }}
                 display={'flex'}
                 justifyContent={'flex-end'}
                 alignItems={'flex-end'}
@@ -108,9 +113,17 @@ const StudentCard: React.FC<StudentCardProps> = ({ student }) => {
                         size="lg"
                         variant="solid"
                         color="black"
+                        onClick={onOpen}
                     >
                         Edit Student
                     </Button>
+                    <StudentForm
+                        isOpenForm={isOpen}
+                        onCloseForm={onClose}
+                        title="Edit Student"
+                        student={student}
+                        setNeedUpdate={setNeedUpdate}
+                    />
                 </CardFooter>
             </Stack>
         </Card>
