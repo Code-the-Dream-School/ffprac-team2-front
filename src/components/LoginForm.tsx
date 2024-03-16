@@ -17,6 +17,12 @@ const buttonStyle = {
     width: '150px',
     height: '50px',
 };
+
+const labelStyle = {
+    fontSize: '14px', 
+    fontWeight: 'normal', 
+};
+
 const LoginForm: React.FC = () => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -27,11 +33,11 @@ const LoginForm: React.FC = () => {
         <form onSubmit={handleSubmit}>
             <Stack spacing={4}>
                 <FormControl>
-                    <FormLabel htmlFor="email">Email</FormLabel>
+                    <FormLabel htmlFor="email" style={labelStyle}>Email</FormLabel>
                     <Input type="email" id="email" name="email" style={inputStyle} />
                 </FormControl>
                 <FormControl>
-                    <FormLabel htmlFor="password">Password</FormLabel>
+                    <FormLabel htmlFor="password" style={labelStyle}>Password</FormLabel>
                     <Input type="password" id="password" name="password" style={inputStyle} />
                 </FormControl>
                 <Stack direction="row" spacing={4} display="flex" alignItems="center">

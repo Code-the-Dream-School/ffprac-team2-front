@@ -20,6 +20,15 @@ const buttonStyle = {
     height: '50px',
 };
 
+const labelStyle = {
+    fontSize: '14px', 
+    fontWeight: 'normal', 
+};
+const radioLabelStyle = {
+    fontWeight: 'bold',
+};
+
+
 const RegistrationForm: React.FC = () => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -30,25 +39,29 @@ const RegistrationForm: React.FC = () => {
         <form onSubmit={handleSubmit}>
             <Stack spacing={4} >
                 <FormControl>
-                    <FormLabel htmlFor="firstName">First Name</FormLabel>
+                    <FormLabel htmlFor="firstName" style={labelStyle}>First Name</FormLabel>
                     <Input type="text" id="firstName" name="firstName" style={inputStyle} />
                 </FormControl>
                 <FormControl>
-                    <FormLabel htmlFor="lastName">Last Name</FormLabel>
+                    <FormLabel htmlFor="lastName" style={labelStyle}>Last Name</FormLabel>
                     <Input type="text" id="lastName" name="lastName" style={inputStyle} />
                 </FormControl>
                 <FormControl>
-                    <FormLabel htmlFor="password">Password</FormLabel>
+                    <FormLabel htmlFor="password" style={labelStyle}>Password</FormLabel>
                     <Input id="password" name="password" type="password" style={inputStyle} />
                 </FormControl>
                 <FormControl>
-                    <FormLabel htmlFor="confirmPassword">Confirm Password</FormLabel>
+                    <FormLabel htmlFor="confirmPassword" style={labelStyle}>Confirm Password</FormLabel>
                     <Input id="confirmPassword" name="confirmPassword" type="password" style={inputStyle} />
                 </FormControl>
                 <RadioGroup id="role" name="role" width='350px'>
                     <Stack direction="row" display="flex" alignItems="center">
-                        <Radio value="parent" flex="1">Parent</Radio>
-                        <Radio value="tutor" flex="1">Tutor</Radio>
+                        <Radio value="parent" flex="1" bg="white" size='md'>
+                           <span style={radioLabelStyle}>Parent</span>
+                            </Radio>
+                        <Radio value="tutor" flex="1" bg="white" size='md'>
+                           <span style={radioLabelStyle}>Tutor</span>
+                            </Radio>
                     </Stack>
                 </RadioGroup>
                 <Stack direction="row" spacing={4} display="flex" alignItems="center">

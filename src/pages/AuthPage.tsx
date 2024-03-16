@@ -32,11 +32,13 @@ return (
                     display="flex"
                     justifyContent="center"
                     margin="0 15px"
+                    
+
                 >
-                    <Tab _selected={{ backgroundColor: 'white' }} flex="1" borderRadius="20px" textAlign="center">
+                    <Tab _selected={{ backgroundColor: 'white' }} flex="1" borderRadius="20px" textAlign="center" fontWeight="bold">
                         Register
                     </Tab>
-                    <Tab _selected={{ backgroundColor: 'white' }} flex="1" borderRadius="20px" textAlign="center">
+                    <Tab _selected={{ backgroundColor: 'white' }} flex="1" borderRadius="20px" textAlign="center" fontWeight="bold">
                         Login
                     </Tab>
                 </TabList>
