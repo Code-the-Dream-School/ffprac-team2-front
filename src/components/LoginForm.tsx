@@ -1,4 +1,6 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import {
     Stack,
     FormControl,
@@ -24,11 +26,21 @@ const labelStyle = {
 };
 
 const LoginForm: React.FC = () => {
+    const navigate = useNavigate();
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         // Login logic
+        //After successful login, navigate to another page,   
+        navigate('/parent-dashboard');
     };
 
+    const handleCancel = () => {
+        // Redirect to main page on cancel
+        navigate('/');
+    };
+
+    
     return (
         <form onSubmit={handleSubmit}>
             <Stack spacing={4}>
@@ -53,6 +65,7 @@ const LoginForm: React.FC = () => {
                         type="button"
                         style={{ ...buttonStyle, backgroundColor: '#59D3C8', color: 'black' }}
                         flex="1"
+                        onClick={handleCancel}
                     >
                         Cancel
                     </Button>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     Stack,
     FormControl,
@@ -30,9 +31,16 @@ const radioLabelStyle = {
 
 
 const RegistrationForm: React.FC = () => {
+    const navigate = useNavigate();
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         // Registration logic
+        //For testing purpose:
+        navigate('/parent-dashboard');
+    };
+    const handleCancel = () => {
+        navigate('/');
     };
 
     return (
@@ -77,6 +85,7 @@ const RegistrationForm: React.FC = () => {
                         type="button"
                         style={{ ...buttonStyle, backgroundColor: '#59D3C8', color: 'black' }}
                         flex="1"
+                        onClick={handleCancel}
 
                     >
                         Cancel
