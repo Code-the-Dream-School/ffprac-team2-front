@@ -27,8 +27,8 @@ export interface StudentRequest {
     confirmPassword: string;
     role: 'parent' | 'tutor';
 }
+*/
 export interface LoginData {
     email: string;
     password: string;
 }
-*/

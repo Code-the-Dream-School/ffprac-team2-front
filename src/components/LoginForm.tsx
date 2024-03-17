@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import { Stack, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
 import { LoginData } from '../models/interfaces';
@@ -22,17 +23,24 @@ const labelStyle = {
 
 const LoginForm: React.FC = () => {
     const navigate = useNavigate();
-    const [formData, setFormData] = useState<LoginData>({
-        email: '',
-        password: '',
-    });
+    const [formData, setFormData] = useState<LoginData>({ email: '', password: '' });
 
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        setFormData({ ...formData, [name]: value });
+    };
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        // Login logic
-        //After successful login, navigate to another page, for testing purposes:
-        navigate('/parent-dashboard');
+        try {
+            const response = await axios.post('/api/login', formData);
+            // Handle successful login
+            console.log('Login successful', response);
+            navigate('/parent-dashboard'); // this is just for test
+        } catch (error) {
+            // Handle login error
+            console.error('Login failed:', error);
+        }
     };
 
     const handleCancel = () => {
@@ -52,6 +60,8 @@ const LoginForm: React.FC = () => {
                         id="email"
                         name="email"
                         style={inputStyle}
+                        value={formData.email}
+                        onChange={handleChange}
                     />
                 </FormControl>
                 <FormControl isRequired>
@@ -63,6 +73,8 @@ const LoginForm: React.FC = () => {
                         id="password"
                         name="password"
                         style={inputStyle}
+                        value={formData.password}
+                        onChange={handleChange}
                     />
                 </FormControl>
                 <Stack direction="row" spacing={4} display="flex" alignItems="center">
