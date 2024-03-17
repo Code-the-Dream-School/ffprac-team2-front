@@ -6,6 +6,14 @@ import iconEducation from '../assets/experience.png'
 import iconExperience from '../assets/education.png';
 import { theme } from '../util/theme';
 
+// import { EmailIcon } from '@chakra-ui/icons';
+// import { IconButton } from '@chakra-ui/react'
+
+
+
+
+
+
 const customAvatarStyle = {
   width: "90px",
   height: "90px",
@@ -25,7 +33,14 @@ const TutorCard: React.FC = () => {
     gap={{ base: '10px', md: '20px' }}
     display={{ base: "grid", md: "flex" }} 
             gridTemplateColumns={{ base: "1fr", md: "auto auto" }}       
-  >
+          >
+            {/* <IconButton
+              variant='outline'
+              h='35px'
+              colorScheme='teal'
+              aria-label='Send email'
+              icon={<EmailIcon />}
+            /> */}
     <Button
       variant='solid'
       bg={theme.dashboardButtons.buttonYellow.bg}
@@ -99,7 +114,7 @@ const TutorCard: React.FC = () => {
             <Image src={iconCalendar} alt='Calendar' w='20px' h='20px' mr='2' />
           </Flex>
         <Grid
-              templateColumns={{ base: 'repeat(4, 1fr)', sm: 'repeat(7, 1fr)', md: 'repeat(7, 1fr)' }}
+              templateColumns={{ base: 'repeat(2, 1fr)', sm: 'repeat(4, 1fr)', md: 'repeat(7, 1fr)' }}
               gap="1"
               justifyItems="center"
         >
