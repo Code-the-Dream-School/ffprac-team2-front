@@ -5,7 +5,7 @@ import { Route, Routes } from 'react-router-dom';
 import Layout from './components/Layout';
 import ParentDashboardPage from './pages/ParentDashboardPage';
 import AuthPage from './pages/AuthPage';
-import React from 'react';
+//import React from 'react';
 
 // import { useEffect, useState } from 'react';
 

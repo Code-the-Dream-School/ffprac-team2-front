@@ -1,17 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-    Stack,
-    FormControl,
-    FormLabel,
-    Input,
-    Radio,
-    RadioGroup,
-    Button
-} from '@chakra-ui/react';
-import { useBreakpointValue } from '@chakra-ui/react';
-
-
+import { Stack, FormControl, FormLabel, Input, Radio, RadioGroup, Button } from '@chakra-ui/react';
+//import { RegistrationFormData } from '../models/interfaces';
 
 const inputStyle = {
     width: '22em',
@@ -25,13 +15,12 @@ const buttonStyle = {
 };
 
 const labelStyle = {
-    fontSize: '14px', 
-    fontWeight: 'normal', 
+    fontSize: '14px',
+    fontWeight: 'normal',
 };
 const radioLabelStyle = {
     fontWeight: 'bold',
 };
-
 
 const RegistrationForm: React.FC = () => {
     const navigate = useNavigate();
@@ -48,31 +37,44 @@ const RegistrationForm: React.FC = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <Stack spacing={4} >
-                <FormControl>
-                    <FormLabel htmlFor="firstName" style={labelStyle}>First Name</FormLabel>
+            <Stack spacing={4}>
+                <FormControl isRequired>
+                    <FormLabel htmlFor="firstName" style={labelStyle}>
+                        First Name
+                    </FormLabel>
                     <Input type="text" id="firstName" name="firstName" style={inputStyle} />
                 </FormControl>
-                <FormControl>
-                    <FormLabel htmlFor="lastName" style={labelStyle}>Last Name</FormLabel>
+                <FormControl isRequired>
+                    <FormLabel htmlFor="lastName" style={labelStyle}>
+                        Last Name
+                    </FormLabel>
                     <Input type="text" id="lastName" name="lastName" style={inputStyle} />
                 </FormControl>
-                <FormControl>
-                    <FormLabel htmlFor="password" style={labelStyle}>Password</FormLabel>
+                <FormControl isRequired>
+                    <FormLabel htmlFor="password" style={labelStyle}>
+                        Password
+                    </FormLabel>
                     <Input id="password" name="password" type="password" style={inputStyle} />
                 </FormControl>
-                <FormControl>
-                    <FormLabel htmlFor="confirmPassword" style={labelStyle}>Confirm Password</FormLabel>
-                    <Input id="confirmPassword" name="confirmPassword" type="password" style={inputStyle} />
+                <FormControl isRequired>
+                    <FormLabel htmlFor="confirmPassword" style={labelStyle}>
+                        Confirm Password
+                    </FormLabel>
+                    <Input
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        type="password"
+                        style={inputStyle}
+                    />
                 </FormControl>
-                <RadioGroup id="role" name="role" width='22em'>
+                <RadioGroup id="role" name="role" width="22em">
                     <Stack direction="row" display="flex" alignItems="center">
-                        <Radio value="parent" flex="1" bg="white" size='md'>
-                           <span style={radioLabelStyle}>Parent</span>
-                            </Radio>
-                        <Radio value="tutor" flex="1" bg="white" size='md'>
-                           <span style={radioLabelStyle}>Tutor</span>
-                            </Radio>
+                        <Radio value="parent" flex="1" bg="white" size="md">
+                            <span style={radioLabelStyle}>Parent</span>
+                        </Radio>
+                        <Radio value="tutor" flex="1" bg="white" size="md">
+                            <span style={radioLabelStyle}>Tutor</span>
+                        </Radio>
                     </Stack>
                 </RadioGroup>
                 <Stack direction="row" spacing={4} display="flex" alignItems="center">
@@ -80,7 +82,6 @@ const RegistrationForm: React.FC = () => {
                         type="submit"
                         style={{ ...buttonStyle, backgroundColor: '#F4CD76', color: 'black' }}
                         flex="1"
-
                     >
                         Register
                     </Button>
@@ -89,7 +90,6 @@ const RegistrationForm: React.FC = () => {
                         style={{ ...buttonStyle, backgroundColor: '#59D3C8', color: 'black' }}
                         flex="1"
                         onClick={handleCancel}
-
                     >
                         Cancel
                     </Button>
