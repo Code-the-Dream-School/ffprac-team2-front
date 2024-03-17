@@ -9,16 +9,19 @@ import {
     RadioGroup,
     Button
 } from '@chakra-ui/react';
+import { useBreakpointValue } from '@chakra-ui/react';
+
+
 
 const inputStyle = {
-    width: '350px',
-    height: '50px',
+    width: '22em',
+    height: '3em',
     backgroundColor: 'white',
 };
 
 const buttonStyle = {
-    width: '150px',
-    height: '50px',
+    width: '9em',
+    height: '3em',
 };
 
 const labelStyle = {
@@ -62,7 +65,7 @@ const RegistrationForm: React.FC = () => {
                     <FormLabel htmlFor="confirmPassword" style={labelStyle}>Confirm Password</FormLabel>
                     <Input id="confirmPassword" name="confirmPassword" type="password" style={inputStyle} />
                 </FormControl>
-                <RadioGroup id="role" name="role" width='350px'>
+                <RadioGroup id="role" name="role" width='22em'>
                     <Stack direction="row" display="flex" alignItems="center">
                         <Radio value="parent" flex="1" bg="white" size='md'>
                            <span style={radioLabelStyle}>Parent</span>

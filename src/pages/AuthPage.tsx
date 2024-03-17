@@ -25,20 +25,20 @@ return (
         <Box>
             <Tabs variant="unstyled" defaultIndex={defaultIndex}>
                 <TabList
-                    bg="#D9D9D9" // Set background color to #D9D9D9
-                    width="350px"
-                    height="60px"
-                    borderRadius="20px"
+                    bg="#D9D9D9" 
+                    width="22em"
+                    height="3.75em"
+                    borderRadius="1.25em"
                     display="flex"
                     justifyContent="center"
-                    margin="0 15px"
+                    margin="0 1em"
                     
 
                 >
-                    <Tab _selected={{ backgroundColor: 'white' }} flex="1" borderRadius="20px" textAlign="center" fontWeight="bold">
+                    <Tab _selected={{ backgroundColor: 'white' }} flex="1" borderRadius="1.25em" textAlign="center" fontWeight="bold">
                         Register
                     </Tab>
-                    <Tab _selected={{ backgroundColor: 'white' }} flex="1" borderRadius="20px" textAlign="center" fontWeight="bold">
+                    <Tab _selected={{ backgroundColor: 'white' }} flex="1" borderRadius="1.25em" textAlign="center" fontWeight="bold">
                         Login
                     </Tab>
                 </TabList>

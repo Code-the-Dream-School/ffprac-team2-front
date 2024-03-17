@@ -10,14 +10,14 @@ import {
 } from '@chakra-ui/react';
 
 const inputStyle = {
-    width: '350px',
-    height: '50px',
+    width: '22em',
+    height: '3em',
     backgroundColor: 'white',
 };
 
 const buttonStyle = {
-    width: '150px',
-    height: '50px',
+    width: '9em',
+    height: '3em',
 };
 
 const labelStyle = {
@@ -31,7 +31,7 @@ const LoginForm: React.FC = () => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         // Login logic
-        //After successful login, navigate to another page,   
+        //After successful login, navigate to another page, for testing purposes:  
         navigate('/parent-dashboard');
     };
 
