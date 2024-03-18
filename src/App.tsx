@@ -19,7 +19,7 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<Layout />}>
                     {/* <Route index element={<HomePage />} /> */}
-                    <Route path="/login" element={<AuthPage activeTab={'login'} />} />
+                    <Route path="/auth" element={<AuthPage activeTab={'login'} />} />
                     <Route path="/parent-dashboard" element={<ParentDashboardPage />} />
                     {/* <Route path="*" element={<NotFoundPage />} /> */}
                 </Route>
