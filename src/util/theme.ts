@@ -8,8 +8,30 @@ export const theme = extendTheme({
             body: {
                 bg: '#E7E0D6',
                 color: '#000000',
+                fontSize: '11px',
             },
         },
+    },
+    //styles for Dashboard
+    colors: {
+        customWhite: '#FFFFFF',
+    },
+    dashboardButtons: {
+        buttonYellow: {
+            bg: '#F4CD76',
+            _hover: {
+                bg: 'grey.400',
+            },
+        },
+        buttonTeal: {
+            bg: '#59D3C8',
+            _hover: {
+                bg: 'grey.400',
+            },
+        },
+        height: '35px',
+        fontSize: '12px',
+        fontWeight: '700',
     },
 });
 
