@@ -3,9 +3,13 @@ import './App.css';
 import { Route, Routes } from 'react-router-dom';
 
 import Layout from './components/Layout';
+import LandingPage from './pages/LandingPage';
 import ParentDashboardPage from './pages/ParentDashboardPage';
 
+<<<<<<< HEAD
 import TutorSearchPage from './pages/TutorSearchPage';
+=======
+>>>>>>> updated bg, added redirect to login page
 import AuthPage from './pages/AuthPage';
 
 // import TutorCard from './components/TutorCard';
@@ -13,8 +17,11 @@ import AuthPage from './pages/AuthPage';
 // import TutorSearchBar from './components/TutorSearchBar';
 // import TutorSearchPage from './pages/TutorSearchPage';
 
+<<<<<<< HEAD
 import LandingPage from './pages/LandingPage'
 
+=======
+>>>>>>> updated bg, added redirect to login page
 
 // import { useEffect, useState } from 'react';
 
@@ -27,9 +34,13 @@ const App = () => {
         <>
             <Routes>
                 <Route path="/" element={<Layout />}>
+<<<<<<< HEAD
                     {/* <Route index element={<HomePage />} /> */}
                     <Route path="/auth" element={<AuthPage activeTab={'login'} />} />
+=======
+>>>>>>> updated bg, added redirect to login page
                     <Route index element={<LandingPage parentButtonText="I'm a parent" tutorButtonText="I'm a tutor" />} />
+                    <Route path="/auth" element={<AuthPage activeTab={'login'} />} />
                     {/* <Route path="/login" element={<LoginForm />} /> */}
                     <Route path="/parent-dashboard" element={<ParentDashboardPage />} />
                     {/* <Route path="/tutorcard" element={<TutorCard tutor={undefined} />} /> */}
