@@ -4,11 +4,15 @@ import { Route, Routes } from 'react-router-dom';
 
 import Layout from './components/Layout';
 import ParentDashboardPage from './pages/ParentDashboardPage';
+<<<<<<< HEAD
 import AuthPage from './pages/AuthPage';
 import TutorCard from './components/TutorCard';
 
 // import TutorSearchBar from './components/TutorSearchBar';
 // import TutorSearchPage from './pages/TutorSearchPage';
+=======
+import LandingPage from './pages/LandingPage'
+>>>>>>> add LandingPage
 
 // import { useEffect, useState } from 'react';
 
@@ -21,8 +25,13 @@ const App = () => {
         <>
             <Routes>
                 <Route path="/" element={<Layout />}>
+<<<<<<< HEAD
                     {/* <Route index element={<HomePage />} /> */}
                     <Route path="/auth" element={<AuthPage activeTab={'login'} />} />
+=======
+                    <Route index element={<LandingPage parentButtonText="I'm a parent" tutorButtonText="I'm a tutor" />} />
+                    {/* <Route path="/login" element={<LoginForm />} /> */}
+>>>>>>> add LandingPage
                     <Route path="/parent-dashboard" element={<ParentDashboardPage />} />
                     <Route path="/tutorcard" element={<TutorCard />} />
                     {/* <Route path="/tutorsearchbar" element={<TutorSearchBar />} />
