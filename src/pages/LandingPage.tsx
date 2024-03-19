@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Button, Flex, VStack, Heading, Text } from '@chakra-ui/react';
 import backgroundImage from '../assets/background_photo.png';
+import { useNavigate } from 'react-router-dom';
 
 interface LandingPage {
   parentButtonText: string;
@@ -8,6 +9,13 @@ interface LandingPage {
 }
 
 const LandingPage: React.FC<LandingPage> = ({ parentButtonText, tutorButtonText }) => {
+
+  const navigate = useNavigate();
+
+  const toRegistration = () => {
+      navigate('/auth');
+  };
+
   return (
     <Flex
       direction="column"
@@ -20,7 +28,7 @@ const LandingPage: React.FC<LandingPage> = ({ parentButtonText, tutorButtonText 
       {/* Background Image */}
       <Box
         w="full"
-        h="100vh"
+        h="90vh"
         bgImage={`url(${backgroundImage})`}
         bgSize="cover"
         bgPos="center"
@@ -33,8 +41,8 @@ const LandingPage: React.FC<LandingPage> = ({ parentButtonText, tutorButtonText 
           right: 0,
           bottom: 0,
           left: 0,
-          bg: 'black',
-          opacity: '0.5', // Adjust this value for more or less transparency
+          //bg: 'white',
+          opacity: '0.5', // transparency
         }}
       />
       
@@ -46,10 +54,10 @@ const LandingPage: React.FC<LandingPage> = ({ parentButtonText, tutorButtonText 
         <Text fontSize="lg" textAlign="center">
           Find your perfect tutor today
         </Text>
-        <Button size="landing" variant="parent">
+        <Button size="landing" variant="parent" onClick={toRegistration}>
           {parentButtonText}
         </Button>
-        <Button size="landing" variant="tutor">
+        <Button size="landing" variant="tutor" onClick={toRegistration}>
           {tutorButtonText}
         </Button>
       </VStack>
