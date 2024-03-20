@@ -11,3 +11,18 @@ export const studentSchema = yup.object().shape({
         .oneOf(['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'])
         .required('Please select a grade'),
 });
+
+export const connectSchema = yup.object().shape({
+    studentId: yup.string().required('Please select a student'),
+    subjects: yup.object().shape({
+        math: yup.string(),
+        english: yup.string(),
+        science: yup.string(),
+        socialStudies: yup.string(),
+        foringLanguage: yup.string(),
+    }),
+    grade: yup
+        .string()
+        .oneOf(['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'])
+        .required('Please select a grade'),
+});

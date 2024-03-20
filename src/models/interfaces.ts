@@ -18,3 +18,16 @@ export interface StudentRequest {
     name: string;
     grade: string;
 }
+
+export interface TutorConnectionRequest {
+    studentId: string;
+    tutorId?: string;
+    subjects: {
+        math: string;
+        english: string;
+        science: string;
+        socialStudies: string;
+        foringLanguage: string;
+    };
+    grade: string;
+}

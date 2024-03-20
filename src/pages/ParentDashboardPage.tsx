@@ -23,6 +23,7 @@ const ParentDashboardPage: React.FC = () => {
             } catch (error) {
                 console.error(error);
                 setErrMsg('Something went wrong. Please try again later.');
+                setIsLoading(false);
             }
         };
         fetchStudent();
