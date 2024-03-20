@@ -4,10 +4,10 @@ import { Route, Routes } from 'react-router-dom';
 
 import Layout from './components/Layout';
 import ParentDashboardPage from './pages/ParentDashboardPage';
-import TutorCard from './components/TutorCard';
+import TutorSearchPage from './pages/TutorSearchPage';
 
-// import TutorSearchBar from './components/TutorSearchBar';
-// import TutorSearchPage from './pages/TutorSearchPage';
+// import TutorCard from './components/TutorCard';
+
 
 // import { useEffect, useState } from 'react';
 
@@ -23,9 +23,8 @@ const App = () => {
                     {/* <Route index element={<HomePage />} /> */}
                     {/* <Route path="/login" element={<LoginForm />} /> */}
                     <Route path="/parent-dashboard" element={<ParentDashboardPage />} />
-                    <Route path="/tutorcard" element={<TutorCard />} />
-                    {/* <Route path="/tutorsearchbar" element={<TutorSearchBar />} />
-                    <Route path="/tutorsearch" element={<TutorSearchPage />} /> */}
+                    {/* <Route path="/tutorcard" element={<TutorCard tutor={undefined} />} /> */}
+                    <Route path="/tutorsearch" element={<TutorSearchPage />} />
                     {/* <Route path="*" element={<NotFoundPage />} /> */}
                 </Route>
             </Routes>
