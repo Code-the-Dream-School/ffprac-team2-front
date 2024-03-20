@@ -18,3 +18,22 @@ export interface StudentRequest {
     name: string;
     grade: string;
 }
+
+export interface Tutor {
+    availability: string;
+    userId: any;
+    firstName: string;
+    lastName: string;
+    about: string;
+    grades: string;
+    avatar?: string;
+    education: string;
+    yearsOfExperience: number;
+    MathSubject?: string;
+    ForeignLanguages?: string;
+    English?: string;
+    SocialStudies?: string;
+    Science?: string;
+    _id: string;
+    subject: string;
+}

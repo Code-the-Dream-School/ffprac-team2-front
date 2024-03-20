@@ -14,12 +14,14 @@ import {
     useBreakpointValue,
 } from '@chakra-ui/react';
 
+import { CalendarIcon } from '@chakra-ui/icons';
 import React from 'react';
-import iconCalendar from '../assets/calendar.png';
+import { Tutor } from '../models/interfaces';
 import iconEducation from '../assets/experience.png';
 import iconExperience from '../assets/education.png';
 import { theme } from '../util/theme';
 
+// import iconCalendar from '../assets/calendar.png';
 // import { EmailIcon } from '@chakra-ui/icons';
 // import { IconButton } from '@chakra-ui/react'
 
@@ -28,8 +30,15 @@ const customAvatarStyle = {
     height: '90px',
 };
 
-// const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
-const TutorCard: React.FC = () => {
+export interface TutorCardProps {
+    tutor: Tutor;
+}
+
+const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
+    // const TutorCard: React.FC = ({tutor: }) => {
+    const getButtonColor = (day: string) => {
+        return tutor.availability.includes(day) ? 'green.400' : 'red.500';
+    };
     return (
         <Box mt="30px" w="100%">
             {/* <Box borderWidth='0px' borderRadius='md' boxShadow='md' ml='70'> */}
@@ -76,6 +85,19 @@ const TutorCard: React.FC = () => {
                 </Flex>
                 <CardBody>
                     <Stack spacing="2" textAlign="center">
+                        <Heading size="xs">{`${tutor.userId.firstName} ${tutor.userId.lastName}`}</Heading>
+                        <Avatar
+                            borderRadius="full"
+                            boxSize="100px"
+                            mx="auto"
+                            style={customAvatarStyle}
+                        />
+                    </Stack>
+                    <Text mt="4" w="100%" fontSize={theme.dashboardButtons.fontSize}>
+                        {tutor.about}
+                    </Text>
+                    {/* <CardBody> */}
+                    {/* <Stack spacing="2" textAlign="center">
                         <Heading size="xs">Patrick Hill</Heading>
                         <Avatar
                             // src='../assets/patrick.jpg'
@@ -84,169 +106,101 @@ const TutorCard: React.FC = () => {
                             mx="auto"
                             style={customAvatarStyle}
                         />
-                    </Stack>
-                    <Text mt="4" w="100%" fontSize={theme.dashboardButtons.fontSize}>
+                    </Stack> */}
+                    {/* <Text mt="4" w="100%" fontSize={theme.dashboardButtons.fontSize}>
                         Lorem ipsum dolor sit amet,consectetur adipiscing elit, sed do eiusmod
                         tempor incididunnim ad minim veniam, quis nost quip ex ea commodo consequat
-                    </Text>
-                </CardBody>
-                <CardBody>
-                    <Stack spacing="2" align="flex-start">
+                    </Text> */}
+                    {/* </CardBody> */}
+                    <CardBody>
                         <Stack spacing="2" align="flex-start">
-                            <Flex justify="flex-start">
-                                <Image
-                                    src={iconExperience}
-                                    alt="Experience"
-                                    w="20px"
-                                    h="20px"
-                                    mr="5"
-                                />
-                                <Text fontSize={theme.styles.global.body.fontSize}>
-                                    Master of Art at Loyola University
+                            <Stack spacing="2" align="flex-start">
+                                <Flex justify="flex-start">
+                                    <Image
+                                        src={iconExperience}
+                                        alt="Experience"
+                                        w="20px"
+                                        h="20px"
+                                        mr="5"
+                                    />
+                                    <Text fontSize={theme.styles.global.body.fontSize}>
+                                        {tutor.education}
+                                    </Text>
+                                </Flex>
+                                <Flex align="start">
+                                    <Image
+                                        src={iconEducation}
+                                        alt="Education"
+                                        w="20px"
+                                        h="20px"
+                                        mr="5"
+                                    />
+                                    <Text fontSize={theme.styles.global.body.fontSize}>
+                                        {tutor.yearsOfExperience} years of teaching
+                                    </Text>
+                                </Flex>
+                                <Text
+                                    fontWeight={theme.dashboardButtons.fontWeight}
+                                    fontSize={theme.styles.global.body.fontSize}
+                                >
+                                    Subjects
                                 </Text>
-                            </Flex>
-                            <Flex align="start">
-                                <Image
-                                    src={iconEducation}
-                                    alt="Education"
-                                    w="20px"
-                                    h="20px"
-                                    mr="5"
-                                />
-                                <Text fontSize={theme.styles.global.body.fontSize}>
-                                    5 years of teaching
+
+                                <Text>{tutor.MathSubject.join(', ')}</Text>
+                                <Text>{tutor.ForeignLanguages.join(', ')}</Text>
+                                <Text>{tutor.Science.join(', ')}</Text>
+                                <Text>{tutor.English.join(', ')}</Text>
+                                <Text>{tutor.SocialStudies.join(', ')}</Text>
+                                <Text
+                                    fontWeight={theme.dashboardButtons.fontWeight}
+                                    fontSize={theme.styles.global.body.fontSize}
+                                >
+                                    Grades
                                 </Text>
-                            </Flex>
-                            <Text
-                                fontWeight={theme.dashboardButtons.fontWeight}
-                                fontSize={theme.styles.global.body.fontSize}
-                            >
-                                Subjects
-                            </Text>
-                            <Text>Algebra, Geometry, Calculus</Text>
-                            <Text
-                                fontWeight={theme.dashboardButtons.fontWeight}
-                                fontSize={theme.styles.global.body.fontSize}
-                            >
-                                Grades
-                            </Text>
-                            <Text>8, 9, 10, 11</Text>
+                                <Text>{tutor.grades.join(', ')}</Text>
+                            </Stack>
+                            <Stack spacing="4" align="flex-start">
+                                <Flex align="start">
+                                    <CalendarIcon w="15px" h="15px" />
+                                </Flex>
+                                <Grid
+                                    templateColumns={{
+                                        base: 'repeat(2, 1fr)',
+                                        sm: 'repeat(4, 1fr)',
+                                        md: 'repeat(7, 1fr)',
+                                    }}
+                                    gap={1}
+                                    justifyItems="center"
+                                >
+                                    {[
+                                        'Monday',
+                                        'Tuesday',
+                                        'Wednesday',
+                                        'Thursday',
+                                        'Friday',
+                                        'Saturday',
+                                        'Sunday',
+                                    ].map((day, index) => (
+                                        <Button
+                                            key={index}
+                                            variant="solid"
+                                            bg={getButtonColor(day)}
+                                            m="0"
+                                            w="50%"
+                                            _hover={{ bg: getButtonColor(day) }}
+                                        >
+                                            <Text
+                                                color="white"
+                                                fontSize={theme.styles.global.body.fontSize}
+                                            >
+                                                {day.slice(0, 3)}
+                                            </Text>
+                                        </Button>
+                                    ))}
+                                </Grid>
+                            </Stack>
                         </Stack>
-                        <Stack spacing="4" align="flex-start">
-                            <Flex align="start">
-                                <Image src={iconCalendar} alt="Calendar" w="20px" h="20px" mr="2" />
-                            </Flex>
-                            <Grid
-                                templateColumns={{
-                                    base: 'repeat(2, 1fr)',
-                                    sm: 'repeat(4, 1fr)',
-                                    md: 'repeat(7, 1fr)',
-                                }}
-                                gap="1"
-                                justifyItems="center"
-                            >
-                                <Button
-                                    variant="solid"
-                                    bg="green.400"
-                                    m="0"
-                                    w="50%"
-                                    _hover={{ bg: 'green.400' }}
-                                >
-                                    <Text
-                                        color="white"
-                                        pointer-events="none"
-                                        fontSize={theme.styles.global.body.fontSize}
-                                    >
-                                        Mon
-                                    </Text>
-                                </Button>
-                                <Button
-                                    variant="solid"
-                                    bg="green.400"
-                                    m="0"
-                                    w="50%"
-                                    _hover={{ bg: 'green.400' }}
-                                >
-                                    <Text
-                                        color="white"
-                                        fontSize={theme.styles.global.body.fontSize}
-                                    >
-                                        Tue
-                                    </Text>
-                                </Button>
-                                <Button
-                                    variant="solid"
-                                    bg="green.400"
-                                    m="0"
-                                    w="50%"
-                                    _hover={{ bg: 'green.400' }}
-                                >
-                                    <Text
-                                        color="white"
-                                        fontSize={theme.styles.global.body.fontSize}
-                                    >
-                                        Wed
-                                    </Text>
-                                </Button>
-                                <Button
-                                    variant="solid"
-                                    bg="green.400"
-                                    m="0"
-                                    w="50%"
-                                    _hover={{ bg: 'green.400' }}
-                                >
-                                    <Text
-                                        color="white"
-                                        fontSize={theme.styles.global.body.fontSize}
-                                    >
-                                        Thu
-                                    </Text>
-                                </Button>
-                                <Button
-                                    variant="solid"
-                                    bg="red.500"
-                                    m="0"
-                                    w="50%"
-                                    _hover={{ bg: 'red.500' }}
-                                >
-                                    <Text
-                                        color="white"
-                                        fontSize={theme.styles.global.body.fontSize}
-                                    >
-                                        Fri
-                                    </Text>
-                                </Button>
-                                <Button
-                                    variant="solid"
-                                    bg="red.500"
-                                    m="0"
-                                    w="50%"
-                                    _hover={{ bg: 'red.500' }}
-                                >
-                                    <Text
-                                        color="white"
-                                        fontSize={theme.styles.global.body.fontSize}
-                                    >
-                                        Sat
-                                    </Text>
-                                </Button>
-                                <Button
-                                    variant="solid"
-                                    bg="red.500"
-                                    m="0"
-                                    w="50%"
-                                    _hover={{ bg: 'red.500' }}
-                                >
-                                    <Text
-                                        color="white"
-                                        fontSize={theme.styles.global.body.fontSize}
-                                    >
-                                        Sun
-                                    </Text>
-                                </Button>
-                            </Grid>
-                        </Stack>
-                    </Stack>
+                    </CardBody>
                 </CardBody>
             </Card>
         </Box>
