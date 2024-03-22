@@ -11,7 +11,7 @@ const TutorSearchPage: React.FC = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchTutor = async () => {
+        const fetchTutors = async () => {
             try {
                 const res = await axios.get(`${import.meta.env.VITE_REACT_URL}tutors`);
                 const response = await res.data;
@@ -20,36 +20,52 @@ const TutorSearchPage: React.FC = () => {
                 setLoading(false);
             } catch (error) {
                 console.error(error);
+                // setErrMsg('Something went wrong. Please try again later.');
             }
         };
-        fetchTutor();
+        fetchTutors();
     }, []);
 
-    const handleSearch = (query: string) => {
-        console.log('Search query:', query);
-    };
+    const handleSearch = async (query: string) => {
+        setLoading(true);
+        try {
+            const res = await axios.get(
+                `${import.meta.env.VITE_REACT_URL}tutors/search?subject=${query}`
+            );
+            setTutors(res.data.tutors);
+            setLoading(false);
+        } catch (error) {
+            console.error(error);
 
+            setLoading(false);
+        }
+    };
     return (
         <Box p="4">
             <Flex justify="flex-end" mt={4}>
-                <TutorSearchForm
-                    onSearch={function (query: string): void {
-                        throw new Error('Function not implemented.');
-                    }}
-                />
+                <TutorSearchForm onSearch={handleSearch} />
             </Flex>
             <Grid
                 gap={10}
                 templateColumns={{
-                    base: 'repeat(2, 1fr)',
+                    base: 'repeat(1, 1fr)',
                     sm: 'repeat(2, 1fr)',
-                    md: 'repeat(2, 1fr)',
+                    md: 'repeat(3, 1fr)',
                 }}
                 justifyItems="center"
             >
-                {tutors && tutors.length > 0
-                    ? tutors.map((tutor) => <TutorCard key={tutor._id} tutor={tutor} />)
-                    : null}
+                {/* <Grid
+                gap={10}
+                templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
+                justifyItems="center"
+            > */}
+                {loading ? (
+                    <div>Loading...</div>
+                ) : tutors && tutors.length > 0 ? (
+                    tutors.map((tutor) => <TutorCard key={tutor._id} tutor={tutor} />)
+                ) : (
+                    <div>No tutors found</div>
+                )}
             </Grid>
         </Box>
     );

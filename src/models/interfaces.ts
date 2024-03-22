@@ -25,15 +25,15 @@ export interface Tutor {
     firstName: string;
     lastName: string;
     about: string;
-    grades: string;
+    grades: string[];
     avatar?: string;
     education: string;
     yearsOfExperience: number;
-    MathSubject?: string;
-    ForeignLanguages?: string;
-    English?: string;
-    SocialStudies?: string;
-    Science?: string;
+    MathSubject: string[];
+    ForeignLanguages: string[];
+    English: string[];
+    SocialStudies: string[];
+    Science: string[];
     _id: string;
     subject: string;
 }

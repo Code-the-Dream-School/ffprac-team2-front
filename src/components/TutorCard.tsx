@@ -39,10 +39,11 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
     const getButtonColor = (day: string) => {
         return tutor.availability.includes(day) ? 'green.400' : 'red.500';
     };
+    console.log(tutor);
     return (
         <Box mt="30px" w="100%">
             {/* <Box borderWidth='0px' borderRadius='md' boxShadow='md' ml='70'> */}
-            <Card maxW={{ base: '90%', md: '500px' }} bg={theme.colors.customWhite}>
+            <Card maxW={{ base: '90%', md: '380px' }} bg={theme.colors.customWhite}>
                 <Flex justify="flex-end" mb="4" mt="20px">
                     <ButtonGroup
                         gap={{ base: '10px', md: '20px' }}
@@ -85,7 +86,10 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
                 </Flex>
                 <CardBody>
                     <Stack spacing="2" textAlign="center">
-                        <Heading size="xs">{`${tutor.userId.firstName} ${tutor.userId.lastName}`}</Heading>
+                        <Heading
+                            size="xs"
+                            mb="8px"
+                        >{`${tutor.userId.firstName} ${tutor.userId.lastName}`}</Heading>
                         <Avatar
                             borderRadius="full"
                             boxSize="100px"
@@ -112,95 +116,140 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
                         tempor incididunnim ad minim veniam, quis nost quip ex ea commodo consequat
                     </Text> */}
                     {/* </CardBody> */}
-                    <CardBody>
-                        <Stack spacing="2" align="flex-start">
+                    <Box position="relative" mt="4" mb="4">
+                        <Box borderBottom="1px solid gray" />
+                        <Box
+                            position="absolute"
+                            left="50%"
+                            transform="translateX(-50%)"
+                            bottom="-5px"
+                            width="40px"
+                            height="5px"
+                            bg="gray"
+                            borderRadius="9999px"
+                        />
+                        <CardBody>
                             <Stack spacing="2" align="flex-start">
-                                <Flex justify="flex-start">
-                                    <Image
-                                        src={iconExperience}
-                                        alt="Experience"
-                                        w="20px"
-                                        h="20px"
-                                        mr="5"
-                                    />
-                                    <Text fontSize={theme.styles.global.body.fontSize}>
-                                        {tutor.education}
+                                <Stack spacing="2" align="flex-start">
+                                    <Flex justify="flex-start">
+                                        <Image
+                                            src={iconExperience}
+                                            alt="Experience"
+                                            w="20px"
+                                            h="20px"
+                                            mr="5"
+                                        />
+                                        <Text fontSize={theme.styles.global.body.fontSize}>
+                                            {tutor.education}
+                                        </Text>
+                                    </Flex>
+                                    <Flex align="start">
+                                        <Image
+                                            src={iconEducation}
+                                            alt="Education"
+                                            w="20px"
+                                            h="20px"
+                                            mr="5"
+                                        />
+                                        <Text fontSize={theme.styles.global.body.fontSize}>
+                                            {tutor.yearsOfExperience} years of teaching
+                                        </Text>
+                                    </Flex>
+                                    <Text
+                                        fontWeight={theme.dashboardButtons.fontWeight}
+                                        fontSize={theme.styles.global.body.fontSize}
+                                    >
+                                        Teaching skills
                                     </Text>
-                                </Flex>
-                                <Flex align="start">
-                                    <Image
-                                        src={iconEducation}
-                                        alt="Education"
-                                        w="20px"
-                                        h="20px"
-                                        mr="5"
-                                    />
-                                    <Text fontSize={theme.styles.global.body.fontSize}>
-                                        {tutor.yearsOfExperience} years of teaching
+                                    <Text>
+                                        {[
+                                            ...tutor.MathSubject,
+                                            ...tutor.ForeignLanguages,
+                                            ...tutor.Science,
+                                            ...tutor.English,
+                                            ...tutor.SocialStudies,
+                                        ]
+                                            .filter((subject) => subject && subject.length > 0)
+                                            .join(', ')}
                                     </Text>
-                                </Flex>
-                                <Text
-                                    fontWeight={theme.dashboardButtons.fontWeight}
-                                    fontSize={theme.styles.global.body.fontSize}
-                                >
-                                    Subjects
-                                </Text>
 
-                                <Text>{tutor.MathSubject.join(', ')}</Text>
-                                <Text>{tutor.ForeignLanguages.join(', ')}</Text>
-                                <Text>{tutor.Science.join(', ')}</Text>
-                                <Text>{tutor.English.join(', ')}</Text>
-                                <Text>{tutor.SocialStudies.join(', ')}</Text>
-                                <Text
-                                    fontWeight={theme.dashboardButtons.fontWeight}
-                                    fontSize={theme.styles.global.body.fontSize}
-                                >
-                                    Grades
-                                </Text>
-                                <Text>{tutor.grades.join(', ')}</Text>
-                            </Stack>
-                            <Stack spacing="4" align="flex-start">
-                                <Flex align="start">
-                                    <CalendarIcon w="15px" h="15px" />
-                                </Flex>
-                                <Grid
-                                    templateColumns={{
-                                        base: 'repeat(2, 1fr)',
-                                        sm: 'repeat(4, 1fr)',
-                                        md: 'repeat(7, 1fr)',
-                                    }}
-                                    gap={1}
-                                    justifyItems="center"
-                                >
+                                    {/* <Text>
                                     {[
-                                        'Monday',
-                                        'Tuesday',
-                                        'Wednesday',
-                                        'Thursday',
-                                        'Friday',
-                                        'Saturday',
-                                        'Sunday',
-                                    ].map((day, index) => (
-                                        <Button
-                                            key={index}
-                                            variant="solid"
-                                            bg={getButtonColor(day)}
-                                            m="0"
-                                            w="50%"
-                                            _hover={{ bg: getButtonColor(day) }}
-                                        >
-                                            <Text
-                                                color="white"
-                                                fontSize={theme.styles.global.body.fontSize}
+                                        tutor.MathSubject,
+                                        tutor.ForeignLanguages,
+                                        tutor.Science,
+                                        tutor.English,
+                                        tutor.SocialStudies,
+                                    ]
+                                        .filter((subject) => subject && subject.length > 0)
+                                        .join(', ')}
+                                </Text> */}
+
+                                    {/* <Text>
+                                    {[
+                                        tutor.MathSubject,
+                                        tutor.ForeignLanguages,
+                                        tutor.Science,
+                                        tutor.English,
+                                        tutor.SocialStudies,
+                                    ]
+                                        .filter((subjects) => subjects && subjects.length > 0)
+                                        .map((subjects) => subjects.join(', '))
+                                        .join(', ')}
+                                </Text> */}
+
+                                    <Text
+                                        fontWeight={theme.dashboardButtons.fontWeight}
+                                        fontSize={theme.styles.global.body.fontSize}
+                                    >
+                                        Grades
+                                    </Text>
+                                    <Text>{tutor.grades.join(', ')}</Text>
+                                </Stack>
+                                <Stack spacing="4" align="flex-start">
+                                    <Flex align="start">
+                                        <CalendarIcon w="15px" h="15px" />
+                                    </Flex>
+                                    <Grid
+                                        templateColumns={{
+                                            base: 'repeat(2, 1fr)',
+                                            sm: 'repeat(4, 1fr)',
+                                            md: 'repeat(7, 1fr)',
+                                        }}
+                                        gap={1}
+                                        justifyItems="center"
+                                    >
+                                        {[
+                                            'Monday',
+                                            'Tuesday',
+                                            'Wednesday',
+                                            'Thursday',
+                                            'Friday',
+                                            'Saturday',
+                                            'Sunday',
+                                        ].map((day, index) => (
+                                            <Button
+                                                key={index}
+                                                variant="solid"
+                                                bg={getButtonColor(day)}
+                                                m="0"
+                                                w="50%"
+                                                h="25px"
+                                                _hover={{ bg: getButtonColor(day) }}
                                             >
-                                                {day.slice(0, 3)}
-                                            </Text>
-                                        </Button>
-                                    ))}
-                                </Grid>
+                                                <Text
+                                                    color="white"
+                                                    fontSize={theme.styles.global.body.fontSize}
+                                                >
+                                                    {day.slice(0, 3)}
+                                                </Text>
+                                            </Button>
+                                        ))}
+                                    </Grid>
+                                </Stack>
                             </Stack>
-                        </Stack>
-                    </CardBody>
+                        </CardBody>
+                    </Box>
                 </CardBody>
             </Card>
         </Box>
