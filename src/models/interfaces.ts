@@ -35,7 +35,7 @@ export interface LoginData {
 
 export interface Tutor {
     availability: string;
-    userId: any;
+    userId: string;
     firstName: string;
     lastName: string;
     about: string;

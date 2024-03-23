@@ -25,7 +25,7 @@ interface SearchFormProps {
 interface FormFieldProps {
     field: {
         name: string;
-        value: any;
+        value: string;
         onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
         onBlur: (event: React.FocusEvent<HTMLInputElement>) => void;
     };
@@ -44,9 +44,8 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
     return (
         <Formik
             initialValues={{ query: '' }}
-            onSubmit={(values, {}) => {
+            onSubmit={(values) => {
                 onSearch(values.query);
-                // resetForm();
             }}
             validationSchema={validationSchema}
         >
