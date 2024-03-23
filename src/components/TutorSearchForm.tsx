@@ -18,7 +18,6 @@ const validationSchema = object().shape({
         .required('Please enter a subject')
         .max(20, 'Subject must be less than 20 characters'),
 });
-
 interface SearchFormProps {
     onSearch: (query: string) => void;
 }
@@ -45,9 +44,9 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
     return (
         <Formik
             initialValues={{ query: '' }}
-            onSubmit={(values, { resetForm }) => {
+            onSubmit={(values, {}) => {
                 onSearch(values.query);
-                resetForm();
+                // resetForm();
             }}
             validationSchema={validationSchema}
         >
@@ -63,6 +62,9 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
                                             variant="outline"
                                             bg="white"
                                             placeholder="Enter your subject"
+                                            maxLength={25}
+                                            _placeholder={{ color: 'gray.400' }}
+                                            _focus={{ borderColor: 'teal.400' }}
                                         />
                                         <InputRightElement>
                                             <IconButton
