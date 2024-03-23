@@ -54,7 +54,8 @@ const TutorSearchPage: React.FC = () => {
                 }}
                 justifyItems="center"
             >
-                {/* <Grid
+                {/* OM: Still debating on the layout. Pls, don't remove.
+                <Grid
                 gap={10}
                 templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
                 justifyItems="center"

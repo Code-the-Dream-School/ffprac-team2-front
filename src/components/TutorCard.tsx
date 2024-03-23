@@ -100,22 +100,6 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
                     <Text mt="4" w="100%" fontSize={theme.dashboardButtons.fontSize}>
                         {tutor.about}
                     </Text>
-                    {/* <CardBody> */}
-                    {/* <Stack spacing="2" textAlign="center">
-                        <Heading size="xs">Patrick Hill</Heading>
-                        <Avatar
-                            // src='../assets/patrick.jpg'
-                            borderRadius="full"
-                            boxSize="100px"
-                            mx="auto"
-                            style={customAvatarStyle}
-                        />
-                    </Stack> */}
-                    {/* <Text mt="4" w="100%" fontSize={theme.dashboardButtons.fontSize}>
-                        Lorem ipsum dolor sit amet,consectetur adipiscing elit, sed do eiusmod
-                        tempor incididunnim ad minim veniam, quis nost quip ex ea commodo consequat
-                    </Text> */}
-                    {/* </CardBody> */}
                     <Box position="relative" mt="4" mb="4">
                         <Box borderBottom="1px solid gray" />
                         <Box
@@ -158,7 +142,6 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
                                     <Text
                                         fontWeight={theme.dashboardButtons.fontWeight}
                                         fontSize={theme.styles.global.body.fontSize}
-                                        color="#206A64"
                                     >
                                         Teaching skills
                                     </Text>
@@ -173,31 +156,6 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
                                             .filter((subject) => subject && subject.length > 0)
                                             .join(', ')}
                                     </Text>
-
-                                    {/* <Text>
-                                    {[
-                                        tutor.MathSubject,
-                                        tutor.ForeignLanguages,
-                                        tutor.Science,
-                                        tutor.English,
-                                        tutor.SocialStudies,
-                                    ]
-                                        .filter((subject) => subject && subject.length > 0)
-                                        .join(', ')}
-                                </Text> */}
-
-                                    {/* <Text>
-                                    {[
-                                        tutor.MathSubject,
-                                        tutor.ForeignLanguages,
-                                        tutor.Science,
-                                        tutor.English,
-                                        tutor.SocialStudies,
-                                    ]
-                                        .filter((subjects) => subjects && subjects.length > 0)
-                                        .map((subjects) => subjects.join(', '))
-                                        .join(', ')}
-                                </Text> */}
 
                                     <Text
                                         fontWeight={theme.dashboardButtons.fontWeight}
