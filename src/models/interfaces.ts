@@ -32,3 +32,22 @@ export interface LoginData {
     email: string;
     password: string;
 }
+
+export interface Tutor {
+    availability: string;
+    userId: string;
+    firstName: string;
+    lastName: string;
+    about: string;
+    grades: string[];
+    avatar?: string;
+    education: string;
+    yearsOfExperience: number;
+    MathSubject: string[];
+    ForeignLanguages: string[];
+    English: string[];
+    SocialStudies: string[];
+    Science: string[];
+    _id: string;
+    subject: string;
+}

@@ -29,8 +29,8 @@ export const theme = extendTheme({
                 bg: 'grey.400',
             },
         },
-        height: '35px',
-        fontSize: '12px',
+        height: '30px',
+        fontSize: '11px',
         fontWeight: '700',
     },
 });
