@@ -54,10 +54,10 @@ const LandingPage: React.FC<LandingPage> = ({ parentButtonText, tutorButtonText 
         <Text fontSize="lg" textAlign="center">
           Find your perfect tutor today
         </Text>
-        <Button size="landing" variant="parent" onClick={toRegistration}>
+        <Button size="landing" variant="buttonTeal" onClick={toRegistration}>
           {parentButtonText}
         </Button>
-        <Button size="landing" variant="tutor" onClick={toRegistration}>
+        <Button size="landing" variant="buttonYellow" onClick={toRegistration}>
           {tutorButtonText}
         </Button>
       </VStack>
