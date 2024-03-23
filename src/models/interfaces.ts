@@ -19,6 +19,20 @@ export interface StudentRequest {
     grade: string;
 }
 
+/*export interface RegistrationFormData {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+    role: 'parent' | 'tutor';
+}
+*/
+export interface LoginData {
+    email: string;
+    password: string;
+}
+
 export interface Tutor {
     availability: string;
     userId: any;
