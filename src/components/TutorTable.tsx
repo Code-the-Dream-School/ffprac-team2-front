@@ -4,7 +4,7 @@ import { theme } from '../util/theme';
 
 // import React from 'react';
 
-function TutorDashboard() {
+function TutorTable() {
     const data = [
         {
             parent: 'Alicia Morgan',
@@ -37,44 +37,46 @@ function TutorDashboard() {
     ];
 
     return (
-        <Box overflowX="auto" overflowY="scroll" mt="50px" height="400px">
-            <Table
-                variant="simple"
-                width="100%"
-                bg={theme.colors.customWhite}
-                borderRadius="md"
-                boxShadow="md"
-            >
-                <Thead>
-                    <Tr
-                        bg={theme.dashboardButtons.buttonTeal.bg}
-                        fontWeight={theme.dashboardButtons.fontWeight}
-                        color="black"
-                        borderRadius="md"
-                    >
-                        <Th>Parent</Th>
-                        <Th>Student</Th>
-                        <Th>Email</Th>
-                        <Th>Subject</Th>
-                        <Th>Schedule</Th>
-                    </Tr>
-                </Thead>
-                <Tbody fontSize="13px">
-                    {data.map((row, index) => (
-                        <Tr key={index}>
-                            <Td>{row.parent}</Td>
-                            <Td>{row.student}</Td>
-                            <Td>
-                                <a href={`mailto:${row.email}`}>{row.email}</a>
-                            </Td>
-                            <Td>{row.subject}</Td>
-                            <Td>{row.schedule}</Td>
+        <Box height="100%" display="flex" justifyContent="flex-end">
+            <Box overflowX="auto" overflowY="scroll" mt="50px">
+                <Table
+                    variant="simple"
+                    width="80%"
+                    bg={theme.colors.customWhite}
+                    borderRadius="md"
+                    boxShadow="md"
+                >
+                    <Thead>
+                        <Tr
+                            bg={theme.dashboardButtons.buttonTeal.bg}
+                            fontWeight={theme.dashboardButtons.fontWeight}
+                            color="black"
+                            borderRadius="md"
+                        >
+                            <Th>Parent</Th>
+                            <Th>Student</Th>
+                            <Th>Email</Th>
+                            <Th>Subject</Th>
+                            <Th>Schedule</Th>
                         </Tr>
-                    ))}
-                </Tbody>
-            </Table>
+                    </Thead>
+                    <Tbody fontSize="13px">
+                        {data.map((row, index) => (
+                            <Tr key={index}>
+                                <Td>{row.parent}</Td>
+                                <Td>{row.student}</Td>
+                                <Td>
+                                    <a href={`mailto:${row.email}`}>{row.email}</a>
+                                </Td>
+                                <Td>{row.subject}</Td>
+                                <Td>{row.schedule}</Td>
+                            </Tr>
+                        ))}
+                    </Tbody>
+                </Table>
+            </Box>
         </Box>
     );
 }
 
-export default TutorDashboard;
+export default TutorTable;
