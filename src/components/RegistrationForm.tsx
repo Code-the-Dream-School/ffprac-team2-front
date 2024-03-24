@@ -13,8 +13,8 @@ const inputStyle = {
 };
 
 const buttonStyle = {
-    width: '9em',
-    height: '3em',
+    width: '150px',
+    height: '50px',
 };
 
 const labelStyle = {
@@ -27,53 +27,14 @@ const radioLabelStyle = {
 
 const RegistrationForm: React.FC = () => {
     const navigate = useNavigate();
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [registrationError, setRegistrationError] = useState(null);
-   
     const initialValues: RegistrationFormData = {
         firstName: '',
         lastName: '',
         email: '',
         password: '',
         confirmPassword: '',
-        role: 'parent', // Set default role to 'parent'
+        role: '',
     };
-    const handleRegistrationSubmit = async (values: RegistrationFormData, { setTouched }: { setTouched: Function }) => {
-        setIsSubmitting(true);
-        setRegistrationError(null);
-
-        try {
-            const requestData = {
-                firstName: values.firstName,
-                lastName: values.lastName,
-                email: values.email,
-                password: values.password,
-                role: values.role
-            };
-
-            const response = await axios.post("https://ffprac-team2-back.onrender.com/api/v1/auth/register", requestData);
-            const { firstName, lastName, email, role, token } = response.data.user;
-            console.log(response);
-            localStorage.setItem('token', token);
-
-            setIsRegistrationSuccess(true);
-
-            if (role === 'parent') {
-                navigate('/parent-dashboard');
-            } else if (role === 'tutor') {
-                navigate('/tutor-dashboard');
-            } else {
-                console.error('Unexpected role:', role);
-            }
-
-        } catch (error) {
-            console.error('Registration failed:', error);
-            setRegistrationError(error);
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
-
     return (
         <Formik
             initialValues={initialValues}
@@ -89,10 +50,36 @@ const RegistrationForm: React.FC = () => {
                     .required('Confirmation of password is required'),
 
             })}
-            onSubmit={handleRegistrationSubmit}
+            onSubmit={async (values, { setSubmitting, setStatus, setFieldError }) => {
+                setStatus('Processing')
+                try {
+                    const requestData = {
+                        firstName: values.firstName,
+                        lastName: values.lastName,
+                        email: values.email,
+                        password: values.password,
+                        role: values.role
+                    };
+                    //console.log('Request Data:', requestData);
+                    const response = await axios.post("https://ffprac-team2-back.onrender.com/api/v1/auth/register", requestData);
+                    const { firstName, lastName, email, role, token } = response.data.user;
+
+                    console.log(response.data.user);
+                    localStorage.setItem('token', token);
+                    const userData = { firstName, lastName, email, role };
+                    localStorage.setItem('userData', JSON.stringify(userData));
+                    navigate('/');
+                } catch (error) {
+                    console.error('Registration failed:', error);
+                    setStatus('failed');
+                    setFieldError('email', 'Registration failed. Please try again.');
+                } finally {
+                    setSubmitting(false);
+                }
+            }}
         >
             {(formik) => (
-                <form onSubmit={formik.handleSubmit}>
+                <Form onSubmit={formik.handleSubmit}>
                     <Stack spacing={4}>
                         <FormControl isRequired isInvalid={!!(formik.errors.firstName && formik.touched.firstName)}>
                             <FormLabel htmlFor="firstName" style={labelStyle}>
@@ -169,7 +156,7 @@ const RegistrationForm: React.FC = () => {
                                 <FormErrorMessage>{formik.errors.confirmPassword}</FormErrorMessage>
                             )}
                         </FormControl>
-                        <RadioGroup id="role" name="role" width="22em" defaultValue='parent'>
+                        <RadioGroup id="role" name="role" width="350px" value={formik.values.role} onChange={(value) => formik.setFieldValue('role', value)}>
                             <Stack direction="row" display="flex" alignItems="center">
                                 <Radio value="parent" flex="1" bg="white" size="md">
                                     <span style={radioLabelStyle}>Parent</span>
@@ -184,7 +171,7 @@ const RegistrationForm: React.FC = () => {
                                 type="submit"
                                 style={{ ...buttonStyle, backgroundColor: '#F4CD76', color: 'black' }}
                                 flex="1"
-                                disabled={isSubmitting}
+                                disabled={formik.isSubmitting}
                             >
                                 Register
                             </Button>
@@ -197,21 +184,18 @@ const RegistrationForm: React.FC = () => {
                                 Cancel
                             </Button>
                         </Stack>
-                        {isSubmitting && (
+                        {formik.isSubmitting && (
                             <Box textAlign="center">
                                 <Spinner size="sm" />
                             </Box>
                         )}
-                        {registrationError && (
-                            <Box textAlign="center" color="red.500">
-                                {registrationError}
-                            </Box>
-                        )}
                     </Stack>
-                </form>
+                </Form>
             )}
         </Formik>
     );
 };
 
+
 export default RegistrationForm;
+
