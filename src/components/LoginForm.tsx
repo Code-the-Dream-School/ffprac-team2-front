@@ -44,10 +44,11 @@ const LoginForm: React.FC = () => {
 
                     // Submit the form data
                     const response = await axios.post('https://ffprac-team2-back.onrender.com/api/v1/auth/login', values);
-                    const { role, token } = response.data.user;
+                    const { firstName, lastName, email, role, token } = response.data.user;
                     console.log(response.data.user);
                     localStorage.setItem('token', token);
-                    localStorage.setItem('role', role);
+                    const userData = { firstName, lastName, email, role };
+                    localStorage.setItem('userData', JSON.stringify(userData));
                     navigate('/');
                 } catch (error) {
                     console.error('Login failed:', error);
