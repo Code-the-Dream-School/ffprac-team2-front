@@ -17,8 +17,8 @@ const AuthPage: React.FC<AuthPageProps> = ({ activeTab }) => {
                 <Tabs variant="unstyled" defaultIndex={defaultIndex}>
                     <TabList
                         bg="#D9D9D9"
-                        width="22em"
-                        height="3.75em"
+                        width="350px"
+                        height="60px"
                         borderRadius="1.25em"
                         display="flex"
                         justifyContent="center"
