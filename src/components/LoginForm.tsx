@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Formik, Form, Field } from 'formik';
@@ -15,8 +15,8 @@ const inputStyle = {
 };
 
 const buttonStyle = {
-    width: '9em',
-    height: '3em',
+    width: '150px',
+    height: '50px',
 };
 
 const labelStyle = {
@@ -44,16 +44,11 @@ const LoginForm: React.FC = () => {
 
                     // Submit the form data
                     const response = await axios.post('https://ffprac-team2-back.onrender.com/api/v1/auth/login', values);
-                    const { firstName, lastName, email, role, token } = response.data.user;
+                    const { role, token } = response.data.user;
+                    console.log(response.data.user);
                     localStorage.setItem('token', token);
-
-                    if (role === 'parent') {
-                        navigate('/parent-dashboard');
-                    } else if (role === 'tutor') {
-                        navigate('/tutor-dashboard');
-                    } else {
-                        console.error('Unexpected role:', role);
-                    }
+                    localStorage.setItem('role', role);
+                    navigate('/');
                 } catch (error) {
                     console.error('Login failed:', error);
                     setStatus('failed');
@@ -63,7 +58,7 @@ const LoginForm: React.FC = () => {
             }}
         >
             {(formik) => (
-                <Form>
+                <Form onSubmit={formik.handleSubmit}>
                     <Stack spacing={4}>
                         <FormControl isRequired isInvalid={!!(formik.errors.email && formik.touched.email)}>
                             <FormLabel htmlFor="email" style={labelStyle}>
