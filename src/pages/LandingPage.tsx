@@ -28,7 +28,7 @@ const LandingPage: React.FC<LandingPage> = ({ parentButtonText, tutorButtonText 
       {/* Background Image */}
       <Box
         w="full"
-        h="90vh"
+        h={{ base: "90vh", md: "80vh" }}
         bgImage={`url(${backgroundImage})`}
         bgSize="cover"
         bgPos="center"
@@ -41,44 +41,61 @@ const LandingPage: React.FC<LandingPage> = ({ parentButtonText, tutorButtonText 
           right: 0,
           bottom: 0,
           left: 0,
-          //bg: 'white',
-          opacity: '0.5', // transparency
+          bg: 'white',
+          opacity: '0.4', // transparency
         }}
       />
 
       {/* Content */}
       <VStack spacing={8} align="stretch" w="full" maxW="container.md" mx="auto" zIndex="1">
-        <Heading 
-          as="h1" 
-          size="2xl" 
+        <Heading
+          as="h1"
+          size={{ base: "xl", md: "2xl" }}
           textAlign="center"
-          mb="1rem"
           sx={{
-            textShadow: '2px 2px 4px rgba(0, 0, 0, 0.25)'
+            textShadow: '2px 2px 4px rgba(0, 0, 0, 0.4)'
           }}>
           Empower Your Learning Journey
         </Heading>
 
         <Text
-          fontSize="2xl"
+          as="h3"
+          fontSize={{ base: "lg", md: "xl", lg: "2xl" }}
           textAlign="center"
           fontWeight="bold"
-          mb="4rem"
+          mt="1rem"
+          mb="5rem"
           sx={{
-            textShadow: '2px 2px 4px rgba(0, 0, 0, 0.25)'
+            textShadow: '2px 2px 4px rgba(0, 0, 0, 0.4)'
           }}
         >
           Find your perfect tutor today
         </Text>
-        <Box width="350" gap="2rem" margin="0 auto" display="flex" alignItems="center" flexDirection="column" justifyContent="center">
+        <ButtonGroup
+          gap={{ base: "4rem", sm: "3rem" }}
+          margin="0 auto"
+          display="flex"
+          alignItems="center"
+          flexDirection="column"
+          justifyContent="center">
 
-          <Button size="landing" variant="buttonTeal" fontWeight="bold" onClick={toRegistration}>
+          <Button
+            size="landing"
+            variant="buttonTeal"
+            width={{ base: "90%", sm: "80%", lg: "350px" }}
+            fontWeight="bold"
+            onClick={toRegistration}>
             {parentButtonText}
           </Button>
-          <Button size="landing" variant="buttonYellow" fontWeight="bold" onClick={toRegistration}>
+          <Button
+            size="landing"
+            variant="buttonYellow"
+            width={{ base: "90%", sm: "80%", lg: "350px" }}
+            fontWeight="bold"
+            onClick={toRegistration}>
             {tutorButtonText}
           </Button>
-        </Box>
+        </ButtonGroup>
 
       </VStack>
     </Flex>
@@ -86,3 +103,4 @@ const LandingPage: React.FC<LandingPage> = ({ parentButtonText, tutorButtonText 
 };
 
 export default LandingPage;
+

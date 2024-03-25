@@ -46,18 +46,17 @@ export const theme = extendTheme({
               },
           },
           variants: {
-            // button variants. (dashboardButtons styles as variants)
+            // landing button variants.
             buttonYellow: {
-                shadows: {
-                    purple: '0 0 0 3px rgba(159, 122, 234, 0.6)'
-                  },
               bg: '#F4CD76',
+              boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)',
               _hover: {
                 bg: 'grey.400',
               },
             },
             buttonTeal: {
               bg: '#59D3C8',
+              boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)',
               _hover: {
                 bg: 'grey.400',
               },
@@ -76,3 +75,4 @@ export const theme = extendTheme({
 //     xl: "80em", // ~1280px
 //     "2xl": "96em", // ~1536px
 //   };
+
