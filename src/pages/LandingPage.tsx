@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, Flex, VStack, Heading, Text } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Flex, VStack, Heading, Text } from '@chakra-ui/react';
 import backgroundImage from '../assets/background_photo.png';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,7 +13,7 @@ const LandingPage: React.FC<LandingPage> = ({ parentButtonText, tutorButtonText 
   const navigate = useNavigate();
 
   const toRegistration = () => {
-      navigate('/auth');
+    navigate(`/auth`);
   };
 
   return (
@@ -45,21 +45,41 @@ const LandingPage: React.FC<LandingPage> = ({ parentButtonText, tutorButtonText 
           opacity: '0.5', // transparency
         }}
       />
-      
+
       {/* Content */}
       <VStack spacing={8} align="stretch" w="full" maxW="container.md" mx="auto" zIndex="1">
-        <Heading as="h1" size="2xl" textAlign="center">
+        <Heading 
+          as="h1" 
+          size="2xl" 
+          textAlign="center"
+          mb="1rem"
+          sx={{
+            textShadow: '2px 2px 4px rgba(0, 0, 0, 0.25)'
+          }}>
           Empower Your Learning Journey
         </Heading>
-        <Text fontSize="lg" textAlign="center">
+
+        <Text
+          fontSize="2xl"
+          textAlign="center"
+          fontWeight="bold"
+          mb="4rem"
+          sx={{
+            textShadow: '2px 2px 4px rgba(0, 0, 0, 0.25)'
+          }}
+        >
           Find your perfect tutor today
         </Text>
-        <Button size="landing" variant="buttonTeal" onClick={toRegistration}>
-          {parentButtonText}
-        </Button>
-        <Button size="landing" variant="buttonYellow" onClick={toRegistration}>
-          {tutorButtonText}
-        </Button>
+        <Box width="350" gap="2rem" margin="0 auto" display="flex" alignItems="center" flexDirection="column" justifyContent="center">
+
+          <Button size="landing" variant="buttonTeal" fontWeight="bold" onClick={toRegistration}>
+            {parentButtonText}
+          </Button>
+          <Button size="landing" variant="buttonYellow" fontWeight="bold" onClick={toRegistration}>
+            {tutorButtonText}
+          </Button>
+        </Box>
+
       </VStack>
     </Flex>
   );
