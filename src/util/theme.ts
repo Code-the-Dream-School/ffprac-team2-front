@@ -35,35 +35,35 @@ export const theme = extendTheme({
     },
     components: {
         Button: {
-          baseStyle: {
-            fontWeight: 'normal', 
-          },
-          sizes: {
-            landing: {
-                h: '75px', 
-                minW: '350px', 
-                fontSize: '24px',
-              },
-          },
-          variants: {
-            // landing button variants.
-            buttonYellow: {
-              bg: '#F4CD76',
-              boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)',
-              _hover: {
-                bg: 'grey.400',
-              },
+            baseStyle: {
+                fontWeight: 'normal',
             },
-            buttonTeal: {
-              bg: '#59D3C8',
-              boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)',
-              _hover: {
-                bg: 'grey.400',
-              },
+            sizes: {
+                landing: {
+                    h: '75px',
+                    minW: '350px',
+                    fontSize: '24px',
+                },
             },
-          },
+            variants: {
+                // landing button variants.
+                buttonYellow: {
+                    bg: '#F4CD76',
+                    boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)',
+                    _hover: {
+                        bg: 'grey.400',
+                    },
+                },
+                buttonTeal: {
+                    bg: '#59D3C8',
+                    boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)',
+                    _hover: {
+                        bg: 'grey.400',
+                    },
+                },
+            },
         },
-      },
+    },
 });
 
 // Default braikpoints for informational purposes
@@ -75,4 +75,3 @@ export const theme = extendTheme({
 //     xl: "80em", // ~1280px
 //     "2xl": "96em", // ~1536px
 //   };
-

@@ -22,7 +22,15 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<Layout />}>
                     {/* <Route index element={<HomePage />} /> */}
-                    <Route index element={<LandingPage parentButtonText="I'm a parent" tutorButtonText="I'm a tutor" />} />
+                    <Route
+                        index
+                        element={
+                            <LandingPage
+                                parentButtonText="I'm a parent"
+                                tutorButtonText="I'm a tutor"
+                            />
+                        }
+                    />
                     <Route path="/auth" element={<AuthPage activeTab={'login'} />} />
                     <Route path="/parent-dashboard" element={<ParentDashboardPage />} />
                     {/* <Route path="/tutorcard" element={<TutorCard tutor={undefined} />} /> */}
