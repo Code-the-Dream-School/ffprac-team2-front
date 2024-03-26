@@ -1,25 +1,31 @@
 import React from 'react';
-import { Box, Button, ButtonGroup, Flex, VStack, Heading, Text } from '@chakra-ui/react';
-import backgroundImage from '../assets/background_photo.png';
+import {
+    Box,
+    Button,
+    ButtonGroup,
+    Flex,
+    VStack,
+    Heading,
+    Text,
+    useMediaQuery,
+} from '@chakra-ui/react';
+import backgroundImage from '../assets/background_01.jpg';
 import { useNavigate } from 'react-router-dom';
 
-interface LandingPage {
-    parentButtonText: string;
-    tutorButtonText: string;
-}
-
-const LandingPage: React.FC<LandingPage> = ({ parentButtonText, tutorButtonText }) => {
+const LandingPage: React.FC = () => {
     const navigate = useNavigate();
 
     const toRegistration = () => {
         navigate(`/auth`);
     };
 
+    const [isLargeScreen] = useMediaQuery('(min-width: 1280px)');
+
     return (
         <Flex
             direction="column"
-            justify="center"
             align="center"
+            justify="center"
             w="full"
             h="100vh"
             position="relative"
@@ -27,10 +33,11 @@ const LandingPage: React.FC<LandingPage> = ({ parentButtonText, tutorButtonText 
             {/* Background Image */}
             <Box
                 w="full"
-                h={{ base: '90vh', md: '80vh' }}
+                h="100vh"
                 bgImage={`url(${backgroundImage})`}
-                bgSize="cover"
+                bgSize={isLargeScreen ? 'auto 100vh' : 'cover'}
                 bgPos="center"
+                bgRepeat="no-repeat"
                 position="absolute"
                 zIndex="-1"
                 _after={{
@@ -44,12 +51,11 @@ const LandingPage: React.FC<LandingPage> = ({ parentButtonText, tutorButtonText 
                     opacity: '0.4', // transparency
                 }}
             />
-
             {/* Content */}
             <VStack spacing={8} align="stretch" w="full" maxW="container.md" mx="auto" zIndex="1">
                 <Heading
                     as="h1"
-                    size={{ base: 'xl', md: '2xl' }}
+                    size={{ base: 'xl', lg: '2xl' }}
                     textAlign="center"
                     sx={{
                         textShadow: '2px 2px 4px rgba(0, 0, 0, 0.4)',
@@ -59,12 +65,11 @@ const LandingPage: React.FC<LandingPage> = ({ parentButtonText, tutorButtonText 
                 </Heading>
 
                 <Text
-                    as="h3"
-                    fontSize={{ base: 'lg', md: 'xl', lg: '2xl' }}
+                    fontSize={{ base: 'lg', lg: '2xl' }}
                     textAlign="center"
                     fontWeight="bold"
-                    mt="1rem"
-                    mb="5rem"
+                    mt={{ base: '1rem', sm: '0.5rem' }}
+                    mb={{ base: '5rem', sm: '2rem' }}
                     sx={{
                         textShadow: '2px 2px 4px rgba(0, 0, 0, 0.4)',
                     }}
@@ -72,7 +77,7 @@ const LandingPage: React.FC<LandingPage> = ({ parentButtonText, tutorButtonText 
                     Find your perfect tutor today
                 </Text>
                 <ButtonGroup
-                    gap={{ base: '4rem', sm: '3rem' }}
+                    gap={{ base: '4rem', sm: '2rem' }}
                     margin="0 auto"
                     display="flex"
                     alignItems="center"
@@ -82,20 +87,20 @@ const LandingPage: React.FC<LandingPage> = ({ parentButtonText, tutorButtonText 
                     <Button
                         size="landing"
                         variant="buttonTeal"
-                        width={{ base: '90%', sm: '80%', lg: '350px' }}
+                        width={{ base: '90%', sm: '50%', lg: '350px' }}
                         fontWeight="bold"
                         onClick={toRegistration}
                     >
-                        {parentButtonText}
+                        I'm a parent
                     </Button>
                     <Button
                         size="landing"
                         variant="buttonYellow"
-                        width={{ base: '90%', sm: '80%', lg: '350px' }}
+                        width={{ base: '90%', sm: '50%', lg: '350px' }}
                         fontWeight="bold"
                         onClick={toRegistration}
                     >
-                        {tutorButtonText}
+                        I'm a tutor
                     </Button>
                 </ButtonGroup>
             </VStack>
