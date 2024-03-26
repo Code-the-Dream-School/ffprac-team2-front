@@ -3,21 +3,21 @@ import { Button, Flex, Heading, Spinner, Stack, useDisclosure } from '@chakra-ui
 import { AddIcon } from '@chakra-ui/icons';
 import { Student } from '../models/interfaces';
 import StudentCard from '../components/StudentCard';
-import { getAllData } from '../util';
 import StudentForm from '../components/StudentForm';
+import useStateContext from '../context/GlobalStateContext ';
+
 const ParentDashboardPage: React.FC = () => {
-    const [students, setStudents] = useState<Student[] | []>([]);
+    // const [students, setStudents] = useState<Student[] | []>([]);
     const [errMsg, setErrMsg] = useState<string | null>(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [needUpdate, setNeedUpdate] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const { students, updateStudents } = useStateContext();
 
     useEffect(() => {
         const fetchStudent = async () => {
             try {
-                const data = await getAllData(`${import.meta.env.VITE_REACT_URL}students`);
-                console.log(data);
-                setStudents(data.students);
+                updateStudents();
                 setNeedUpdate(false);
                 setIsLoading(false);
             } catch (error) {
@@ -62,7 +62,7 @@ const ParentDashboardPage: React.FC = () => {
             )}
             {students && students.length > 0 ? (
                 <Stack direction="column">
-                    {students.map((student) => (
+                    {students.map((student: Student) => (
                         <StudentCard
                             key={student._id}
                             student={student}

@@ -45,3 +45,11 @@ export interface TutorConnectionRequest {
     };
     grade: string;
 }
+
+export interface GlobalState {
+    // isLoggedIn: boolean;
+    // user: User | null;
+    students: Student[] | [];
+    // teacherSearchResults: string[];
+    updateStudents: () => Promise<void>;
+}
