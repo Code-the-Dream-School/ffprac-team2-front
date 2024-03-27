@@ -18,6 +18,8 @@ import {
 import { Field, Formik, FormikHelpers } from 'formik';
 import { TutorConnectionRequest } from '../models/interfaces';
 import { connectSchema } from '../validationSchemas';
+import axios from 'axios';
+import { headers } from '../util';
 
 const ConnectForm: React.FC = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -33,8 +35,14 @@ const ConnectForm: React.FC = () => {
         };
 
         try {
+            const response = await axios.patch(
+                `${import.meta.env.VITE_REACT_URL}students/${values.studentId}`,
+                connectionData,
+                { headers }
+            );
+            const studentData = response?.data;
             console.log(values);
-            console.log(connectionData);
+            console.log(studentData);
             actions.resetForm();
             onClose();
         } catch (error) {
@@ -92,7 +100,7 @@ const ConnectForm: React.FC = () => {
                                             </FormErrorMessage>
                                         )}
                                     </FormControl>
-                                    <Text fontWeight="600" mt="2rem">
+                                    <Text fontSize="16px" fontWeight="500" mt="2rem">
                                         In wihich subject do you need tutoring?
                                     </Text>
                                     <FormControl
@@ -100,7 +108,9 @@ const ConnectForm: React.FC = () => {
                                         isRequired
                                         isInvalid={!!(formik.errors.grade && formik.touched.grade)}
                                     >
-                                        <FormLabel>Grade</FormLabel>
+                                        <FormLabel fontSize="14px" fontWeight="400">
+                                            Grade
+                                        </FormLabel>
                                         <Field
                                             as={Select}
                                             placeholder="Select option"
@@ -134,7 +144,9 @@ const ConnectForm: React.FC = () => {
                                             !!(formik.errors.subjects && formik.touched.subjects)
                                         }
                                     >
-                                        <FormLabel>Select Math</FormLabel>
+                                        <FormLabel fontSize="14px" fontWeight="400">
+                                            Select Math
+                                        </FormLabel>
                                         <Field
                                             as={Select}
                                             placeholder="Select option"
