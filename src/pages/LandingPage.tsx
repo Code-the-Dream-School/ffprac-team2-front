@@ -105,8 +105,13 @@ const LandingPage: React.FC = () => {
                     </Button>
                 </ButtonGroup>
             </VStack>
-            <Box position="absolute" bottom="4" left="4" fontSize="sm">
-                <Link href="https://www.freepik.com/free-photo/bonding-together-university-device-book-reading_1235750.htm#fromView=search&page=2&position=41&uuid=bca06273-6a4d-4be6-b816-8e3504991bb8" color="white" fontSize="sm" isExternal>
+            <Box position="absolute" bottom="4" left="4">
+                <Link
+                    href="http://www.freepik.com/free-photo/-together-university-device-book-reading_1235750.htm"
+                    color="white"
+                    fontSize="sm"
+                    isExternal
+                >
                     Image by mindandi
                 </Link>
             </Box>
