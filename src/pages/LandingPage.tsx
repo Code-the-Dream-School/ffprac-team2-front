@@ -9,7 +9,7 @@ import {
     Text,
     useBreakpointValue,
 } from '@chakra-ui/react';
-import backgroundImage from '../assets/background_01.jpg';
+import backgroundImage from '../assets/background_01.jpeg';
 import { useNavigate } from 'react-router-dom';
 
 const LandingPage: React.FC = () => {
