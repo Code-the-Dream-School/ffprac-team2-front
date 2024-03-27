@@ -8,8 +8,9 @@ import {
     Heading,
     Text,
     useBreakpointValue,
+    Link,
 } from '@chakra-ui/react';
-import backgroundImage from '../assets/background_01.jpeg';
+import backgroundImage from '../assets/new_bg.jpg';
 import { useNavigate } from 'react-router-dom';
 
 const LandingPage: React.FC = () => {
@@ -104,6 +105,11 @@ const LandingPage: React.FC = () => {
                     </Button>
                 </ButtonGroup>
             </VStack>
+            <Box position="absolute" bottom="4" left="4" fontSize="sm">
+                <Link href="https://www.freepik.com/free-photo/bonding-together-university-device-book-reading_1235750.htm#fromView=search&page=2&position=41&uuid=bca06273-6a4d-4be6-b816-8e3504991bb8" color="white" fontSize="sm" isExternal>
+                    Image by mindandi
+                </Link>
+            </Box>
         </Flex>
     );
 };
