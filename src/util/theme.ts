@@ -33,6 +33,37 @@ export const theme = extendTheme({
         fontSize: '11px',
         fontWeight: '700',
     },
+    components: {
+        Button: {
+            baseStyle: {
+                fontWeight: 'normal',
+            },
+            sizes: {
+                landing: {
+                    h: '75px',
+                    minW: '350px',
+                    fontSize: '24px',
+                },
+            },
+            variants: {
+                // landing button variants.
+                buttonYellow: {
+                    bg: '#F4CD76',
+                    boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)',
+                    _hover: {
+                        bg: 'grey.400',
+                    },
+                },
+                buttonTeal: {
+                    bg: '#59D3C8',
+                    boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)',
+                    _hover: {
+                        bg: 'grey.400',
+                    },
+                },
+            },
+        },
+    },
 });
 
 // Default braikpoints for informational purposes

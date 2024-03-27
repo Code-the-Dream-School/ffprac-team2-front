@@ -6,6 +6,7 @@ import Layout from './components/Layout';
 import ParentDashboardPage from './pages/ParentDashboardPage';
 import TutorSearchPage from './pages/TutorSearchPage';
 import AuthPage from './pages/AuthPage';
+import LandingPage from './pages/LandingPage';
 
 // import TutorCard from './components/TutorCard';
 
@@ -20,8 +21,9 @@ const App = () => {
         <>
             <Routes>
                 <Route path="/" element={<Layout />}>
-                    {/* <Route index element={<HomePage />} /> */}
+                    <Route index element={<LandingPage />} />
                     <Route path="/auth" element={<AuthPage activeTab={'login'} />} />
+                    {/* <Route path="/login" element={<LoginForm />} /> */}
                     <Route path="/parent-dashboard" element={<ParentDashboardPage />} />
                     {/* <Route path="/tutorcard" element={<TutorCard tutor={undefined} />} /> */}
                     <Route path="/tutorsearch" element={<TutorSearchPage />} />
