@@ -7,7 +7,7 @@ import {
     VStack,
     Heading,
     Text,
-    useMediaQuery,
+    useBreakpointValue,
 } from '@chakra-ui/react';
 import backgroundImage from '../assets/background_01.jpg';
 import { useNavigate } from 'react-router-dom';
@@ -19,7 +19,7 @@ const LandingPage: React.FC = () => {
         navigate(`/auth`);
     };
 
-    const [isLargeScreen] = useMediaQuery('(min-width: 1280px)');
+    const bgSize = useBreakpointValue({ base: '100% 100%', sm: 'cover' });
 
     return (
         <Flex
@@ -33,9 +33,9 @@ const LandingPage: React.FC = () => {
             {/* Background Image */}
             <Box
                 w="full"
-                h="100vh"
+                h="full"
                 bgImage={`url(${backgroundImage})`}
-                bgSize={isLargeScreen ? 'auto 100vh' : 'cover'}
+                bgSize={bgSize}
                 bgPos="center"
                 bgRepeat="no-repeat"
                 position="absolute"
@@ -65,11 +65,11 @@ const LandingPage: React.FC = () => {
                 </Heading>
 
                 <Text
-                    fontSize={{ base: 'lg', lg: '2xl' }}
+                    fontSize={{ base: 'lg', lg: '2xl', sm: 'mg' }}
                     textAlign="center"
                     fontWeight="bold"
                     mt={{ base: '1rem', sm: '0.5rem' }}
-                    mb={{ base: '5rem', sm: '2rem' }}
+                    mb={{ base: '5rem', sm: '1rem' }}
                     sx={{
                         textShadow: '2px 2px 4px rgba(0, 0, 0, 0.4)',
                     }}
