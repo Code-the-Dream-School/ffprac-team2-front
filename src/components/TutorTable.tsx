@@ -34,18 +34,40 @@ function TutorTable() {
             subject: 'Math',
             schedule: 'Thursday',
         },
+        {
+            parent: 'Alicia Morgan',
+            student: 'Oliver',
+            email: 'alicia@gmail.com',
+            subject: 'Algebra',
+            schedule: 'Tuesday',
+        },
+        {
+            parent: 'Donna Kratz',
+            student: 'Dominique',
+            email: 'donna@gmail.com',
+            subject: 'Geometry',
+            schedule: 'Monday',
+        },
+        {
+            parent: 'Bruce Williams',
+            student: 'Maria',
+            email: 'bruce@gmail.com',
+            subject: 'Trigonometry',
+            schedule: 'Monday',
+        },
+        {
+            parent: 'Bruce Williams',
+            student: 'Elizabeth',
+            email: 'bruce@gmail.com',
+            subject: 'Math',
+            schedule: 'Thursday',
+        },
     ];
 
     return (
-        <Box height="100%" display="flex" justifyContent="flex-end">
-            <Box overflowX="auto" overflowY="scroll" mt="50px">
-                <Table
-                    variant="simple"
-                    width="80%"
-                    bg={theme.colors.customWhite}
-                    borderRadius="md"
-                    boxShadow="md"
-                >
+        <Box>
+            <Box overflowX="auto" overflowY="hidden" mt="50px" borderRadius="md" width="100%">
+                <Table variant="striped" bg={theme.colors.customWhite}>
                     <Thead>
                         <Tr
                             bg={theme.dashboardButtons.buttonTeal.bg}
