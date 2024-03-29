@@ -1,21 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Stack, FormControl, FormLabel, Input, Radio, RadioGroup, Button, Box, Spinner, FormErrorMessage } from '@chakra-ui/react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Stack, FormControl, FormLabel, Input, Radio, RadioGroup, Button, Box, Spinner, FormErrorMessage, Tooltip, useBreakpointValue } from '@chakra-ui/react';
+import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { RegistrationFormData } from '../models/interfaces';
 
-const inputStyle = {
-    width: '350px',
-    height: '60px',
-    backgroundColor: 'white',
-};
 
-const buttonStyle = {
-    width: '150px',
-    height: '50px',
-};
+
 
 const labelStyle = {
     fontSize: '14px',
@@ -24,9 +16,31 @@ const labelStyle = {
 const radioLabelStyle = {
     fontWeight: 'bold',
 };
+const tooltipStyle = {
+    bg: 'white',
+    color: 'red.500',
+    borderColor: 'red.500',
+    borderWidth: '2px',
+};
 
 const RegistrationForm: React.FC = () => {
     const navigate = useNavigate();
+    const fieldLength = useBreakpointValue({ base: '300px', md: '350px' });
+    const fieldHeight = useBreakpointValue({ base: '40px', md: '50px' });
+    const inputStyle = {
+        width: fieldLength,
+        height: fieldHeight, 
+        backgroundColor: 'white',
+    };
+    
+    const buttonLength = useBreakpointValue({ base: '120px', md: '150px' });
+    const buttonHeight = useBreakpointValue({ base: '40px', md: '50px' });
+    const buttonStyle = {
+        width: buttonLength,
+        height: buttonHeight,
+
+    }
+
     const initialValues: RegistrationFormData = {
         firstName: '',
         lastName: '',
@@ -35,21 +49,36 @@ const RegistrationForm: React.FC = () => {
         confirmPassword: '',
         role: '',
     };
+
     return (
         <Formik
             initialValues={initialValues}
             validationSchema={Yup.object({
-                firstName: Yup.string().required('First name is required'),
-                lastName: Yup.string().required('Last name is required'),
-                email: Yup.string().email('Invalid email address').required('Email is required'),
+                firstName: Yup.string()
+                    .required('Please provide your first name')
+                    .min(2, 'First name must be at least 2 characters')
+                    .max(20, 'First name should not be more than 20 characters'),
+
+                lastName: Yup.string()
+                    .required('Please provide your last name')
+                    .max(20, 'Last name should not be more than 20 characters'),
+                email: Yup.string()
+                    .email('Please provide a valid email address')
+                    .required('Please provide your email'),
                 password: Yup.string()
-                    .min(8, 'Password must be at least 8 characters')
-                    .required('Password is required'),
+                    .min(6, 'Password must be at least 6 characters')
+                    .required('Please provide password')
+                    .matches(
+                        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{6,}$/,
+                        'Password must contain at least one lowercase letter, uppercase letter, number, and special character'
+                    ),
                 confirmPassword: Yup.string()
                     .oneOf([Yup.ref('password'), null], 'Passwords must match')
                     .required('Confirmation of password is required'),
+                role: Yup.string().required('Please select a role'),
 
             })}
+
             onSubmit={async (values, { setSubmitting, setStatus, setFieldError }) => {
                 setStatus('Processing')
                 try {
@@ -63,10 +92,9 @@ const RegistrationForm: React.FC = () => {
                     //console.log('Request Data:', requestData);
                     const response = await axios.post("https://ffprac-team2-back.onrender.com/api/v1/auth/register", requestData);
                     const { firstName, lastName, email, role, token } = response.data.user;
-
-                    console.log(response.data.user);
                     localStorage.setItem('token', token);
                     const userData = { firstName, lastName, email, role };
+                    console.log(userData);
                     localStorage.setItem('userData', JSON.stringify(userData));
                     navigate('/');
                 } catch (error) {
@@ -79,8 +107,8 @@ const RegistrationForm: React.FC = () => {
             }}
         >
             {(formik) => (
-                <Form onSubmit={formik.handleSubmit}>
-                    <Stack spacing={4}>
+                <Form onSubmit={formik.handleSubmit} >
+                    <Stack spacing={4} style={{width: fieldLength, height: fieldHeight}} >
                         <FormControl isRequired isInvalid={!!(formik.errors.firstName && formik.touched.firstName)}>
                             <FormLabel htmlFor="firstName" style={labelStyle}>
                                 First Name
@@ -123,7 +151,7 @@ const RegistrationForm: React.FC = () => {
                                 style={inputStyle}
                             />
                             {(formik.errors.email && formik.touched.email) && (
-                                <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
+                                <FormErrorMessage >{formik.errors.email}</FormErrorMessage>
                             )}
                         </FormControl>
                         <FormControl isRequired isInvalid={!!(formik.errors.password && formik.touched.password)}>
@@ -158,23 +186,33 @@ const RegistrationForm: React.FC = () => {
                         </FormControl>
                         <RadioGroup id="role" name="role" width="350px" value={formik.values.role} onChange={(value) => formik.setFieldValue('role', value)}>
                             <Stack direction="row" display="flex" alignItems="center">
-                                <Radio value="parent" flex="1" bg="white" size="md">
+                                <Radio value="parent" flex="1" bg="white" size="md" marginLeft={2}>
                                     <span style={radioLabelStyle}>Parent</span>
                                 </Radio>
-                                <Radio value="tutor" flex="1" bg="white" size="md">
+                                <Radio value="tutor" flex="1" bg="white" size="md" marginLeft={4}>
                                     <span style={radioLabelStyle}>Tutor</span>
                                 </Radio>
                             </Stack>
                         </RadioGroup>
-                        <Stack direction="row" spacing={4} display="flex" alignItems="center">
-                            <Button
-                                type="submit"
-                                style={{ ...buttonStyle, backgroundColor: '#F4CD76', color: 'black' }}
-                                flex="1"
-                                disabled={formik.isSubmitting}
-                            >
-                                Register
-                            </Button>
+                        <Stack direction="row" spacing={4} display="flex" alignItems="center" marginTop={4} marginBottom={4}>
+
+                            <Tooltip
+                                label="Please fill out all fields and choose 'Parent' or 'Tutor' to complete registration."
+                                openDelay={300}
+                                hasArrow
+                                isDisabled={formik.dirty && formik.isValid}
+
+                                {...tooltipStyle}>
+                                <Button
+                                    type="submit"
+                                    style={{ ...buttonStyle, width: buttonLength, backgroundColor: '#F4CD76', color: 'black' }}
+                                    flex="1"
+                                    isDisabled={!formik.dirty || !formik.isValid}
+                                >
+                                    Register
+                                </Button>
+                            </Tooltip>
+
                             <Button
                                 type="button"
                                 style={{ ...buttonStyle, backgroundColor: '#59D3C8', color: 'black' }}

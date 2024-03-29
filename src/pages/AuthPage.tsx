@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, TabList, Tab, TabPanels, TabPanel, Flex, Box } from '@chakra-ui/react';
+import { Tabs, TabList, Tab, TabPanels, TabPanel, Flex, Box , useBreakpointValue } from '@chakra-ui/react';
 
 import RegistrationForm from '../components/RegistrationForm';
 import LoginForm from '../components/LoginForm';
@@ -10,24 +10,25 @@ interface AuthPageProps {
 
 const AuthPage: React.FC<AuthPageProps> = ({ activeTab }) => {
     const defaultIndex = activeTab === 'register' ? 0 : 1; // Set the defaultIndex based on activeTab prop
-
+    const tabLength = useBreakpointValue({ base: '300px', md: '350px' });
+    const tabHeight = useBreakpointValue({ base: '50px', md: '60px' });
     return (
         <Flex align="center" justify="center">
             <Box>
-                <Tabs variant="unstyled" defaultIndex={defaultIndex}>
+                <Tabs variant="unstyled" defaultIndex={defaultIndex}  marginTop={14} marginBottom={4}>
                     <TabList
                         bg="#D9D9D9"
-                        width="350px"
                         height="60px"
-                        borderRadius="1.25em"
+                        borderRadius="20px"
                         display="flex"
                         justifyContent="center"
                         margin="0 1em"
+                        style={{width: tabLength, height: tabHeight}}
                     >
                         <Tab
                             _selected={{ backgroundColor: 'white' }}
                             flex="1"
-                            borderRadius="1.25em"
+                            borderRadius="20px"
                             textAlign="center"
                             fontWeight="bold"
                         >
@@ -36,7 +37,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ activeTab }) => {
                         <Tab
                             _selected={{ backgroundColor: 'white' }}
                             flex="1"
-                            borderRadius="1.25em"
+                            borderRadius="20px"
                             textAlign="center"
                             fontWeight="bold"
                         >
