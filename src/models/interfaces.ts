@@ -35,9 +35,12 @@ export interface LoginData {
 
 export interface Tutor {
     availability: string;
-    userId: string;
-    firstName: string;
-    lastName: string;
+    userId: {
+        _id: string;
+        firstName: string;
+        lastName: string;
+        // email: string;
+    };
     about: string;
     grades: string[];
     avatar?: string;
@@ -49,5 +52,4 @@ export interface Tutor {
     SocialStudies: string[];
     Science: string[];
     _id: string;
-    subject: string;
 }

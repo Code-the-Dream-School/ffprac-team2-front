@@ -142,6 +142,7 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
                                     <Text
                                         fontWeight={theme.dashboardButtons.fontWeight}
                                         fontSize={theme.styles.global.body.fontSize}
+                                        color="#206A64"
                                     >
                                         Teaching skills
                                     </Text>
