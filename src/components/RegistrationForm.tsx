@@ -48,6 +48,7 @@ const RegistrationForm: React.FC = () => {
     const buttonStyle = {
         width: buttonLength,
         height: buttonHeight,
+        fontWeight: 'bold',
     };
 
     const initialValues: RegistrationFormData = {
