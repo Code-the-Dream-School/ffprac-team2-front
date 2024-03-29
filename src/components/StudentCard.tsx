@@ -69,39 +69,21 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => 
                             </Tr>
                         </Thead>
                         <Tbody>
-                            <Tr>
-                                <Td p="0">Patrick Hill</Td>
-                                <Td p="0">Geometry</Td>
-                                <Td p="0">
-                                    <Flex gap="4">
-                                        <CalendarIcon />
-                                        <EmailIcon />
-                                        <DeleteIcon />
-                                    </Flex>
-                                </Td>
-                            </Tr>
-                            <Tr>
-                                <Td p="0">Melissa Dragone</Td>
-                                <Td p="0">French</Td>
-                                <Td p="0">
-                                    <Flex gap="4">
-                                        <CalendarIcon />
-                                        <EmailIcon />
-                                        <DeleteIcon />
-                                    </Flex>
-                                </Td>
-                            </Tr>
-                            <Tr>
-                                <Td p="0">Roberta Simon</Td>
-                                <Td p="0">English writing</Td>
-                                <Td p="0">
-                                    <Flex gap="4">
-                                        <CalendarIcon />
-                                        <EmailIcon />
-                                        <DeleteIcon />
-                                    </Flex>
-                                </Td>
-                            </Tr>
+                            {student.tutorInfo &&
+                                student.tutorInfo?.length > 0 &&
+                                student.tutorInfo?.map((element) => (
+                                    <Tr key={element.tutorId}>
+                                        <Td p="0">{element.tutorName}</Td>
+                                        <Td p="0">{element.subjects.join('. ')}</Td>
+                                        <Td p="0">
+                                            <Flex gap="4">
+                                                <CalendarIcon />
+                                                <EmailIcon />
+                                                <DeleteIcon />
+                                            </Flex>
+                                        </Td>
+                                    </Tr>
+                                ))}
                         </Tbody>
                     </Table>
                 </CardBody>

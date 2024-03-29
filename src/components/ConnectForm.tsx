@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import React from 'react';
 import {
     Button,
@@ -13,26 +14,67 @@ import {
     ModalOverlay,
     Select,
     Text,
-    useDisclosure,
 } from '@chakra-ui/react';
 import { Field, Formik, FormikHelpers } from 'formik';
-import { TutorConnectionRequest } from '../models/interfaces';
+import { Tutor, TutorConnectionRequest } from '../models/interfaces';
 import { connectSchema } from '../validationSchemas';
 import axios from 'axios';
 import { headers } from '../util';
+import useStateContext from '../context/GlobalStateContext ';
 
-const ConnectForm: React.FC = () => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+interface ConnectFormProps {
+    isOpen: boolean;
+    onClose: () => void;
+    tutor: Tutor;
+}
+
+interface InitialValues {
+    studentId: string;
+    grade: string;
+    subjects: {
+        math: string;
+        english: string;
+        science: string;
+        socialStudies: string;
+        foringLanguage: string;
+    };
+}
+
+const initialValues: InitialValues = {
+    studentId: '',
+    subjects: {
+        math: '',
+        english: '',
+        science: '',
+        socialStudies: '',
+        foringLanguage: '',
+    },
+    grade: '',
+};
+
+const ConnectForm: React.FC<ConnectFormProps> = ({ isOpen, onClose, tutor }) => {
+    const { students } = useStateContext();
+    console.log(students);
+
+    const fieldsToDisplay: (keyof Tutor)[] = [
+        'MathSubject',
+        'ForeignLanguages',
+        'English',
+        'SocialStudies',
+        'Science',
+    ];
+
     const handleSubmit = async (
         values: TutorConnectionRequest,
         actions: FormikHelpers<TutorConnectionRequest>
     ) => {
         const connectionData = {
             studentId: values.studentId,
-            // tutorId: values.tutorId,
+            tutorId: tutor._id,
             subjects: values.subjects,
             grade: values.grade,
         };
+        console.log(connectionData);
 
         try {
             const response = await axios.patch(
@@ -52,23 +94,12 @@ const ConnectForm: React.FC = () => {
 
     return (
         <>
-            <Button onClick={onOpen}>Connect with me</Button>
             <Modal isOpen={isOpen} onClose={onClose} isCentered>
                 <ModalOverlay />
                 <Formik
                     onSubmit={handleSubmit}
                     validationSchema={connectSchema}
-                    initialValues={{
-                        studentId: '',
-                        subjects: {
-                            math: '',
-                            english: '',
-                            science: '',
-                            socialStudies: '',
-                            foringLanguage: '',
-                        },
-                        grade: '',
-                    }}
+                    initialValues={initialValues}
                 >
                     {(formik) => (
                         <ModalContent backgroundColor="#E7E0D6">
@@ -90,9 +121,9 @@ const ConnectForm: React.FC = () => {
                                             backgroundColor="white"
                                             name="studentId"
                                         >
-                                            <option value="Child1">Child1</option>
-                                            <option value="Child2">Child2</option>
-                                            <option value="Child3">Child3</option>
+                                            {students.map((student) => {
+                                                <option value={student._id}>{student.name}</option>;
+                                            })}
                                         </Field>
                                         {formik.errors.studentId && formik.touched.studentId && (
                                             <FormErrorMessage>
@@ -137,34 +168,31 @@ const ConnectForm: React.FC = () => {
                                             </FormErrorMessage>
                                         )}
                                     </FormControl>
-                                    <FormControl
-                                        mt={4}
-                                        isRequired
-                                        isInvalid={
-                                            !!(formik.errors.subjects && formik.touched.subjects)
+                                    {fieldsToDisplay.map((field) => {
+                                        const fieldValue = tutor[field];
+                                        if (Array.isArray(fieldValue) && fieldValue.length > 0) {
+                                            return (
+                                                <FormControl key={field} mt={4}>
+                                                    <FormLabel fontSize="14px" fontWeight="400">
+                                                        {field}
+                                                    </FormLabel>
+                                                    <Field
+                                                        as={Select}
+                                                        placeholder={`Select ${field}`}
+                                                        backgroundColor="white"
+                                                        name={`subjects.${field}`}
+                                                    >
+                                                        {fieldValue.map((option: string) => (
+                                                            <option key={option} value={option}>
+                                                                {option}
+                                                            </option>
+                                                        ))}
+                                                    </Field>
+                                                </FormControl>
+                                            );
                                         }
-                                    >
-                                        <FormLabel fontSize="14px" fontWeight="400">
-                                            Select Math
-                                        </FormLabel>
-                                        <Field
-                                            as={Select}
-                                            placeholder="Select option"
-                                            backgroundColor="white"
-                                            name="subjects.math"
-                                        >
-                                            <option value="Math">Math</option>
-                                            <option value="Algebra">Algebra</option>
-                                            <option value="Geometry">Geometry</option>
-                                            <option value="Trigonometry">Trigonometry</option>
-                                            <option value="Calculus">Calculus</option>
-                                            <option value="Statistics">Statistics</option>
-                                            <option value="Pre-Calculus">Pre-Calculus</option>
-                                            <option value="SAT Math Test Prep">
-                                                SAT Math Test Prep
-                                            </option>
-                                        </Field>
-                                    </FormControl>
+                                        return null;
+                                    })}
                                 </ModalBody>
 
                                 <ModalFooter>

@@ -1,7 +1,8 @@
 interface StudentTutorInfo {
     tutorId: string;
-    subject: string;
+    subjects: string[];
     grade: string | number;
+    tutorName?: string;
 }
 
 export interface Student {

@@ -9,7 +9,6 @@ import AuthPage from './pages/AuthPage';
 import LandingPage from './pages/LandingPage';
 
 // import TutorCard from './components/TutorCard';
-import ConnectForm from './components/ConnectForm';
 
 // import { useEffect, useState } from 'react';
 
@@ -28,7 +27,6 @@ const App = () => {
                     <Route path="/parent-dashboard" element={<ParentDashboardPage />} />
                     {/* <Route path="/tutorcard" element={<TutorCard tutor={undefined} />} /> */}
                     <Route path="/tutorsearch" element={<TutorSearchPage />} />
-                    <Route path="/connect-tutor" element={<ConnectForm />} />
                     {/* <Route path="*" element={<NotFoundPage />} /> */}
                 </Route>
             </Routes>
