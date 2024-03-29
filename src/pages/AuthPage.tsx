@@ -1,5 +1,14 @@
 import React from 'react';
-import { Tabs, TabList, Tab, TabPanels, TabPanel, Flex, Box , useBreakpointValue } from '@chakra-ui/react';
+import {
+    Tabs,
+    TabList,
+    Tab,
+    TabPanels,
+    TabPanel,
+    Flex,
+    Box,
+    useBreakpointValue,
+} from '@chakra-ui/react';
 
 import RegistrationForm from '../components/RegistrationForm';
 import LoginForm from '../components/LoginForm';
@@ -15,7 +24,12 @@ const AuthPage: React.FC<AuthPageProps> = ({ activeTab }) => {
     return (
         <Flex align="center" justify="center">
             <Box>
-                <Tabs variant="unstyled" defaultIndex={defaultIndex}  marginTop={14} marginBottom={4}>
+                <Tabs
+                    variant="unstyled"
+                    defaultIndex={defaultIndex}
+                    marginTop={14}
+                    marginBottom={4}
+                >
                     <TabList
                         bg="#D9D9D9"
                         height="60px"
@@ -23,7 +37,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ activeTab }) => {
                         display="flex"
                         justifyContent="center"
                         margin="0 1em"
-                        style={{width: tabLength, height: tabHeight}}
+                        style={{ width: tabLength, height: tabHeight }}
                     >
                         <Tab
                             _selected={{ backgroundColor: 'white' }}
