@@ -15,6 +15,7 @@ export const theme = extendTheme({
     //styles for Dashboard
     colors: {
         customWhite: '#FFFFFF',
+        customYellow: '#F5E0B1',
     },
     dashboardButtons: {
         buttonYellow: {
