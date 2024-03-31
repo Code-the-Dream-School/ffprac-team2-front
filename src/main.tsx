@@ -6,7 +6,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { theme } from './util/theme.ts';
-import { GlobalStateProvider } from '../src/context/GlobalStateContext ';
+import { GlobalStateProvider } from './context/GlobalStateContext.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>

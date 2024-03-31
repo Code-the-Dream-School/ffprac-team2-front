@@ -1,8 +1,8 @@
 interface StudentTutorInfo {
     tutorId: string;
-    subjects: string[];
-    grade: string | number;
-    tutorName?: string;
+    subject: string;
+    availability: string;
+    tutorName: string;
 }
 
 export interface Student {
@@ -35,7 +35,7 @@ export interface LoginData {
 }
 
 export interface Tutor {
-    availability: string;
+    availability: string[];
     userId: {
         _id: string;
         firstName: string;
@@ -58,14 +58,8 @@ export interface Tutor {
 export interface TutorConnectionRequest {
     studentId: string;
     tutorId?: string;
-    subjects: {
-        math: string;
-        english: string;
-        science: string;
-        socialStudies: string;
-        foringLanguage: string;
-    };
-    grade: string;
+    subject: string;
+    availability: string;
 }
 
 export interface GlobalState {

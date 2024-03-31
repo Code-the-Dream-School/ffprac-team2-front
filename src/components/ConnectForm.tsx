@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import React from 'react';
+import React, { useState } from 'react';
 import {
     Button,
     FormControl,
@@ -20,7 +20,8 @@ import { Tutor, TutorConnectionRequest } from '../models/interfaces';
 import { connectSchema } from '../validationSchemas';
 import axios from 'axios';
 import { headers } from '../util';
-import useStateContext from '../context/GlobalStateContext ';
+import { useGlobal } from '../context/useGlobal';
+import { useNavigate } from 'react-router-dom';
 
 interface ConnectFormProps {
     isOpen: boolean;
@@ -30,31 +31,22 @@ interface ConnectFormProps {
 
 interface InitialValues {
     studentId: string;
-    grade: string;
-    subjects: {
-        math: string;
-        english: string;
-        science: string;
-        socialStudies: string;
-        foringLanguage: string;
-    };
+    availability: string;
+    subject: string;
 }
 
 const initialValues: InitialValues = {
     studentId: '',
-    subjects: {
-        math: '',
-        english: '',
-        science: '',
-        socialStudies: '',
-        foringLanguage: '',
-    },
-    grade: '',
+    subject: '',
+    availability: '',
 };
 
+type SelectChangeEvent = React.ChangeEvent<HTMLSelectElement>;
+
 const ConnectForm: React.FC<ConnectFormProps> = ({ isOpen, onClose, tutor }) => {
-    const { students } = useStateContext();
-    console.log(students);
+    const { students } = useGlobal();
+    const [isOptionSelected, setIsOptionSelected] = useState(false);
+    const navigate = useNavigate();
 
     const fieldsToDisplay: (keyof Tutor)[] = [
         'MathSubject',
@@ -71,30 +63,42 @@ const ConnectForm: React.FC<ConnectFormProps> = ({ isOpen, onClose, tutor }) => 
         const connectionData = {
             studentId: values.studentId,
             tutorId: tutor._id,
-            subjects: values.subjects,
-            grade: values.grade,
+            subject: values.subject,
+            availability: values.availability,
         };
-        console.log(connectionData);
 
         try {
             const response = await axios.patch(
                 `${import.meta.env.VITE_REACT_URL}students/${values.studentId}`,
-                connectionData,
+                { tutorInfo: [connectionData] },
                 { headers }
             );
             const studentData = response?.data;
             console.log(values);
             console.log(studentData);
             actions.resetForm();
+            setIsOptionSelected(false);
             onClose();
+            navigate('/parent-dashboard');
         } catch (error) {
             console.error('Error submitting form:', error);
         }
     };
 
+    const handleSelectChange = () => {
+        setIsOptionSelected(true);
+    };
+
     return (
         <>
-            <Modal isOpen={isOpen} onClose={onClose} isCentered>
+            <Modal
+                isOpen={isOpen}
+                onClose={() => {
+                    onClose();
+                    setIsOptionSelected(false);
+                }}
+                isCentered
+            >
                 <ModalOverlay />
                 <Formik
                     onSubmit={handleSubmit}
@@ -117,13 +121,21 @@ const ConnectForm: React.FC<ConnectFormProps> = ({ isOpen, onClose, tutor }) => 
                                         <FormLabel>Which student needs help?</FormLabel>
                                         <Field
                                             as={Select}
-                                            placeholder="Select option"
+                                            placeholder="Select student"
                                             backgroundColor="white"
                                             name="studentId"
                                         >
-                                            {students.map((student) => {
-                                                <option value={student._id}>{student.name}</option>;
-                                            })}
+                                            {students &&
+                                                students.map((student) => {
+                                                    return (
+                                                        <option
+                                                            key={student._id}
+                                                            value={student._id}
+                                                        >
+                                                            {student.name}
+                                                        </option>
+                                                    );
+                                                })}
                                         </Field>
                                         {formik.errors.studentId && formik.touched.studentId && (
                                             <FormErrorMessage>
@@ -132,42 +144,48 @@ const ConnectForm: React.FC<ConnectFormProps> = ({ isOpen, onClose, tutor }) => 
                                         )}
                                     </FormControl>
                                     <Text fontSize="16px" fontWeight="500" mt="2rem">
-                                        In wihich subject do you need tutoring?
+                                        In which subject do you need tutoring?
                                     </Text>
-                                    <FormControl
-                                        mt={4}
-                                        isRequired
-                                        isInvalid={!!(formik.errors.grade && formik.touched.grade)}
-                                    >
-                                        <FormLabel fontSize="14px" fontWeight="400">
-                                            Grade
-                                        </FormLabel>
-                                        <Field
-                                            as={Select}
-                                            placeholder="Select option"
-                                            backgroundColor="white"
-                                            name="grade"
+                                    {tutor.availability.length > 0 ? (
+                                        <FormControl
+                                            mt={4}
+                                            isRequired
+                                            isInvalid={
+                                                !!(
+                                                    formik.errors.availability &&
+                                                    formik.touched.availability
+                                                )
+                                            }
                                         >
-                                            <option value="K">K</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                            <option value="6">6</option>
-                                            <option value="7">7</option>
-                                            <option value="8">8</option>
-                                            <option value="9">9</option>
-                                            <option value="10">10</option>
-                                            <option value="11">11</option>
-                                            <option value="12">12</option>
-                                        </Field>
-                                        {formik.errors.grade && formik.touched.grade && (
-                                            <FormErrorMessage>
-                                                {formik.errors.grade}
-                                            </FormErrorMessage>
-                                        )}
-                                    </FormControl>
+                                            <FormLabel fontSize="14px" fontWeight="400">
+                                                Availability
+                                            </FormLabel>
+                                            <Field
+                                                as={Select}
+                                                placeholder="Select day"
+                                                backgroundColor="white"
+                                                name="availability"
+                                            >
+                                                {tutor.availability.length > 0 &&
+                                                    tutor.availability.map((day) => {
+                                                        return (
+                                                            <option key={day} value={day}>
+                                                                {day}
+                                                            </option>
+                                                        );
+                                                    })}
+                                            </Field>
+                                            {formik.errors.availability &&
+                                                formik.touched.availability && (
+                                                    <FormErrorMessage>
+                                                        {formik.errors.availability}
+                                                    </FormErrorMessage>
+                                                )}
+                                        </FormControl>
+                                    ) : (
+                                        <Text>Tutor not available right now. Send him email.</Text>
+                                    )}
+
                                     {fieldsToDisplay.map((field) => {
                                         const fieldValue = tutor[field];
                                         if (Array.isArray(fieldValue) && fieldValue.length > 0) {
@@ -180,7 +198,15 @@ const ConnectForm: React.FC<ConnectFormProps> = ({ isOpen, onClose, tutor }) => 
                                                         as={Select}
                                                         placeholder={`Select ${field}`}
                                                         backgroundColor="white"
-                                                        name={`subjects.${field}`}
+                                                        name={'subject'}
+                                                        onChange={(event: SelectChangeEvent) => {
+                                                            handleSelectChange();
+                                                            formik.setFieldValue(
+                                                                'subject',
+                                                                event.target.value
+                                                            );
+                                                        }}
+                                                        disabled={isOptionSelected}
                                                     >
                                                         {fieldValue.map((option: string) => (
                                                             <option key={option} value={option}>
@@ -199,7 +225,14 @@ const ConnectForm: React.FC<ConnectFormProps> = ({ isOpen, onClose, tutor }) => 
                                     <Button type="submit" colorScheme="blue" mr={3}>
                                         Connect
                                     </Button>
-                                    <Button onClick={onClose}>Cancel</Button>
+                                    <Button
+                                        onClick={() => {
+                                            onClose();
+                                            setIsOptionSelected(false);
+                                        }}
+                                    >
+                                        Cancel
+                                    </Button>
                                 </ModalFooter>
                             </form>
                         </ModalContent>
