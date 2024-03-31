@@ -31,7 +31,7 @@ interface StudentCardProps {
 const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const handleDelete = async (tutorId: string, subject: string) => {
+    const handleDeleteTutor = async (tutorId: string, subject: string) => {
         try {
             const response = await axios.patch(
                 `${import.meta.env.VITE_REACT_URL}students/${student?._id}`,
@@ -98,7 +98,7 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => 
                                                 <EmailIcon />
                                                 <DeleteIcon
                                                     onClick={() =>
-                                                        handleDelete(
+                                                        handleDeleteTutor(
                                                             element.tutorId,
                                                             element.subject
                                                         )
