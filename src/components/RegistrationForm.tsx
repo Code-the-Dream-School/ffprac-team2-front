@@ -15,9 +15,9 @@ import {
     useBreakpointValue,
 } from '@chakra-ui/react';
 import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
 import axios from 'axios';
 import { RegistrationFormData } from '../models/interfaces';
+import { registrationValidationSchema } from '../validationSchemas';
 
 const labelStyle = {
     fontSize: '14px',
@@ -63,30 +63,7 @@ const RegistrationForm: React.FC = () => {
     return (
         <Formik
             initialValues={initialValues}
-            validationSchema={Yup.object({
-                firstName: Yup.string()
-                    .required('Please provide your first name')
-                    .min(2, 'First name must be at least 2 characters')
-                    .max(20, 'First name should not be more than 20 characters'),
-
-                lastName: Yup.string()
-                    .required('Please provide your last name')
-                    .max(20, 'Last name should not be more than 20 characters'),
-                email: Yup.string()
-                    .email('Please provide a valid email address')
-                    .required('Please provide your email'),
-                password: Yup.string()
-                    .min(6, 'Password must be at least 6 characters')
-                    .required('Please provide password')
-                    .matches(
-                        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{6,}$/,
-                        'Password must contain at least one lowercase letter, uppercase letter, number, and special character'
-                    ),
-                confirmPassword: Yup.string()
-                    .oneOf([Yup.ref('password'), null], 'Passwords must match')
-                    .required('Confirmation of password is required'),
-                role: Yup.string().required('Please select a role'),
-            })}
+            validationSchema={registrationValidationSchema}
             onSubmit={async (values, { setSubmitting, setStatus, setFieldError }) => {
                 setStatus('Processing');
                 try {
@@ -97,15 +74,14 @@ const RegistrationForm: React.FC = () => {
                         password: values.password,
                         role: values.role,
                     };
-                    //console.log('Request Data:', requestData);
                     const response = await axios.post(
-                        'https://ffprac-team2-back.onrender.com/api/v1/auth/register',
+                        `${import.meta.env.VITE_REACT_URL}auth/register`,
                         requestData
                     );
-                    const { firstName, lastName, email, role, token } = response.data.user;
+                    const { firstName, lastName, email, role } = response.data.user;
+                    const token = response.data.token;
                     localStorage.setItem('token', token);
                     const userData = { firstName, lastName, email, role };
-                    console.log(userData);
                     localStorage.setItem('userData', JSON.stringify(userData));
                     navigate('/');
                 } catch (error) {
