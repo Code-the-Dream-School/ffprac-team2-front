@@ -12,12 +12,14 @@ export interface Student {
     createdAt: string;
     parentId: string;
     updatedAt: string;
+    image: string;
     tutorInfo?: StudentTutorInfo[];
 }
 
 export interface StudentRequest {
     name: string;
     grade: string;
+    image: string;
 }
 
 /*export interface RegistrationFormData {

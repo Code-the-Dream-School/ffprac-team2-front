@@ -30,6 +30,7 @@ interface StudentCardProps {
 }
 const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const studentImage = student.image ? student.image : avatar;
 
     const handleDeleteTutor = async (tutorId: string, subject: string) => {
         try {
@@ -61,7 +62,7 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => 
                 justifyContent={'center'}
                 w={{ base: '100%', sm: '30%' }}
             >
-                <Avatar size={{ base: 'xl', md: '2xl' }} name={student.name} src={avatar} />
+                <Avatar size={{ base: 'xl', md: '2xl' }} name={student.name} src={studentImage} />
                 <Stack direction={{ base: 'row', sm: 'column' }}>
                     <Heading as="h4" size="md">
                         {student.name}

@@ -36,10 +36,29 @@ const StudentForm: React.FC<StudentFormProps> = ({
     student,
     setNeedUpdate,
 }) => {
+    const initialValues: StudentRequest = {
+        name: student?.name || '',
+        grade: student?.grade || '',
+        image: student?.image || '',
+    };
+
     const handleSubmit = async (values: StudentRequest, actions: FormikHelpers<StudentRequest>) => {
+        const formData = new FormData();
+        formData.append('image', values.image);
+        const imageUrl = await axios.post(
+            `${import.meta.env.VITE_REACT_URL}students/uploads`,
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            }
+        );
+        console.log(imageUrl);
         const newStudent: StudentRequest = {
             name: values.name,
             grade: values.grade,
+            image: imageUrl.data.src,
         };
         try {
             let response;
@@ -86,10 +105,7 @@ const StudentForm: React.FC<StudentFormProps> = ({
                     <Formik
                         onSubmit={handleSubmit}
                         validationSchema={studentSchema}
-                        initialValues={{
-                            name: student?.name || '',
-                            grade: student?.grade || '',
-                        }}
+                        initialValues={initialValues}
                     >
                         {(formik) => (
                             <ModalContent backgroundColor="#E7E0D6">
@@ -148,6 +164,31 @@ const StudentForm: React.FC<StudentFormProps> = ({
                                             {formik.errors.grade && formik.touched.grade && (
                                                 <FormErrorMessage>
                                                     {formik.errors.grade}
+                                                </FormErrorMessage>
+                                            )}
+                                        </FormControl>
+                                        <FormControl
+                                            mt={4}
+                                            isRequired
+                                            isInvalid={
+                                                !!(formik.errors.image && formik.touched.image)
+                                            }
+                                        >
+                                            <FormLabel>Image</FormLabel>
+                                            <Input
+                                                type="file"
+                                                onChange={(event) => {
+                                                    const file =
+                                                        event.target.files && event.target.files[0];
+                                                    if (file) {
+                                                        formik.setFieldValue('image', file);
+                                                        console.log(file);
+                                                    }
+                                                }}
+                                            />
+                                            {formik.errors.image && formik.touched.image && (
+                                                <FormErrorMessage>
+                                                    {formik.errors.image}
                                                 </FormErrorMessage>
                                             )}
                                         </FormControl>
