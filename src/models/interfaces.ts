@@ -40,7 +40,7 @@ export interface Tutor {
         _id: string;
         firstName: string;
         lastName: string;
-        // email: string;
+        email: string;
     };
     about: string;
     grades: string[];
