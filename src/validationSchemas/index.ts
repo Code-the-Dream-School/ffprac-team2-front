@@ -36,6 +36,40 @@ export const studentSchema = yup.object().shape({
         .required('Please upload an image'),
 });
 
+export const registrationValidationSchema = yup.object().shape({
+    firstName: yup
+        .string()
+        .required('Please provide your first name')
+        .min(2, 'First name must be at least 2 characters')
+        .max(20, 'First name should not be more than 20 characters'),
+
+    lastName: yup
+        .string()
+        .required('Please provide your last name')
+        .max(20, 'Last name should not be more than 20 characters'),
+
+    email: yup
+        .string()
+        .email('Please provide a valid email address')
+        .required('Please provide your email'),
+
+    password: yup
+        .string()
+        .min(6, 'Password must be at least 6 characters')
+        .required('Please provide password')
+        .matches(
+            /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{6,}$/,
+            'Password must contain at least one lowercase letter, uppercase letter, number, and special character'
+        ),
+
+    confirmPassword: yup
+        .string()
+        .oneOf([yup.ref('password'), undefined], 'Passwords must match')
+        .required('Confirmation of password is required'),
+
+    role: yup.string().required('Please select a role'),
+});
+
 export const connectSchema = yup.object().shape({
     studentId: yup.string().required('Please select a student'),
     subject: yup.string().required('Please select a subject'),

@@ -222,10 +222,12 @@ const ConnectForm: React.FC<ConnectFormProps> = ({ isOpen, onClose, tutor }) => 
                                 </ModalBody>
 
                                 <ModalFooter>
-                                    <Button type="submit" colorScheme="blue" mr={3}>
+                                    <Button type="submit" colorScheme="yellow" mr={3}>
                                         Connect
                                     </Button>
                                     <Button
+                                        backgroundColor="#59D3C8"
+                                        mr={3}
                                         onClick={() => {
                                             onClose();
                                             setIsOptionSelected(false);
