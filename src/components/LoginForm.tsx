@@ -4,20 +4,9 @@ import axios from 'axios';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import {
-    Stack, FormControl, FormLabel, Input, Button, FormErrorMessage, Flex, Box, Spinner
+    Stack, FormControl, FormLabel, Input, Button, FormErrorMessage, Box, Spinner, useBreakpointValue,
 } from '@chakra-ui/react';
 import { LoginData } from '../models/interfaces';
-
-const inputStyle = {
-    width: '350px',
-    height: '50px',
-    backgroundColor: 'white',
-};
-
-const buttonStyle = {
-    width: '150px',
-    height: '50px',
-};
 
 const labelStyle = {
     fontSize: '14px',
@@ -26,6 +15,22 @@ const labelStyle = {
 
 const LoginForm: React.FC = () => {
     const navigate = useNavigate();
+    const fieldLength = useBreakpointValue({ base: '300px', md: '350px' });
+    const fieldHeight = useBreakpointValue({ base: '40px', md: '50px' });
+    const inputStyle = {
+        width: fieldLength,
+        height: fieldHeight,
+        backgroundColor: 'white',
+    };
+
+    const buttonLength = useBreakpointValue({ base: '120px', md: '150px' });
+    const buttonHeight = useBreakpointValue({ base: '40px', md: '50px' });
+    const buttonStyle = {
+        width: buttonLength,
+        height: buttonHeight,
+        fontWeight: 'bold',
+    };
+
     const initialValues: LoginData = { email: '', password: '' };
     return (
         <Formik
@@ -33,7 +38,7 @@ const LoginForm: React.FC = () => {
             validationSchema={Yup.object({
                 email: Yup.string()
                     .email('Invalid email address')
-                    .required('Email is required'),
+                    .required('Please enter the email address you provided during registration'),
                 password: Yup.string().required('Password is required'),
             })}
 
@@ -41,12 +46,12 @@ const LoginForm: React.FC = () => {
                 setStatus('Submitting')
 
                 try {
-
-                    // Submit the form data
-                    const response = await axios.post('https://ffprac-team2-back.onrender.com/api/v1/auth/login', values);
-                    const { firstName, lastName, email, role, token } = response.data.user;
-                    console.log(response.data.user);
+                    const response = await axios.post(`${import.meta.env.VITE_REACT_URL}auth/login`, values);
+                    const token = response.data.token;
+                    console.log('token', token);
                     localStorage.setItem('token', token);
+                    const { firstName, lastName, email, role} = response.data.user;
+                    console.log(response.data.user);          
                     const userData = { firstName, lastName, email, role };
                     localStorage.setItem('userData', JSON.stringify(userData));
                     navigate('/');
@@ -60,7 +65,7 @@ const LoginForm: React.FC = () => {
         >
             {(formik) => (
                 <Form onSubmit={formik.handleSubmit}>
-                    <Stack spacing={4}>
+                    <Stack spacing={4} style={{ width: fieldLength }}>
                         <FormControl isRequired isInvalid={!!(formik.errors.email && formik.touched.email)}>
                             <FormLabel htmlFor="email" style={labelStyle}>
                                 Email
@@ -91,7 +96,8 @@ const LoginForm: React.FC = () => {
                                 <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
                             )}
                         </FormControl>
-                        <Stack direction="row" spacing={4} display="flex" alignItems="center">
+                        <Stack direction="row" spacing={4} display="flex" alignItems="center" marginTop={4}
+                            marginBottom={4}>
                             <Button
                                 type="submit"
                                 style={{ ...buttonStyle, backgroundColor: '#F4CD76', color: 'black' }}
