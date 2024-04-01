@@ -1,7 +1,8 @@
 interface StudentTutorInfo {
     tutorId: string;
     subject: string;
-    grade: string | number;
+    availability: string;
+    tutorName: string;
 }
 
 export interface Student {
@@ -34,7 +35,7 @@ export interface LoginData {
 }
 
 export interface Tutor {
-    availability: string;
+    availability: string[];
     userId: {
         _id: string;
         firstName: string;
@@ -52,4 +53,19 @@ export interface Tutor {
     SocialStudies: string[];
     Science: string[];
     _id: string;
+}
+
+export interface TutorConnectionRequest {
+    studentId: string;
+    tutorId?: string;
+    subject: string;
+    availability: string;
+}
+
+export interface GlobalState {
+    // isLoggedIn: boolean;
+    // user: User | null;
+    students: Student[] | [];
+    // teacherSearchResults: string[];
+    updateStudents: () => Promise<void>;
 }

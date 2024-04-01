@@ -12,6 +12,7 @@ import {
     Stack,
     Text,
     useBreakpointValue,
+    useDisclosure,
 } from '@chakra-ui/react';
 
 import { CalendarIcon } from '@chakra-ui/icons';
@@ -20,6 +21,7 @@ import { Tutor } from '../models/interfaces';
 import iconEducation from '../assets/experience.png';
 import iconExperience from '../assets/education.png';
 import { theme } from '../util/theme';
+import ConnectForm from './ConnectForm';
 
 // import iconCalendar from '../assets/calendar.png';
 // import { EmailIcon } from '@chakra-ui/icons';
@@ -36,10 +38,11 @@ export interface TutorCardProps {
 
 const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
     // const TutorCard: React.FC = ({tutor: }) => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const getButtonColor = (day: string) => {
         return tutor.availability.includes(day) ? 'green.400' : 'red.500';
     };
-    console.log(tutor);
+    // console.log(tutor);
     return (
         <Box mt="30px" w="100%">
             {/* <Box borderWidth='0px' borderRadius='md' boxShadow='md' ml='70'> */}
@@ -79,9 +82,11 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
                             height={theme.dashboardButtons.height}
                             fontSize={theme.dashboardButtons.fontSize}
                             fontWeight={theme.dashboardButtons.fontWeight}
+                            onClick={onOpen}
                         >
                             Connect with me
                         </Button>
+                        <ConnectForm isOpen={isOpen} onClose={onClose} tutor={tutor} />
                     </ButtonGroup>
                 </Flex>
                 <CardBody>

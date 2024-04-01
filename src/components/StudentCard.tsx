@@ -21,6 +21,8 @@ import {
 import avatar from '../assets/avatar.jpg';
 import { EditIcon, CalendarIcon, EmailIcon, DeleteIcon } from '@chakra-ui/icons';
 import StudentForm from './StudentForm';
+import { headers } from '../util';
+import axios from 'axios';
 
 interface StudentCardProps {
     student: Student;
@@ -28,6 +30,21 @@ interface StudentCardProps {
 }
 const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
+
+    const handleDeleteTutor = async (tutorId: string, subject: string) => {
+        try {
+            const response = await axios.patch(
+                `${import.meta.env.VITE_REACT_URL}students/${student?._id}`,
+                { tutorToRemove: { tutorId, subject } },
+                { headers }
+            );
+            setNeedUpdate(true);
+            console.log(response);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
         <Card
             direction={{ base: 'column', sm: 'row' }}
@@ -69,39 +86,28 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => 
                             </Tr>
                         </Thead>
                         <Tbody>
-                            <Tr>
-                                <Td p="0">Patrick Hill</Td>
-                                <Td p="0">Geometry</Td>
-                                <Td p="0">
-                                    <Flex gap="4">
-                                        <CalendarIcon />
-                                        <EmailIcon />
-                                        <DeleteIcon />
-                                    </Flex>
-                                </Td>
-                            </Tr>
-                            <Tr>
-                                <Td p="0">Melissa Dragone</Td>
-                                <Td p="0">French</Td>
-                                <Td p="0">
-                                    <Flex gap="4">
-                                        <CalendarIcon />
-                                        <EmailIcon />
-                                        <DeleteIcon />
-                                    </Flex>
-                                </Td>
-                            </Tr>
-                            <Tr>
-                                <Td p="0">Roberta Simon</Td>
-                                <Td p="0">English writing</Td>
-                                <Td p="0">
-                                    <Flex gap="4">
-                                        <CalendarIcon />
-                                        <EmailIcon />
-                                        <DeleteIcon />
-                                    </Flex>
-                                </Td>
-                            </Tr>
+                            {student.tutorInfo &&
+                                student.tutorInfo?.length > 0 &&
+                                student.tutorInfo?.map((element) => (
+                                    <Tr key={element.tutorId}>
+                                        <Td p="0">{element.tutorName}</Td>
+                                        <Td p="0">{element.subject}</Td>
+                                        <Td p="0">
+                                            <Flex gap="4">
+                                                <CalendarIcon />
+                                                <EmailIcon />
+                                                <DeleteIcon
+                                                    onClick={() =>
+                                                        handleDeleteTutor(
+                                                            element.tutorId,
+                                                            element.subject
+                                                        )
+                                                    }
+                                                />
+                                            </Flex>
+                                        </Td>
+                                    </Tr>
+                                ))}
                         </Tbody>
                     </Table>
                 </CardBody>

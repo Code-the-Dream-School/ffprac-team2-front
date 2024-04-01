@@ -40,8 +40,17 @@ export const registrationValidationSchema = yup.object().shape({
 
     confirmPassword: yup
         .string()
-        .oneOf([yup.ref('password'), null], 'Passwords must match')
+        .oneOf([yup.ref('password'), undefined], 'Passwords must match')
         .required('Confirmation of password is required'),
 
     role: yup.string().required('Please select a role'),
+});
+
+export const connectSchema = yup.object().shape({
+    studentId: yup.string().required('Please select a student'),
+    subject: yup.string().required('Please select a subject'),
+    availability: yup
+        .string()
+        .oneOf(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
+        .required('Please select a day'),
 });

@@ -15,7 +15,7 @@ const TutorSearchPage: React.FC = () => {
             try {
                 const res = await axios.get(`${import.meta.env.VITE_REACT_URL}tutors`);
                 const response = await res.data;
-                console.log(response);
+                // console.log(response);
                 setTutors(response.tutors);
                 setLoading(false);
             } catch (error) {
