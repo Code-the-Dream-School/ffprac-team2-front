@@ -40,7 +40,7 @@ export const registrationValidationSchema = yup.object().shape({
 
     confirmPassword: yup
         .string()
-        .oneOf([yup.ref('password')], 'Passwords must match')
+        .oneOf([yup.ref('password'), undefined], 'Passwords must match')
         .required('Confirmation of password is required'),
 
     role: yup.string().required('Please select a role'),
