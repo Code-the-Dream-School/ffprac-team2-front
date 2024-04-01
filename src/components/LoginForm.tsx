@@ -2,11 +2,19 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
 import {
-    Stack, FormControl, FormLabel, Input, Button, FormErrorMessage, Box, Spinner, useBreakpointValue,
+    Stack,
+    FormControl,
+    FormLabel,
+    Input,
+    Button,
+    FormErrorMessage,
+    Box,
+    Spinner,
+    useBreakpointValue,
 } from '@chakra-ui/react';
 import { LoginData } from '../models/interfaces';
+import { loginValidationSchema } from '../validationSchemas';
 
 const labelStyle = {
     fontSize: '14px',
@@ -35,23 +43,18 @@ const LoginForm: React.FC = () => {
     return (
         <Formik
             initialValues={initialValues}
-            validationSchema={Yup.object({
-                email: Yup.string()
-                    .email('Invalid email address')
-                    .required('Please enter the email address you provided during registration'),
-                password: Yup.string().required('Password is required'),
-            })}
-
+            validationSchema={loginValidationSchema}
             onSubmit={async (values, { setSubmitting, setStatus, setFieldError }) => {
-                setStatus('Submitting')
+                setStatus('Submitting');
 
                 try {
-                    const response = await axios.post(`${import.meta.env.VITE_REACT_URL}auth/login`, values);
+                    const response = await axios.post(
+                        `${import.meta.env.VITE_REACT_URL}auth/login`,
+                        values
+                    );
                     const token = response.data.token;
-                    console.log('token', token);
                     localStorage.setItem('token', token);
-                    const { firstName, lastName, email, role} = response.data.user;
-                    console.log(response.data.user);          
+                    const { firstName, lastName, email, role } = response.data.user;
                     const userData = { firstName, lastName, email, role };
                     localStorage.setItem('userData', JSON.stringify(userData));
                     navigate('/');
@@ -66,7 +69,10 @@ const LoginForm: React.FC = () => {
             {(formik) => (
                 <Form onSubmit={formik.handleSubmit}>
                     <Stack spacing={4} style={{ width: fieldLength }}>
-                        <FormControl isRequired isInvalid={!!(formik.errors.email && formik.touched.email)}>
+                        <FormControl
+                            isRequired
+                            isInvalid={!!(formik.errors.email && formik.touched.email)}
+                        >
                             <FormLabel htmlFor="email" style={labelStyle}>
                                 Email
                             </FormLabel>
@@ -77,11 +83,14 @@ const LoginForm: React.FC = () => {
                                 name="email"
                                 style={inputStyle}
                             />
-                            {(formik.errors.email && formik.touched.email) && (
+                            {formik.errors.email && formik.touched.email && (
                                 <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
                             )}
                         </FormControl>
-                        <FormControl isRequired isInvalid={!!(formik.errors.password && formik.touched.password)}>
+                        <FormControl
+                            isRequired
+                            isInvalid={!!(formik.errors.password && formik.touched.password)}
+                        >
                             <FormLabel htmlFor="password" style={labelStyle}>
                                 Password
                             </FormLabel>
@@ -92,22 +101,36 @@ const LoginForm: React.FC = () => {
                                 name="password"
                                 style={inputStyle}
                             />
-                            {(formik.errors.password && formik.touched.password) && (
+                            {formik.errors.password && formik.touched.password && (
                                 <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
                             )}
                         </FormControl>
-                        <Stack direction="row" spacing={4} display="flex" alignItems="center" marginTop={4}
-                            marginBottom={4}>
+                        <Stack
+                            direction="row"
+                            spacing={4}
+                            display="flex"
+                            alignItems="center"
+                            marginTop={4}
+                            marginBottom={4}
+                        >
                             <Button
                                 type="submit"
-                                style={{ ...buttonStyle, backgroundColor: '#F4CD76', color: 'black' }}
+                                style={{
+                                    ...buttonStyle,
+                                    backgroundColor: '#F4CD76',
+                                    color: 'black',
+                                }}
                                 flex="1"
                             >
                                 Login
                             </Button>
                             <Button
                                 type="button"
-                                style={{ ...buttonStyle, backgroundColor: '#59D3C8', color: 'black' }}
+                                style={{
+                                    ...buttonStyle,
+                                    backgroundColor: '#59D3C8',
+                                    color: 'black',
+                                }}
                                 flex="1"
                                 onClick={() => navigate('/')}
                             >
@@ -122,9 +145,8 @@ const LoginForm: React.FC = () => {
                     </Stack>
                 </Form>
             )}
-        </Formik >
+        </Formik>
     );
 };
-
 
 export default LoginForm;

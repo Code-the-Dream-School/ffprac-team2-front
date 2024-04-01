@@ -69,3 +69,6 @@ export interface GlobalState {
     // teacherSearchResults: string[];
     updateStudents: () => Promise<void>;
 }
+export interface AuthPageProps {
+    activeTab: 'register' | 'login';
+}

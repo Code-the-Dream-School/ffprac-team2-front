@@ -12,13 +12,10 @@ import {
 
 import RegistrationForm from '../components/RegistrationForm';
 import LoginForm from '../components/LoginForm';
-
-interface AuthPageProps {
-    activeTab: 'register' | 'login';
-}
+import { AuthPageProps } from '../models/interfaces';
 
 const AuthPage: React.FC<AuthPageProps> = ({ activeTab }) => {
-    const defaultIndex = activeTab === 'register' ? 0 : 1; // Set the defaultIndex based on activeTab prop
+    const defaultIndex = activeTab === 'register' ? 0 : 1;
     const tabLength = useBreakpointValue({ base: '300px', md: '350px' });
     const tabHeight = useBreakpointValue({ base: '50px', md: '60px' });
     return (
@@ -32,11 +29,10 @@ const AuthPage: React.FC<AuthPageProps> = ({ activeTab }) => {
                 >
                     <TabList
                         bg="#D9D9D9"
-                        height="60px"
                         borderRadius="20px"
                         display="flex"
                         justifyContent="center"
-                        margin="0 1em"
+                        margin="0 15px"
                         style={{ width: tabLength, height: tabHeight }}
                     >
                         <Tab

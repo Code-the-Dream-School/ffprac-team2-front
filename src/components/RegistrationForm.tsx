@@ -191,7 +191,7 @@ const RegistrationForm: React.FC = () => {
                         <RadioGroup
                             id="role"
                             name="role"
-                            width="350px"
+                            style={{ width: fieldLength }}
                             value={formik.values.role}
                             onChange={(value) => formik.setFieldValue('role', value)}
                         >
