@@ -17,6 +17,7 @@ import {
     FormControl,
     FormErrorMessage,
     FormLabel,
+    Textarea,
 } from '@chakra-ui/react';
 
 interface TutorProfilePageProps {}
@@ -155,7 +156,9 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
         height: '3em',
         p: '50em',
     };
-
+    const handleClick = () => {
+        console.log('Add button clicked');
+    };
     const initialValues: TutorRequest = {
         grades: [],
         about: '',
@@ -231,13 +234,22 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
                                                 }}
                                                 boxSize="0.9em"
                                             >
-                                                <AddIcon
-                                                    sx={{
-                                                        width: '65%',
-                                                        height: '65%',
-                                                        color: theme.styles.global.body.bg,
+                                                <Button
+                                                    onClick={handleClick}
+                                                    style={{
+                                                        backgroundColor: 'transparent',
+                                                        border: 'none',
+                                                        padding: 0,
                                                     }}
-                                                />
+                                                >
+                                                    <AddIcon
+                                                        sx={{
+                                                            width: '70%',
+                                                            height: '70%',
+                                                            color: '#E7E0D6',
+                                                        }}
+                                                    />
+                                                </Button>
                                             </AvatarBadge>
                                         </Avatar>
                                     </WrapItem>
@@ -260,12 +272,25 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
                                             size="lg"
                                         />
                                         <Spacer />
-                                        <Input
-                                            color="black.500"
-                                            placeholder={`${tutorData.education}`}
-                                            size="lg"
-                                            bgColor="white"
-                                        />
+                                        <FormControl
+                                            isInvalid={
+                                                !!(formik.errors.about && formik.touched.about)
+                                            }
+                                        >
+                                            <Field
+                                                as={Input}
+                                                backgroundColor="white"
+                                                name="education"
+                                                h="50px"
+                                                textColor="black.400"
+                                                placeholder={`Education`}
+                                            />
+                                            {formik.errors.about && formik.touched.about && (
+                                                <FormErrorMessage>
+                                                    {formik.errors.about}
+                                                </FormErrorMessage>
+                                            )}
+                                        </FormControl>
                                     </VStack>
                                 </SimpleGrid>
                                 <VStack>
@@ -274,7 +299,7 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
                                     >
                                         <FormLabel>About</FormLabel>
                                         <Field
-                                            as={Input}
+                                            as={Textarea}
                                             backgroundColor="white"
                                             name="about"
                                             textColor="black"
