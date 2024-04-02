@@ -86,17 +86,39 @@ export interface Subject {
     _id: string; // Subject ID from the database
     name: string; // Subject name
 }
-export interface Tutor extends User {
+export interface Tutor {
+    availability: string[]; //availability is array : needed change for multiselect in tutorProfilePage
+    userId: {
+        _id: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+    };
+    about: string;
+    grades: string[];
+    avatar?: string;
+    education: string;
+    yearsOfExperience: number;
+    MathSubject: string[];
+    ForeignLanguages: string[];
+    English: string[];
+    SocialStudies: string[];
+    Science: string[];
     _id: string;
-    user: string; // Reference to the User document
-    subjects: Subject[]; // Array of Subject objects
-    grades: string[]; // Array of grade levels (e.g., ['K', '1', '2', ...])
-    about: string; // Summary about the tutor (max 150 characters)
-    education?: string; // Optional education details
-    students?: string[]; // Array of student user IDs (optional)
-    image?: string; // Optional image URL for the tutor
-    availability?: string[]; // Array of availability objects (optional)
-    expirience?: string; //Optional expirience
+}
+//interface for tutorProfilePage form assembele
+export interface TutorRequest {
+    availability: string[];
+    about: string;
+    grades: string[];
+    avatar?: string;
+    education: string;
+    yearsOfExperience: number;
+    MathSubject: string[];
+    ForeignLanguages: string[];
+    English: string[];
+    SocialStudies: string[];
+    Science: string[];
 }
 export interface AuthPageProps {
     activeTab: 'register' | 'login';
