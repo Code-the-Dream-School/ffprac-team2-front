@@ -192,11 +192,11 @@ const ConnectForm: React.FC<ConnectFormProps> = ({ isOpen, onClose, tutor }) => 
                                             return (
                                                 <FormControl key={field} mt={4}>
                                                     <FormLabel fontSize="14px" fontWeight="400">
-                                                        {field}
+                                                        {field === 'MathSubject' ? 'Math' : field}
                                                     </FormLabel>
                                                     <Field
                                                         as={Select}
-                                                        placeholder={`Select ${field}`}
+                                                        placeholder={`Select ${field === 'MathSubject' ? 'Math' : field}`}
                                                         backgroundColor="white"
                                                         name={'subject'}
                                                         onChange={(event: SelectChangeEvent) => {
