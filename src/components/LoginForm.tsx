@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
-import { Stack, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
+import { Formik, Form, Field } from 'formik';
+import {
+    Stack,
+    FormControl,
+    FormLabel,
+    Input,
+    Button,
+    FormErrorMessage,
+    Box,
+    Spinner,
+    useBreakpointValue,
+} from '@chakra-ui/react';
 import { LoginData } from '../models/interfaces';
-
-const inputStyle = {
-    width: '22em',
-    height: '3em',
-    backgroundColor: 'white',
-};
-
-const buttonStyle = {
-    width: '9em',
-    height: '3em',
-};
+import { loginValidationSchema } from '../validationSchemas';
 
 const labelStyle = {
     fontSize: '14px',
@@ -23,79 +23,129 @@ const labelStyle = {
 
 const LoginForm: React.FC = () => {
     const navigate = useNavigate();
-    const [formData, setFormData] = useState<LoginData>({ email: '', password: '' });
-
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = event.target;
-        setFormData({ ...formData, [name]: value });
+    const fieldLength = useBreakpointValue({ base: '300px', md: '350px' });
+    const fieldHeight = useBreakpointValue({ base: '40px', md: '50px' });
+    const inputStyle = {
+        width: fieldLength,
+        height: fieldHeight,
+        backgroundColor: 'white',
     };
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        try {
-            const response = await axios.post('/api/login', formData);
-            // Handle successful login
-            console.log('Login successful', response);
-            navigate('/parent-dashboard'); // this is just for test
-        } catch (error) {
-            // Handle login error
-            console.error('Login failed:', error);
-        }
+    const buttonLength = useBreakpointValue({ base: '120px', md: '150px' });
+    const buttonHeight = useBreakpointValue({ base: '40px', md: '50px' });
+    const buttonStyle = {
+        width: buttonLength,
+        height: buttonHeight,
+        fontWeight: 'bold',
     };
 
-    const handleCancel = () => {
-        // Redirect to main page on cancel
-        navigate('/');
-    };
-
+    const initialValues: LoginData = { email: '', password: '' };
     return (
-        <form onSubmit={handleSubmit}>
-            <Stack spacing={4}>
-                <FormControl isRequired>
-                    <FormLabel htmlFor="email" style={labelStyle}>
-                        Email
-                    </FormLabel>
-                    <Input
-                        type="email"
-                        id="email"
-                        name="email"
-                        style={inputStyle}
-                        value={formData.email}
-                        onChange={handleChange}
-                    />
-                </FormControl>
-                <FormControl isRequired>
-                    <FormLabel htmlFor="password" style={labelStyle}>
-                        Password
-                    </FormLabel>
-                    <Input
-                        type="password"
-                        id="password"
-                        name="password"
-                        style={inputStyle}
-                        value={formData.password}
-                        onChange={handleChange}
-                    />
-                </FormControl>
-                <Stack direction="row" spacing={4} display="flex" alignItems="center">
-                    <Button
-                        type="submit"
-                        style={{ ...buttonStyle, backgroundColor: '#F4CD76', color: 'black' }}
-                        flex="1"
-                    >
-                        Login
-                    </Button>
-                    <Button
-                        type="button"
-                        style={{ ...buttonStyle, backgroundColor: '#59D3C8', color: 'black' }}
-                        flex="1"
-                        onClick={handleCancel}
-                    >
-                        Cancel
-                    </Button>
-                </Stack>
-            </Stack>
-        </form>
+        <Formik
+            initialValues={initialValues}
+            validationSchema={loginValidationSchema}
+            onSubmit={async (values, { setSubmitting, setStatus, setFieldError }) => {
+                setStatus('Submitting');
+
+                try {
+                    const response = await axios.post(
+                        `${import.meta.env.VITE_REACT_URL}auth/login`,
+                        values
+                    );
+                    const token = response.data.token;
+                    localStorage.setItem('token', token);
+                    const { firstName, lastName, email, role } = response.data.user;
+                    const userData = { firstName, lastName, email, role };
+                    localStorage.setItem('userData', JSON.stringify(userData));
+                    navigate('/');
+                } catch (error) {
+                    console.error('Login failed:', error);
+                    setStatus('failed');
+                    setFieldError('password', 'Invalid email or password. Please try again.');
+                }
+                setSubmitting(false);
+            }}
+        >
+            {(formik) => (
+                <Form onSubmit={formik.handleSubmit}>
+                    <Stack spacing={4} style={{ width: fieldLength }}>
+                        <FormControl
+                            isRequired
+                            isInvalid={!!(formik.errors.email && formik.touched.email)}
+                        >
+                            <FormLabel htmlFor="email" style={labelStyle}>
+                                Email
+                            </FormLabel>
+                            <Field
+                                as={Input}
+                                type="email"
+                                id="email"
+                                name="email"
+                                style={inputStyle}
+                            />
+                            {formik.errors.email && formik.touched.email && (
+                                <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
+                            )}
+                        </FormControl>
+                        <FormControl
+                            isRequired
+                            isInvalid={!!(formik.errors.password && formik.touched.password)}
+                        >
+                            <FormLabel htmlFor="password" style={labelStyle}>
+                                Password
+                            </FormLabel>
+                            <Field
+                                as={Input}
+                                type="password"
+                                id="password"
+                                name="password"
+                                style={inputStyle}
+                            />
+                            {formik.errors.password && formik.touched.password && (
+                                <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
+                            )}
+                        </FormControl>
+                        <Stack
+                            direction="row"
+                            spacing={4}
+                            display="flex"
+                            alignItems="center"
+                            marginTop={4}
+                            marginBottom={4}
+                        >
+                            <Button
+                                type="submit"
+                                style={{
+                                    ...buttonStyle,
+                                    backgroundColor: '#F4CD76',
+                                    color: 'black',
+                                }}
+                                flex="1"
+                            >
+                                Login
+                            </Button>
+                            <Button
+                                type="button"
+                                style={{
+                                    ...buttonStyle,
+                                    backgroundColor: '#59D3C8',
+                                    color: 'black',
+                                }}
+                                flex="1"
+                                onClick={() => navigate('/')}
+                            >
+                                Cancel
+                            </Button>
+                        </Stack>
+                        {formik.status === 'Submitting' && (
+                            <Box textAlign="center">
+                                <Spinner size="sm" />
+                            </Box>
+                        )}
+                    </Stack>
+                </Form>
+            )}
+        </Formik>
     );
 };
 
