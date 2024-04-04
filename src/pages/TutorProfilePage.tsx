@@ -31,6 +31,8 @@ import { theme } from '../util/theme.ts';
 import { headers } from '../util';
 
 const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
+    const { firstName, lastName, email } = JSON.parse(localStorage.getItem('userData') ?? '');
+
     const tutorData: Tutor = {
         //MOCK DATA FOR A MEANWHILE//
         availability: [
@@ -272,7 +274,7 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
                                             pointerEvents="none"
                                             boxShadow="md"
                                             p="15px"
-                                            placeholder={`${tutorData.userId.firstName} ${tutorData.userId.lastName}`}
+                                            placeholder={`${firstName} ${lastName}`}
                                             sx={{
                                                 _placeholder: {
                                                     color: 'black',
@@ -288,7 +290,7 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
                                             pointerEvents="none"
                                             boxShadow="md"
                                             p="15px"
-                                            placeholder={`${tutorData.userId.email}`}
+                                            placeholder={`${email}`}
                                             sx={{
                                                 _placeholder: {
                                                     color: 'black',
