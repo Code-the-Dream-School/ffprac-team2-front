@@ -25,7 +25,7 @@ interface TutorProfilePageProps {}
 import { MultiSelect, Option, useMultiSelect } from 'chakra-multiselect';
 import { AddIcon } from '@chakra-ui/icons';
 import avatar from '../assets/avatar.jpg';
-import { Tutor, TutorRequest } from '../models/interfaces.ts';
+import { TutorRequest } from '../models/interfaces.ts';
 import axios from 'axios';
 import { theme } from '../util/theme.ts';
 import { headers } from '../util';
@@ -33,7 +33,7 @@ import { headers } from '../util';
 const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
     const { firstName, lastName, email } = JSON.parse(localStorage.getItem('userData') ?? '');
 
-    const tutorData: Tutor = {
+    const tutorData: TutorRequest = {
         //MOCK DATA FOR A MEANWHILE//
         availability: [
             'Monday',
@@ -44,12 +44,6 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
             'Saturday',
             'Sunday',
         ],
-        userId: {
-            _id: '123456',
-            firstName: 'Fany',
-            lastName: 'Kreminski',
-            email: 'frk@gmail.com',
-        },
         about: '',
         grades: ['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
         avatar: '',
@@ -95,7 +89,6 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
             'Science',
             'ACT Science Test Prep',
         ],
-        _id: '12345',
     };
 
     //populating mathSubjectOptions for using in Multiselect Component
@@ -317,11 +310,6 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
                                                 textColor="black.400"
                                                 placeholder={`MS Berkley`}
                                             />
-                                            {formik.errors.about && formik.touched.about && (
-                                                <FormErrorMessage>
-                                                    {formik.errors.about}
-                                                </FormErrorMessage>
-                                            )}
                                         </FormControl>
                                     </VStack>
                                 </SimpleGrid>
