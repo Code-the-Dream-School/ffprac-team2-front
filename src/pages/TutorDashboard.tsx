@@ -1,13 +1,46 @@
+// @ts-nocheck
+
 import { Box, Button, Flex } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 
 import { BsChevronDown } from 'react-icons/bs';
 import TableSearch from '../components/TableSearch';
 import TutorTable from '../components/TutorTable';
+import axios from 'axios';
 import { theme } from '../util/theme';
-import { useState } from 'react';
 
 function TutorDashboard() {
     const [showSearch, setShowSearch] = useState(false);
+    const [students, setStudents] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchStudents = async () => {
+            const token = localStorage.getItem('token');
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            };
+
+            try {
+                const res = await axios
+                    .get(`${import.meta.env.VITE_REACT_URL}students/my-students`, config)
+                    .then((res) => {
+                        setStudents(res.data.students);
+                        setLoading(false);
+                        console.log('Students:', res.data.students);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+                console.log(res);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchStudents();
+    }, []);
 
     return (
         <Flex direction="column">
@@ -36,7 +69,7 @@ function TutorDashboard() {
                     overflowY="hidden"
                     mt={{ base: '0', md: '0' }}
                 >
-                    <TutorTable />
+                    <TutorTable students={students} />
                 </Box>
             </Flex>
         </Flex>

@@ -2,11 +2,26 @@ import './App.css';
 
 import { Route, Routes } from 'react-router-dom';
 
-import Layout from './components/Layout';
-import ParentDashboardPage from './pages/ParentDashboardPage';
-import TutorSearchPage from './pages/TutorSearchPage';
 import AuthPage from './pages/AuthPage';
 import LandingPage from './pages/LandingPage';
+import Layout from './components/Layout';
+import ParentDashboardPage from './pages/ParentDashboardPage';
+import TutorDashboard from './pages/TutorDashboard';
+import TutorSearchPage from './pages/TutorSearchPage';
+
+// import TutorProfileMult from './components/TutorProfileMult';
+
+// import Sample from './components/Sample';
+// import Sample01 from './components/Sample';
+
+// import SubjectFilter from './components/SubjectFilter';
+
+// import TutorCard from './components/TutorCard';
+
+// import AuthPage from './pages/AuthPage';
+
+// import Sample from './components/SubjectFilter';
+// import SubjectFilter from './components/SubjectFilter';
 
 // import TutorCard from './components/TutorCard';
 
@@ -25,8 +40,8 @@ const App = () => {
                     <Route path="/auth" element={<AuthPage activeTab={'login'} />} />
                     {/* <Route path="/login" element={<LoginForm />} /> */}
                     <Route path="/parent-dashboard" element={<ParentDashboardPage />} />
-                    {/* <Route path="/tutorcard" element={<TutorCard tutor={undefined} />} /> */}
                     <Route path="/tutorsearch" element={<TutorSearchPage />} />
+                    <Route path="/tutordashboard" element={<TutorDashboard />} />
                     {/* <Route path="*" element={<NotFoundPage />} /> */}
                 </Route>
             </Routes>

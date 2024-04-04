@@ -1,69 +1,11 @@
+// @ts-nocheck
+
 import { Box, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 
+import React from 'react';
 import { theme } from '../util/theme';
 
-// import React from 'react';
-
-function TutorTable() {
-    const data = [
-        {
-            parent: 'Alicia Morgan',
-            student: 'Oliver',
-            email: 'alicia@gmail.com',
-            subject: 'Algebra',
-            schedule: 'Tuesday',
-        },
-        {
-            parent: 'Alicia Morgan',
-            student: 'Kate',
-            email: 'alicia@gmail.com',
-            subject: 'Geometry',
-            schedule: 'Monday',
-        },
-        {
-            parent: 'Susanna Doe',
-            student: 'Patrick',
-            email: 'susanna@gmail.com',
-            subject: 'Trigonometry',
-            schedule: 'Wednesday',
-        },
-        {
-            parent: 'Alexa Sater',
-            student: 'Elizabeth',
-            email: 'alexa@gmail.com',
-            subject: 'Math',
-            schedule: 'Thursday',
-        },
-        {
-            parent: 'Alicia Morgan',
-            student: 'Oliver',
-            email: 'alicia@gmail.com',
-            subject: 'Algebra',
-            schedule: 'Tuesday',
-        },
-        {
-            parent: 'Donna Kratz',
-            student: 'Dominique',
-            email: 'donna@gmail.com',
-            subject: 'Geometry',
-            schedule: 'Monday',
-        },
-        {
-            parent: 'Bruce Williams',
-            student: 'Maria',
-            email: 'bruce@gmail.com',
-            subject: 'Trigonometry',
-            schedule: 'Monday',
-        },
-        {
-            parent: 'Bruce Williams',
-            student: 'Elizabeth',
-            email: 'bruce@gmail.com',
-            subject: 'Math',
-            schedule: 'Thursday',
-        },
-    ];
-
+function TutorTable({ students }) {
     return (
         <Box>
             <Box overflowX="auto" overflowY="hidden" mt="50px" borderRadius="md" width="100%">
@@ -83,15 +25,15 @@ function TutorTable() {
                         </Tr>
                     </Thead>
                     <Tbody fontSize="13px">
-                        {data.map((row, index) => (
+                        {students.map((student, index) => (
                             <Tr key={index}>
-                                <Td>{row.parent}</Td>
-                                <Td>{row.student}</Td>
+                                <Td>{student.parent}</Td>
+                                <Td>{student.name}</Td>
                                 <Td>
-                                    <a href={`mailto:${row.email}`}>{row.email}</a>
+                                    <a href={`mailto:${student.email}`}>{student.email}</a>
                                 </Td>
-                                <Td>{row.subject}</Td>
-                                <Td>{row.schedule}</Td>
+                                <Td>{student.subject}</Td>
+                                <Td>{student.availability}</Td>
                             </Tr>
                         ))}
                     </Tbody>
