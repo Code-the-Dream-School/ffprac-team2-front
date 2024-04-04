@@ -13,12 +13,16 @@ export interface Student {
     parentId: string;
     updatedAt: string;
     tutorInfo?: StudentTutorInfo[];
+}
+
+export interface TutorStudents {
+    name: string;
+    id: string;
     parent: string;
     email: string;
     subject: string;
     availability: string;
 }
-
 export interface StudentRequest {
     name: string;
     grade: string;

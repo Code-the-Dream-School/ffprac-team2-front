@@ -1,9 +1,14 @@
 import { Box, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 
-import { Student } from '../models/interfaces';
+import React from 'react';
+import { TutorStudents } from '../models/interfaces';
 import { theme } from '../util/theme';
 
-function TutorTable({ students }: { students: Student[] }) {
+type TutorTableProps = {
+    students: TutorStudents[];
+};
+
+const TutorTable: React.FC<TutorTableProps> = ({ students }) => {
     return (
         <Box>
             <Box overflowX="auto" overflowY="hidden" mt="50px" borderRadius="md" width="100%">
@@ -39,6 +44,6 @@ function TutorTable({ students }: { students: Student[] }) {
             </Box>
         </Box>
     );
-}
+};
 
 export default TutorTable;

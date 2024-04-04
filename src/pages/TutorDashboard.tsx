@@ -2,30 +2,26 @@ import { Box, Button, Flex } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
 import { BsChevronDown } from 'react-icons/bs';
+import React from 'react';
 import { Spinner } from '@chakra-ui/react';
-import { Student } from '../models/interfaces';
 import TableSearch from '../components/TableSearch';
+import { TutorStudents } from '../models/interfaces';
 import TutorTable from '../components/TutorTable';
 import axios from 'axios';
+import { headers } from '../util/index';
 import { theme } from '../util/theme';
 
-function TutorDashboard() {
+const TutorDashboard: React.FC = () => {
     const [showSearch, setShowSearch] = useState(false);
-    const [students, setStudents] = useState<Student[]>([]);
+    const [students, setStudents] = useState<TutorStudents[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchStudents = async () => {
-            const token = localStorage.getItem('token');
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            };
             try {
                 const res = await axios.get(
                     `${import.meta.env.VITE_REACT_URL}students/my-students`,
-                    config
+                    { headers }
                 );
                 setStudents(res.data.students);
                 setLoading(false);
@@ -80,6 +76,6 @@ function TutorDashboard() {
             </Flex>
         </Flex>
     );
-}
+};
 
 export default TutorDashboard;
