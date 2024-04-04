@@ -113,7 +113,7 @@ export interface TutorRequest {
     grades: string[];
     avatar?: string;
     education: string;
-    yearsOfExperience: number;
+    YearsOfExperience: number;
     MathSubject: string[];
     ForeignLanguages: string[];
     English: string[];

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Form, Formik, FormikHelpers, FormikValues, Field } from 'formik';
 
-import * as yup from 'yup';
+// import * as yup from 'yup';
+import { tutorValidationSchema } from '../validationSchemas';
 import {
     Box,
     Button,
@@ -21,23 +22,17 @@ import {
 } from '@chakra-ui/react';
 
 interface TutorProfilePageProps {}
-import { MultiSelect, useMultiSelect } from 'chakra-multiselect';
+import { MultiSelect, Option, useMultiSelect } from 'chakra-multiselect';
 import { AddIcon } from '@chakra-ui/icons';
 import avatar from '../assets/avatar.jpg';
 import { Tutor, TutorRequest } from '../models/interfaces.ts';
 import axios from 'axios';
 import { theme } from '../util/theme.ts';
+import { headers } from '../util';
 
 const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
-    const tutorValidationSchema = yup.object({
-        about: yup.string(),
-        // grades: yup.array(yup.string()),
-        // availability: yup.array(yup.string()),
-        // education: yup.string(),
-        // experience: yup.number(),
-        // avatar: yup.string(),
-    });
     const tutorData: Tutor = {
+        //MOCK DATA FOR A MEANWHILE//
         availability: [
             'Monday',
             'Tuesday',
@@ -57,7 +52,7 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
         grades: ['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
         avatar: '',
         education: '',
-        yearsOfExperience: 0,
+        YearsOfExperience: 0,
         MathSubject: [
             'Math',
             'Algebra',
@@ -137,7 +132,7 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
         options: SocialStudiesInitialOptions,
     });
     //populating ScienceInitialOptions for using in Multiselect Component
-    const ScienceInitialOptions = tutorData.SocialStudies.map((el) => {
+    const ScienceInitialOptions = tutorData.Science.map((el) => {
         return { label: el, value: el };
     });
     const { options: ScienceOptions } = useMultiSelect({
@@ -149,6 +144,16 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
     });
     const { options: AvailabilityOptions } = useMultiSelect({
         options: AvailabilityInitialOptions,
+    });
+    //populating ExperienceInitialOptions for using in Select Component
+    const YearsOfExperienceInitialOptions = Array(50)
+        .fill(null)
+        .map((_, i) => ({
+            label: `${i + 1}`,
+            value: `${i + 1}`,
+        }));
+    const { options: YearsOfExperienceOptions } = useMultiSelect({
+        options: YearsOfExperienceInitialOptions,
     });
 
     const buttonStyle = {
@@ -170,36 +175,45 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
         English: [],
         SocialStudies: [],
         Science: [],
-        yearsOfExperience: 0,
+        YearsOfExperience: 0,
     };
 
     const handleSubmit = async (values: TutorRequest, actions: FormikHelpers<TutorRequest>) => {
-        const updateTutor = async () => {
+        console.log(`Logger:inside handleSubmit with ${values.YearsOfExperience}and${headers} `);
+
+        const createTutor = async () => {
             try {
-                const response = await axios.patch(
-                    `https://ffprac-team2-back.onrender.com/api/v1/tutors/${tutorData._id}`,
+                const response = await axios.post(
+                    `https://ffprac-team2-back.onrender.com/api/v1/tutors`,
                     {
-                        grades: values.grades[0],
+                        grades: values.grades,
                         about: values.about,
                         education: values.education,
                         avatar: values.avatar,
                         availability: values.availability,
-                        yearsOfExperience: values.yearsOfExperience,
-                    }
+                        yearsOfExperience: values.YearsOfExperience,
+                        MathSubject: values.MathSubject,
+                        ForeignLanguages: values.ForeignLanguages,
+                        English: values.English,
+                        SocialStudies: values.SocialStudies,
+                        Science: values.Science,
+                    },
+                    { headers }
                 );
                 const { data, status } = response;
                 console.log(data);
+                if (status === 201) console.log('Tutor was created successfully');
                 actions.resetForm();
 
                 if (status !== 201) {
-                    throw new Error('Tutor Update failed');
+                    throw new Error('Tutor creation failed');
                 }
             } catch (error) {
-                console.error('Error update tutor profile:', error);
+                console.error('Error create tutor profile:', error);
                 return;
             }
         };
-        updateTutor();
+        createTutor();
     };
 
     return (
@@ -255,21 +269,36 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
                                     </WrapItem>
                                     <VStack spacing={3}>
                                         <Input
-                                            isDisabled
-                                            boxShadow="dark-lg"
-                                            p="5px"
+                                            pointerEvents="none"
+                                            boxShadow="md"
+                                            p="15px"
                                             placeholder={`${tutorData.userId.firstName} ${tutorData.userId.lastName}`}
+                                            sx={{
+                                                _placeholder: {
+                                                    color: 'black',
+                                                    opacity: '100',
+                                                },
+                                            }}
                                             fontWeight={400}
                                             size="lg"
-                                            textColor="Black.600"
+                                            variant={'disable'}
+                                            bgColor={theme.styles.global.body.bg}
                                         />
                                         <Input
-                                            textColor="black.600"
-                                            isDisabled
-                                            boxShadow="dark-lg"
+                                            pointerEvents="none"
+                                            boxShadow="md"
                                             p="15px"
                                             placeholder={`${tutorData.userId.email}`}
+                                            sx={{
+                                                _placeholder: {
+                                                    color: 'black',
+                                                    opacity: '100',
+                                                },
+                                            }}
+                                            fontWeight={400}
                                             size="lg"
+                                            variant={'disable'}
+                                            bgColor={theme.styles.global.body.bg}
                                         />
                                         <Spacer />
                                         <FormControl
@@ -277,13 +306,14 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
                                                 !!(formik.errors.about && formik.touched.about)
                                             }
                                         >
+                                            <FormLabel>Education</FormLabel>
                                             <Field
                                                 as={Input}
                                                 backgroundColor="white"
                                                 name="education"
                                                 h="50px"
                                                 textColor="black.400"
-                                                placeholder={`Education`}
+                                                placeholder={`MS Berkley`}
                                             />
                                             {formik.errors.about && formik.touched.about && (
                                                 <FormErrorMessage>
@@ -313,12 +343,31 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
                                         )}
                                     </FormControl>
                                     <Spacer />
-                                    <Input
-                                        textColor="black.400"
-                                        placeholder={`${tutorData.yearsOfExperience}`}
-                                        size="lg"
-                                        bgColor="white"
-                                    />
+
+                                    {/* Experience*/}
+                                    <Box maxW="35em" p="3px">
+                                        <FormControl>
+                                            <Field name="YearsOfExperience">
+                                                {({ field, form }) => (
+                                                    <MultiSelect
+                                                        {...field}
+                                                        options={YearsOfExperienceOptions}
+                                                        value={form.values.YearsOfExperience} //for displaying selected values
+                                                        label="YearsOfExperience"
+                                                        single
+                                                        onChange={(selectedOption) => {
+                                                            console.log(field.name, selectedOption);
+                                                            console.log(form);
+                                                            form.setFieldValue(
+                                                                field.name,
+                                                                selectedOption
+                                                            ); //updates selected options in tutorRequest
+                                                        }}
+                                                    />
+                                                )}
+                                            </Field>
+                                        </FormControl>
+                                    </Box>
                                 </VStack>
                             </SimpleGrid>
                             {/* MULTiSELECTS GRID */}
@@ -332,14 +381,19 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
                                                     <MultiSelect
                                                         {...field}
                                                         options={EnglishOptions}
-                                                        value={form.values.English} //for displaying selected values
+                                                        value={form.values.English.map((item) => {
+                                                            return {
+                                                                label: item,
+                                                                value: item,
+                                                            };
+                                                        })}
                                                         label="English"
-                                                        onChange={(selectedOption) => {
-                                                            console.log(field.name, selectedOption);
-                                                            console.log(form);
+                                                        onChange={(selectedOption: Option[]) => {
                                                             form.setFieldValue(
                                                                 field.name,
-                                                                selectedOption
+                                                                selectedOption.map(
+                                                                    (item) => item.value
+                                                                )
                                                             ); //updates selected options in tutorRequest
                                                         }}
                                                     />
@@ -354,14 +408,21 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
                                                     <MultiSelect
                                                         {...field}
                                                         options={SocialStudiesOptions}
-                                                        value={form.values.SocialStudies} //for displaying selected values
+                                                        value={form.values.SocialStudies.map(
+                                                            (item) => {
+                                                                return {
+                                                                    label: item,
+                                                                    value: item,
+                                                                };
+                                                            }
+                                                        )}
                                                         label="Social Studies"
-                                                        onChange={(selectedOption) => {
-                                                            console.log(field.name, selectedOption);
-                                                            console.log(form);
+                                                        onChange={(selectedOption: Option[]) => {
                                                             form.setFieldValue(
                                                                 field.name,
-                                                                selectedOption
+                                                                selectedOption.map(
+                                                                    (item) => item.value
+                                                                )
                                                             ); //updates selected options in tutorRequest
                                                         }}
                                                     />
@@ -379,14 +440,19 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
                                                     <MultiSelect
                                                         {...field}
                                                         options={ScienceOptions}
-                                                        value={form.values.Science} //for displaying selected values
+                                                        value={form.values.Science.map((item) => {
+                                                            return {
+                                                                label: item,
+                                                                value: item,
+                                                            };
+                                                        })}
                                                         label="Science"
-                                                        onChange={(selectedOption) => {
-                                                            console.log(field.name, selectedOption);
-                                                            console.log(form);
+                                                        onChange={(selectedOption: Option[]) => {
                                                             form.setFieldValue(
                                                                 field.name,
-                                                                selectedOption
+                                                                selectedOption.map(
+                                                                    (item) => item.value
+                                                                )
                                                             ); //updates selected options in tutorRequest
                                                         }}
                                                     />
@@ -405,14 +471,21 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
                                                     <MultiSelect
                                                         {...field}
                                                         options={mathSubjectOptions}
-                                                        value={form.values.MathSubject} //for displaying selected values
+                                                        value={form.values.MathSubject.map(
+                                                            (item) => {
+                                                                return {
+                                                                    label: item,
+                                                                    value: item,
+                                                                };
+                                                            }
+                                                        )}
                                                         label="Math"
-                                                        onChange={(selectedOption) => {
-                                                            console.log(field.name, selectedOption);
-                                                            console.log(form);
+                                                        onChange={(selectedOption: Option[]) => {
                                                             form.setFieldValue(
                                                                 field.name,
-                                                                selectedOption
+                                                                selectedOption.map(
+                                                                    (item) => item.value
+                                                                )
                                                             ); //updates selected options in tutorRequest
                                                         }}
                                                     />
@@ -428,14 +501,21 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
                                                     <MultiSelect
                                                         {...field}
                                                         options={gradesOptions}
-                                                        value={form.values.grades} //for displaying selected values
+                                                        value={form.values.grades.map((item) => {
+                                                            return {
+                                                                label: item,
+                                                                value: item,
+                                                            };
+                                                        })} //for displaying selected values
                                                         label="Grades"
-                                                        onChange={(selectedOption) => {
+                                                        onChange={(selectedOption: Option[]) => {
                                                             console.log(field.name, selectedOption);
                                                             console.log(form);
                                                             form.setFieldValue(
                                                                 field.name,
-                                                                selectedOption
+                                                                selectedOption.map(
+                                                                    (item) => item.value
+                                                                )
                                                             ); //updates selected options in tutorRequest
                                                         }}
                                                     />
@@ -451,14 +531,23 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
                                                     <MultiSelect
                                                         {...field}
                                                         options={ForeignLanguagesOptions}
-                                                        value={form.values.ForeignLanguages} //for displaying selected values
+                                                        value={form.values.ForeignLanguages.map(
+                                                            (item) => {
+                                                                return {
+                                                                    label: item,
+                                                                    value: item,
+                                                                };
+                                                            }
+                                                        )}
                                                         label="Foreign Languages"
-                                                        onChange={(selectedOption) => {
+                                                        onChange={(selectedOption: Option[]) => {
                                                             console.log(field.name, selectedOption);
                                                             console.log(form);
                                                             form.setFieldValue(
                                                                 field.name,
-                                                                selectedOption
+                                                                selectedOption.map(
+                                                                    (item) => item.value
+                                                                )
                                                             ); //updates selected options in tutorRequest
                                                         }}
                                                     />
@@ -473,19 +562,22 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
                                 {/* AVAILABILITY */}
                                 <Box maxW="35em" p="3px">
                                     <FormControl>
-                                        <Field name="Availability">
+                                        <Field name="availability">
                                             {({ field, form }) => (
                                                 <MultiSelect
                                                     {...field}
                                                     options={AvailabilityOptions}
-                                                    value={form.values.availability} //for displaying selected values
+                                                    value={form.values.availability.map((item) => {
+                                                        return {
+                                                            label: item,
+                                                            value: item,
+                                                        };
+                                                    })}
                                                     label="Availability"
-                                                    onChange={(selectedOption) => {
-                                                        console.log(field.name, selectedOption);
-                                                        console.log(form);
+                                                    onChange={(selectedOption: Option[]) => {
                                                         form.setFieldValue(
                                                             field.name,
-                                                            selectedOption
+                                                            selectedOption.map((item) => item.value)
                                                         ); //updates selected options in tutorRequest
                                                     }}
                                                 />
