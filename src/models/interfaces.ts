@@ -13,6 +13,10 @@ export interface Student {
     parentId: string;
     updatedAt: string;
     tutorInfo?: StudentTutorInfo[];
+    parent: string;
+    email: string;
+    subject: string;
+    availability: string;
 }
 
 export interface StudentRequest {
