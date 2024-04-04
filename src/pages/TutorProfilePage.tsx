@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Formik, FormikHelpers, FormikValues, Field } from 'formik';
 
 // import * as yup from 'yup';
@@ -32,6 +32,7 @@ import { headers } from '../util';
 
 const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
     const { firstName, lastName, email } = JSON.parse(localStorage.getItem('userData') ?? '');
+    const [selectedImage, setSelectedImage] = useState<Blob | null>(null);
 
     const tutorData: TutorRequest = {
         //MOCK DATA FOR A MEANWHILE//
@@ -156,9 +157,7 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
         height: '3em',
         p: '50em',
     };
-    const handleClick = () => {
-        console.log('Add button clicked');
-    };
+
     const initialValues: TutorRequest = {
         grades: [],
         about: '',
@@ -230,7 +229,12 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
                                                 width: '200px',
                                                 height: '200px',
                                             }}
-                                            src={avatar}
+                                            src={
+                                                selectedImage
+                                                    ? URL.createObjectURL(selectedImage)
+                                                    : avatar
+                                            }
+                                            name="avatar"
                                         >
                                             <AvatarBadge
                                                 sx={{
@@ -244,7 +248,11 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
                                                 boxSize="0.9em"
                                             >
                                                 <Button
-                                                    onClick={handleClick}
+                                                    onClick={() => {
+                                                        document
+                                                            .getElementById('fileInput')
+                                                            ?.click();
+                                                    }}
                                                     style={{
                                                         backgroundColor: 'transparent',
                                                         border: 'none',
@@ -256,6 +264,54 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
                                                             width: '70%',
                                                             height: '70%',
                                                             color: '#E7E0D6',
+                                                        }}
+                                                    />
+                                                    <Input
+                                                        id="fileInput"
+                                                        type="file"
+                                                        accept="image/*"
+                                                        hidden
+                                                        onChange={(
+                                                            event: React.ChangeEvent<HTMLInputElement>
+                                                        ) => {
+                                                            const selectedFile =
+                                                                event.target.files?.[0];
+                                                            if (!selectedFile) {
+                                                                return; // Handle no file selected case (optional: display a message)
+                                                            }
+
+                                                            if (
+                                                                !selectedFile.type.match('image/*')
+                                                            ) {
+                                                                console.error(
+                                                                    'Invalid file type selected'
+                                                                );
+                                                                return;
+                                                            }
+
+                                                            const reader = new FileReader();
+
+                                                            reader.onload = (
+                                                                event: ProgressEvent<FileReader>
+                                                            ) => {
+                                                                if (event.target?.result) {
+                                                                    const blob = new Blob(
+                                                                        [
+                                                                            event.target
+                                                                                .result as ArrayBuffer,
+                                                                        ],
+                                                                        { type: selectedFile.type }
+                                                                    );
+                                                                    // Use the blob
+                                                                    setSelectedImage(blob);
+                                                                }
+                                                            };
+
+                                                            reader.readAsArrayBuffer(selectedFile);
+
+                                                            // formik.setFieldValue();
+
+                                                            setSelectedImage(selectedFile);
                                                         }}
                                                     />
                                                 </Button>
