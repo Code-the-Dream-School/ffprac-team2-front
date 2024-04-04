@@ -22,22 +22,17 @@ function TutorDashboard() {
                     Authorization: `Bearer ${token}`,
                 },
             };
-
             try {
-                const res = await axios
-                    .get(`${import.meta.env.VITE_REACT_URL}students/my-students`, config)
-                    .then((res) => {
-                        setStudents(res.data.students);
-                        setLoading(false);
-                        console.log('Students:', res.data.students);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                        setLoading(false);
-                    });
-                console.log(res);
+                const res = await axios.get(
+                    `${import.meta.env.VITE_REACT_URL}students/my-students`,
+                    config
+                );
+                setStudents(res.data.students);
+                setLoading(false);
+                console.log('Students:', res.data.students);
             } catch (error) {
                 console.error(error);
+                setLoading(false);
             }
         };
         fetchStudents();
