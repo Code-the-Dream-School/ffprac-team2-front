@@ -1,11 +1,9 @@
-// @ts-nocheck
-
 import { Box, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 
-import React from 'react';
+import { Student } from '../models/interfaces';
 import { theme } from '../util/theme';
 
-function TutorTable({ students }) {
+function TutorTable({ students }: { students: Student[] }) {
     return (
         <Box>
             <Box overflowX="auto" overflowY="hidden" mt="50px" borderRadius="md" width="100%">

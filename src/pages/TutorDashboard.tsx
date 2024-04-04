@@ -1,9 +1,9 @@
-// @ts-nocheck
-
 import { Box, Button, Flex } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
 import { BsChevronDown } from 'react-icons/bs';
+import { Spinner } from '@chakra-ui/react';
+import { Student } from '../models/interfaces';
 import TableSearch from '../components/TableSearch';
 import TutorTable from '../components/TutorTable';
 import axios from 'axios';
@@ -11,7 +11,7 @@ import { theme } from '../util/theme';
 
 function TutorDashboard() {
     const [showSearch, setShowSearch] = useState(false);
-    const [students, setStudents] = useState([]);
+    const [students, setStudents] = useState<Student[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -33,6 +33,7 @@ function TutorDashboard() {
                     })
                     .catch(function (error) {
                         console.log(error);
+                        setLoading(false);
                     });
                 console.log(res);
             } catch (error) {
@@ -69,7 +70,17 @@ function TutorDashboard() {
                     overflowY="hidden"
                     mt={{ base: '0', md: '0' }}
                 >
-                    <TutorTable students={students} />
+                    {loading ? (
+                        <Spinner
+                            thickness="4px"
+                            speed="0.65s"
+                            emptyColor="gray.200"
+                            color="blue.500"
+                            size="xl"
+                        />
+                    ) : (
+                        <TutorTable students={students} />
+                    )}
                 </Box>
             </Flex>
         </Flex>
