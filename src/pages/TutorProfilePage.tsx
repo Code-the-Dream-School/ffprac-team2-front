@@ -119,6 +119,7 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = (isUpdate) => {
         __v: 0,
     };
 
+    //FETCHING TUTOR DATA FOR AN UPDATE
     useEffect(() => {
         if (!isUpdate) {
             return;
@@ -231,43 +232,76 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = (isUpdate) => {
                     console.log('Upload success', data);
                 });
         }
-
-        const createTutor = async () => {
-            try {
-                const response = await axios.post(
-                    `https://ffprac-team2-back.onrender.com/api/v1/tutors`,
-                    {
-                        grades: values.grades,
-                        about: values.about,
-                        education: values.education,
-                        avatar: values.avatar,
-                        availability: values.availability,
-                        yearsOfExperience: values.yearsOfExperience,
-                        MathSubject: values.MathSubject,
-                        ForeignLanguages: values.ForeignLanguages,
-                        English: values.English,
-                        SocialStudies: values.SocialStudies,
-                        Science: values.Science,
-                    },
-                    { headers }
-                );
-                const { data, status } = response;
-                console.log(data);
-                if (status === 201) console.log('Tutor was created successfully');
-                localStorage.setItem('tutorId', data.tutor._id);
-                actions.resetForm();
-
-                if (status !== 201) {
-                    throw new Error('Tutor creation failed');
+        if (isUpdate) {
+            const tutorId = localStorage.getItem('tutorId');
+            const updateTutor = async () => {
+                try {
+                    const response = await axios.patch(
+                        `https://ffprac-team2-back.onrender.com/api/v1/tutors/${tutorId}`,
+                        {
+                            grades: values.grades,
+                            about: values.about,
+                            education: values.education,
+                            avatar: values.avatar,
+                            availability: values.availability,
+                            yearsOfExperience: values.yearsOfExperience,
+                            MathSubject: values.MathSubject,
+                            ForeignLanguages: values.ForeignLanguages,
+                            English: values.English,
+                            SocialStudies: values.SocialStudies,
+                            Science: values.Science,
+                        },
+                        { headers }
+                    );
+                    const { data, status } = response;
+                    console.log(data);
+                    if (status === 201) console.log('Tutor was updatedted successfully');
+                    if (status !== 201) {
+                        throw new Error('Tutor update failed');
+                    }
+                } catch (error) {
+                    console.error('Error update tutor profile:', error);
+                    return;
                 }
-            } catch (error) {
-                console.error('Error create tutor profile:', error);
-                return;
-            }
-        };
-        createTutor();
-    };
+            };
+            updateTutor();
+        } else {
+            const createTutor = async () => {
+                try {
+                    const response = await axios.post(
+                        `https://ffprac-team2-back.onrender.com/api/v1/tutors`,
+                        {
+                            grades: values.grades,
+                            about: values.about,
+                            education: values.education,
+                            avatar: values.avatar,
+                            availability: values.availability,
+                            yearsOfExperience: values.yearsOfExperience,
+                            MathSubject: values.MathSubject,
+                            ForeignLanguages: values.ForeignLanguages,
+                            English: values.English,
+                            SocialStudies: values.SocialStudies,
+                            Science: values.Science,
+                        },
+                        { headers }
+                    );
+                    const { data, status } = response;
+                    console.log(data);
+                    if (status === 201) console.log('Tutor was created successfully');
+                    localStorage.setItem('tutorId', data.tutor._id);
+                    actions.resetForm();
 
+                    if (status !== 201) {
+                        throw new Error('Tutor creation failed');
+                    }
+                } catch (error) {
+                    console.error('Error create tutor profile:', error);
+                    return;
+                }
+            };
+            createTutor();
+        }
+    };
     console.log('rendering initialValues', initialValues);
     return (
         <Grid display="flex" justifyContent="center" w="full">
