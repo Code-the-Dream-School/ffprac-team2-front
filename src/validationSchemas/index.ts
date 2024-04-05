@@ -32,8 +32,7 @@ export const studentSchema = yup.object().shape({
                     return error.message;
                 }
             }
-        )
-        .required('Please upload an image'),
+        ),
 });
 
 export const registrationValidationSchema = yup.object().shape({

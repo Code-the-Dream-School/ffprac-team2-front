@@ -44,16 +44,14 @@ const StudentForm: React.FC<StudentFormProps> = ({
 
     const handleSubmit = async (values: StudentRequest, actions: FormikHelpers<StudentRequest>) => {
         const formData = new FormData();
-        formData.append('image', values.image);
-        const imageUrl = await axios.post(
-            `${import.meta.env.VITE_REACT_URL}students/uploads`,
-            formData,
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            }
-        );
+        if (values.image) {
+            formData.append('image', values?.image);
+        }
+        const imageUrl = await axios.post(`${import.meta.env.VITE_REACT_URL}uploads`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
         console.log(imageUrl);
         const newStudent: StudentRequest = {
             name: values.name,

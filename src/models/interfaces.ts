@@ -19,7 +19,7 @@ export interface Student {
 export interface StudentRequest {
     name: string;
     grade: string;
-    image: string;
+    image?: string;
 }
 
 export interface RegistrationFormData {

@@ -91,13 +91,19 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => 
                                 student.tutorInfo?.length > 0 &&
                                 student.tutorInfo?.map((element) => (
                                     <Tr key={element.tutorId}>
-                                        <Td p="0">{element.tutorName}</Td>
-                                        <Td p="0">{element.subject}</Td>
+                                        <Td fontSize="md" p="0">
+                                            {element.tutorName}
+                                        </Td>
+                                        <Td fontSize="md" p="0">
+                                            {element.subject}
+                                        </Td>
                                         <Td p="0">
                                             <Flex gap="4">
-                                                <CalendarIcon />
-                                                <EmailIcon />
+                                                <CalendarIcon w="15px" h="15px" />
+                                                <EmailIcon w="18px" h="18px" />
                                                 <DeleteIcon
+                                                    w="15px"
+                                                    h="15px"
                                                     onClick={() =>
                                                         handleDeleteTutor(
                                                             element.tutorId,
