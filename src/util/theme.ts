@@ -35,6 +35,38 @@ export const theme = extendTheme({
         fontWeight: '700',
     },
     components: {
+        MultiSelect: {
+            ...MultiSelectTheme,
+            baseStyle: (props) => ({
+                ...MultiSelectTheme.baseStyle(props),
+                field: {
+                    ...MultiSelectTheme.baseStyle(props).item,
+                    bgColor: 'customWhite',
+                },
+                input: {
+                    ...MultiSelectTheme.baseStyle(props).input,
+                    bgColor: 'customWhite',
+                },
+                control: {
+                    ...MultiSelectTheme.baseStyle(props).control,
+                    maxWidth: '380px',
+                    minWidth: '250px',
+                },
+                button: {
+                    ...MultiSelectTheme.baseStyle(props).button,
+                    colorScheme: 'black',
+                },
+                list: {
+                    ...MultiSelectTheme.baseStyle(props).list,
+                    boxShadow: '2xl',
+                    color: 'black',
+                },
+                selectedItem: {
+                    ...MultiSelectTheme.baseStyle(props).selectedItem,
+                    colorScheme: 'pink',
+                },
+            }),
+        },
         Button: {
             baseStyle: {
                 fontWeight: 'normal',
@@ -62,23 +94,6 @@ export const theme = extendTheme({
                         bg: 'grey.400',
                     },
                 },
-            },
-        },
-        MultiSelect: {
-            ...MultiSelectTheme,
-            baseStyle: (props: Record<string, number>) => {
-                const baseStyle = MultiSelectTheme.baseStyle(props);
-                baseStyle.input.bgColor = theme.colors.customWhite;
-                baseStyle.control.minW = 500;
-                baseStyle.button.colorscheme = 'black.400';
-                baseStyle.list.boxShadow = '2xl';
-                baseStyle.selectedItem.colorscheme = 'green';
-                baseStyle.input.outline = 1;
-                baseStyle.selectedItem.colorscheme = 'pink.400';
-                baseStyle.list.color = 'black.100';
-                return {
-                    ...baseStyle,
-                };
             },
         },
     },

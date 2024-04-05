@@ -29,10 +29,12 @@ import { TutorRequest } from '../models/interfaces.ts';
 import axios from 'axios';
 import { theme } from '../util/theme.ts';
 import { headers } from '../util';
+//import { Cloudinary } from '@cloudinary/url-gen';
 
 const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
     const { firstName, lastName, email } = JSON.parse(localStorage.getItem('userData') ?? '');
     const [selectedImage, setSelectedImage] = useState<Blob | null>(null);
+    //  const cld = new Cloudinary({ cloud: { cloudName: 'dcgkkskk5' } });
 
     const tutorData: TutorRequest = {
         //MOCK DATA FOR A MEANWHILE//
@@ -152,11 +154,11 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
         options: YearsOfExperienceInitialOptions,
     });
 
-    const buttonStyle = {
-        width: '5em',
-        height: '3em',
-        p: '50em',
-    };
+    // const buttonStyle = {
+    //     width: '5em',
+    //     height: '3em',
+    //     p: '50em',
+    // };
 
     const initialValues: TutorRequest = {
         grades: [],
@@ -174,6 +176,26 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
 
     const handleSubmit = async (values: TutorRequest, actions: FormikHelpers<TutorRequest>) => {
         console.log(`Logger:inside handleSubmit with ${values.YearsOfExperience}and${headers} `);
+
+        const formData = new FormData();
+
+        if (selectedImage) {
+            formData.append('file', selectedImage);
+            formData.append('upload_preset', 'docs_upload_example_us_preset');
+
+            const url = 'https://api.cloudinary.com/v1_1/hzxyensd5/image/upload';
+            fetch(url, {
+                method: 'POST',
+                body: formData,
+            })
+                .then((response) => {
+                    return response.text();
+                })
+                .then((data) => {
+                    // document.getElementById('data').innerHTML += data;
+                    console.log('Upload success', data);
+                });
+        }
 
         const createTutor = async () => {
             try {
@@ -211,19 +233,19 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
     };
 
     return (
-        <Grid>
+        <Grid display="flex" justifyContent="center" w="full">
             <Formik
                 onSubmit={handleSubmit}
                 validationSchema={tutorValidationSchema}
                 initialValues={initialValues}
             >
                 {(formik) => (
-                    <>
+                    <Grid width="90%" mt={7}>
                         <form onSubmit={formik.handleSubmit}>
                             {/* UPPER GRID */}
                             <SimpleGrid minChildWidth="250px" spacing="40px">
                                 <SimpleGrid minChildWidth="150px" spacing="20px">
-                                    <WrapItem>
+                                    <WrapItem alignItems="center" justifyContent="center">
                                         <Avatar
                                             sx={{
                                                 width: '200px',
@@ -362,7 +384,7 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
                                                 as={Input}
                                                 backgroundColor="white"
                                                 name="education"
-                                                h="50px"
+                                                h="40px"
                                                 textColor="black.400"
                                                 placeholder={`MS Berkley`}
                                             />
@@ -391,29 +413,27 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
                                     <Spacer />
 
                                     {/* Experience*/}
-                                    <Box maxW="35em" p="3px">
-                                        <FormControl>
-                                            <Field name="YearsOfExperience">
-                                                {({ field, form }) => (
-                                                    <MultiSelect
-                                                        {...field}
-                                                        options={YearsOfExperienceOptions}
-                                                        value={form.values.YearsOfExperience} //for displaying selected values
-                                                        label="YearsOfExperience"
-                                                        single
-                                                        onChange={(selectedOption) => {
-                                                            console.log(field.name, selectedOption);
-                                                            console.log(form);
-                                                            form.setFieldValue(
-                                                                field.name,
-                                                                selectedOption
-                                                            ); //updates selected options in tutorRequest
-                                                        }}
-                                                    />
-                                                )}
-                                            </Field>
-                                        </FormControl>
-                                    </Box>
+                                    <FormControl>
+                                        <Field name="YearsOfExperience">
+                                            {({ field, form }) => (
+                                                <MultiSelect
+                                                    {...field}
+                                                    options={YearsOfExperienceOptions}
+                                                    value={form.values.YearsOfExperience} //for displaying selected values
+                                                    label="YearsOfExperience"
+                                                    single
+                                                    onChange={(selectedOption) => {
+                                                        console.log(field.name, selectedOption);
+                                                        console.log(form);
+                                                        form.setFieldValue(
+                                                            field.name,
+                                                            selectedOption
+                                                        ); //updates selected options in tutorRequest
+                                                    }}
+                                                />
+                                            )}
+                                        </Field>
+                                    </FormControl>
                                 </VStack>
                             </SimpleGrid>
                             {/* MULTiSELECTS GRID */}
@@ -632,33 +652,36 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
                                     </FormControl>
                                 </Box>
                                 <Spacer />
-                                <HStack direction="row" spacing={7} display="flex" mt="30px">
+                            </SimpleGrid>
+                            <SimpleGrid minChildWidth="250px" spacing="40px">
+                                <HStack
+                                    display="flex"
+                                    justifyContent="flex-end"
+                                    spacing={10}
+                                    mt="30px"
+                                >
                                     <Button
                                         type="submit"
-                                        style={{
-                                            ...buttonStyle,
-                                            backgroundColor: '#F4CD76',
-                                            color: 'black',
-                                        }}
-                                        flex="1"
+                                        variant="buttonYellow"
+                                        size="lg"
+                                        fontWeight="bold"
+                                        width="175px"
                                     >
                                         Submit
                                     </Button>
                                     <Button
                                         type="button"
-                                        style={{
-                                            ...buttonStyle,
-                                            backgroundColor: '#59D3C8',
-                                            color: 'black',
-                                        }}
-                                        flex="1"
+                                        variant="buttonTeal"
+                                        size="lg"
+                                        fontWeight="bold"
+                                        width="175px"
                                     >
                                         Cancel
                                     </Button>
                                 </HStack>
                             </SimpleGrid>
                         </form>
-                    </>
+                    </Grid>
                 )}
             </Formik>
         </Grid>
