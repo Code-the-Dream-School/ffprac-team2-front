@@ -113,12 +113,15 @@ export interface TutorRequest {
     grades: string[];
     avatar?: string;
     education: string;
-    YearsOfExperience: number;
+    yearsOfExperience: number;
     MathSubject: string[];
     ForeignLanguages: string[];
     English: string[];
     SocialStudies: string[];
     Science: string[];
+    _id: string;
+    userId: string;
+    __v: number;
 }
 export interface AuthPageProps {
     activeTab: 'register' | 'login';

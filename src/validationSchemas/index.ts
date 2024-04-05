@@ -65,8 +65,8 @@ export const tutorValidationSchema = yup.object().shape({
             .oneOf(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
     ),
     education: yup.string(),
-    YearsOfexperience: yup.number(),
-    // avatar: yup.string(),
+    yearsOfExperience: yup.number(),
+    avatar: yup.string(),
     MathSubject: yup.array(
         yup
             .string()
@@ -125,6 +125,9 @@ export const tutorValidationSchema = yup.object().shape({
                 'ACT Science Test Prep',
             ])
     ),
+    _id: yup.string(),
+    userId: yup.string(),
+    __v: yup.number(),
 });
 
 export const loginValidationSchema = yup.object().shape({

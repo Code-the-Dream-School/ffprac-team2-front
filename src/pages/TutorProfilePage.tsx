@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Form, Formik, FormikHelpers, FormikValues, Field } from 'formik';
+import React, { useState, useEffect } from 'react';
+import { Formik, FormikHelpers, Field } from 'formik';
 
 // import * as yup from 'yup';
 import { tutorValidationSchema } from '../validationSchemas';
@@ -21,7 +21,9 @@ import {
     Textarea,
 } from '@chakra-ui/react';
 
-interface TutorProfilePageProps {}
+interface TutorProfilePageProps {
+    isUpdate: boolean;
+}
 import { MultiSelect, Option, useMultiSelect } from 'chakra-multiselect';
 import { AddIcon } from '@chakra-ui/icons';
 import avatar from '../assets/avatar.jpg';
@@ -31,11 +33,31 @@ import { theme } from '../util/theme.ts';
 import { headers } from '../util';
 //import { Cloudinary } from '@cloudinary/url-gen';
 
-const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
+const TutorProfilePage: React.FC<TutorProfilePageProps> = (isUpdate) => {
     const { firstName, lastName, email } = JSON.parse(localStorage.getItem('userData') ?? '');
     const [selectedImage, setSelectedImage] = useState<Blob | null>(null);
+    const [initialValues, setInitialValues] = useState<TutorRequest>({
+        grades: [],
+        about: '',
+        education: '',
+        avatar: '',
+        availability: ['Monday', 'Blanday'],
+        MathSubject: [],
+        ForeignLanguages: [],
+        English: [],
+        SocialStudies: [],
+        Science: [],
+        yearsOfExperience: 0,
+        _id: '',
+        userId: '',
+        __v: 0,
+    });
     //  const cld = new Cloudinary({ cloud: { cloudName: 'dcgkkskk5' } });
 
+    // interface InitialTutorValues extends TutorRequest {
+    //     _id: string;
+    //     userId: string;
+    // }
     const tutorData: TutorRequest = {
         //MOCK DATA FOR A MEANWHILE//
         availability: [
@@ -51,7 +73,7 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
         grades: ['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
         avatar: '',
         education: '',
-        YearsOfExperience: 0,
+        yearsOfExperience: 0,
         MathSubject: [
             'Math',
             'Algebra',
@@ -92,7 +114,40 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
             'Science',
             'ACT Science Test Prep',
         ],
+        _id: '',
+        userId: '',
+        __v: 0,
     };
+
+    useEffect(() => {
+        if (!isUpdate) {
+            return;
+        }
+        const fetchTutor = async () => {
+            try {
+                const tutorId = localStorage.getItem('tutorId');
+                const response = await axios.get(
+                    `https://ffprac-team2-back.onrender.com/api/v1/tutors/${tutorId}`
+                );
+                const { data, status } = response;
+                if (status === 200) {
+                    console.log('got tutor data');
+                    const { tutor } = data;
+                    console.log(tutor);
+                    console.log('call setInitialValues');
+                    // setInitialValues({ ...initialValues, about: 'Hello' });
+                    setInitialValues(tutor);
+                    console.log('call setInitialValues done');
+                } else {
+                    throw new Error('Tutor update failed');
+                }
+            } catch (error) {
+                console.error('Error getting tutor profile:', error);
+                return;
+            }
+        };
+        fetchTutor();
+    }, []);
 
     //populating mathSubjectOptions for using in Multiselect Component
     const mathSubjectInitialOptions = tutorData.MathSubject.map((el) => {
@@ -144,38 +199,18 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
         options: AvailabilityInitialOptions,
     });
     //populating ExperienceInitialOptions for using in Select Component
-    const YearsOfExperienceInitialOptions = Array(50)
+    const yearsOfExperienceInitialOptions = Array(50)
         .fill(null)
         .map((_, i) => ({
             label: `${i + 1}`,
             value: `${i + 1}`,
         }));
-    const { options: YearsOfExperienceOptions } = useMultiSelect({
-        options: YearsOfExperienceInitialOptions,
+    const { options: yearsOfExperienceOptions } = useMultiSelect({
+        options: yearsOfExperienceInitialOptions,
     });
 
-    // const buttonStyle = {
-    //     width: '5em',
-    //     height: '3em',
-    //     p: '50em',
-    // };
-
-    const initialValues: TutorRequest = {
-        grades: [],
-        about: '',
-        education: '',
-        avatar: '',
-        availability: [],
-        MathSubject: [],
-        ForeignLanguages: [],
-        English: [],
-        SocialStudies: [],
-        Science: [],
-        YearsOfExperience: 0,
-    };
-
     const handleSubmit = async (values: TutorRequest, actions: FormikHelpers<TutorRequest>) => {
-        console.log(`Logger:inside handleSubmit with ${values.YearsOfExperience}and${headers} `);
+        console.log(`Logger:inside handleSubmit `);
 
         const formData = new FormData();
 
@@ -207,7 +242,7 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
                         education: values.education,
                         avatar: values.avatar,
                         availability: values.availability,
-                        yearsOfExperience: values.YearsOfExperience,
+                        yearsOfExperience: values.yearsOfExperience,
                         MathSubject: values.MathSubject,
                         ForeignLanguages: values.ForeignLanguages,
                         English: values.English,
@@ -219,6 +254,7 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
                 const { data, status } = response;
                 console.log(data);
                 if (status === 201) console.log('Tutor was created successfully');
+                localStorage.setItem('tutorId', data.tutor._id);
                 actions.resetForm();
 
                 if (status !== 201) {
@@ -232,9 +268,11 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
         createTutor();
     };
 
+    console.log('rendering initialValues', initialValues);
     return (
         <Grid display="flex" justifyContent="center" w="full">
             <Formik
+                enableReinitialize
                 onSubmit={handleSubmit}
                 validationSchema={tutorValidationSchema}
                 initialValues={initialValues}
@@ -376,7 +414,10 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
                                         <Spacer />
                                         <FormControl
                                             isInvalid={
-                                                !!(formik.errors.about && formik.touched.about)
+                                                !!(
+                                                    formik.errors.education &&
+                                                    formik.touched.education
+                                                )
                                             }
                                         >
                                             <FormLabel>Education</FormLabel>
@@ -402,7 +443,7 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
                                             name="about"
                                             textColor="black"
                                             h="200px"
-                                            placeholder={`${tutorData.about}`}
+                                            // placeholder={`${tutorData.about}`}
                                         />
                                         {formik.errors.about && formik.touched.about && (
                                             <FormErrorMessage>
@@ -414,13 +455,13 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = () => {
 
                                     {/* Experience*/}
                                     <FormControl>
-                                        <Field name="YearsOfExperience">
+                                        <Field name="yearsOfExperience">
                                             {({ field, form }) => (
                                                 <MultiSelect
                                                     {...field}
-                                                    options={YearsOfExperienceOptions}
-                                                    value={form.values.YearsOfExperience} //for displaying selected values
-                                                    label="YearsOfExperience"
+                                                    options={yearsOfExperienceOptions}
+                                                    value={form.values.yearsOfExperience} //for displaying selected values
+                                                    label="yearsOfExperience"
                                                     single
                                                     onChange={(selectedOption) => {
                                                         console.log(field.name, selectedOption);
