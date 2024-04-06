@@ -4,20 +4,6 @@ interface StudentTutorInfo {
     availability: string;
     tutorName: string;
 }
-export interface User {
-    user_id: string; // Auto-generated
-    firstName: string; // First name with required validation
-    lastName: string; // Last name with required validation
-    email: string; // Email with required validation
-    password: string; // Password with required validation
-    role: UserRole; // Role using a UserRole enum
-}
-
-export enum UserRole {
-    admin,
-    tutor,
-    parent,
-}
 export interface Student {
     name: string;
     grade: string;
