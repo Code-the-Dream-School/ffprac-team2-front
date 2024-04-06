@@ -69,6 +69,15 @@ export interface TutorConnectionRequest {
     subject: string;
     availability: string;
 }
+export interface TableSearchProps {
+    studentQuery: string;
+    setStudentQuery: React.Dispatch<React.SetStateAction<string>>;
+    parentQuery: string;
+    setParentQuery: React.Dispatch<React.SetStateAction<string>>;
+    subjectQuery: string;
+    setSubjectQuery: React.Dispatch<React.SetStateAction<string>>;
+}
+
 
 export interface GlobalState {
     // isLoggedIn: boolean;

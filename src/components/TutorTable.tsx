@@ -6,9 +6,24 @@ import { theme } from '../util/theme';
 
 type TutorTableProps = {
     students: TutorStudents[];
+    studentQuery: string;
+    parentQuery: string;
+    subjectQuery: string;
 };
 
-const TutorTable: React.FC<TutorTableProps> = ({ students }) => {
+const TutorTable: React.FC<TutorTableProps> = ({
+    students,
+    studentQuery,
+    parentQuery,
+    subjectQuery,
+}) => {
+    const filteredStudents = students.filter(
+        (student) =>
+            student.name.toLowerCase().includes(studentQuery.toLowerCase()) &&
+            student.parent.toLowerCase().includes(parentQuery.toLowerCase()) &&
+            student.subject.toLowerCase().includes(subjectQuery.toLowerCase())
+    );
+
     return (
         <Box>
             <Box overflowX="auto" overflowY="hidden" mt="50px" borderRadius="md" width="100%">
@@ -28,7 +43,7 @@ const TutorTable: React.FC<TutorTableProps> = ({ students }) => {
                         </Tr>
                     </Thead>
                     <Tbody fontSize="13px">
-                        {students.map((student, index) => (
+                        {filteredStudents.map((student, index) => (
                             <Tr key={index}>
                                 <Td>{student.parent}</Td>
                                 <Td>{student.name}</Td>
@@ -39,6 +54,13 @@ const TutorTable: React.FC<TutorTableProps> = ({ students }) => {
                                 <Td>{student.availability}</Td>
                             </Tr>
                         ))}
+                        {filteredStudents.length === 0 && (
+                            <Tr>
+                                <Td colSpan={5} textAlign="center">
+                                    No matching results found, try again
+                                </Td>
+                            </Tr>
+                        )}
                     </Tbody>
                 </Table>
             </Box>

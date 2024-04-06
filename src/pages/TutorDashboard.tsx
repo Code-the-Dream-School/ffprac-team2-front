@@ -16,6 +16,10 @@ const TutorDashboard: React.FC = () => {
     const [students, setStudents] = useState<TutorStudents[]>([]);
     const [loading, setLoading] = useState(true);
 
+    const [studentQuery, setStudentQuery] = useState<string>('');
+    const [parentQuery, setParentQuery] = useState<string>('');
+    const [subjectQuery, setSubjectQuery] = useState<string>('');
+
     useEffect(() => {
         const fetchStudents = async () => {
             try {
@@ -45,7 +49,16 @@ const TutorDashboard: React.FC = () => {
                 >
                     Search
                 </Button>
-                {showSearch && <TableSearch />}
+                {showSearch && (
+                    <TableSearch
+                        studentQuery={studentQuery}
+                        setStudentQuery={setStudentQuery}
+                        parentQuery={parentQuery}
+                        setParentQuery={setParentQuery}
+                        subjectQuery={subjectQuery}
+                        setSubjectQuery={setSubjectQuery}
+                    />
+                )}
             </Box>
             <Flex direction={{ base: 'column', md: 'row' }}>
                 <Box
@@ -53,7 +66,14 @@ const TutorDashboard: React.FC = () => {
                     width={{ base: '100%', md: 'auto' }}
                     mr="20px"
                 >
-                    <TableSearch />
+                    <TableSearch
+                        studentQuery={studentQuery}
+                        setStudentQuery={setStudentQuery}
+                        parentQuery={parentQuery}
+                        setParentQuery={setParentQuery}
+                        subjectQuery={subjectQuery}
+                        setSubjectQuery={setSubjectQuery}
+                    />
                 </Box>
                 <Box
                     flex="1"
@@ -70,12 +90,16 @@ const TutorDashboard: React.FC = () => {
                             size="xl"
                         />
                     ) : (
-                        <TutorTable students={students} />
+                        <TutorTable
+                            students={students}
+                            studentQuery={studentQuery}
+                            parentQuery={parentQuery}
+                            subjectQuery={subjectQuery}
+                        />
                     )}
                 </Box>
             </Flex>
         </Flex>
     );
 };
-
 export default TutorDashboard;
