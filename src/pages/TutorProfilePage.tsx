@@ -138,7 +138,7 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = ({ isUpdate = false })
             }
         };
         if (!(tutorId === '')) fetchTutor();
-    }, []);
+    }, [isUpdate, tutorId]);
 
     //populating mathSubjectOptions for using in Multiselect Component
     const mathSubjectInitialOptions = tutorData.MathSubject.map((el) => {
