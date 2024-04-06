@@ -28,7 +28,7 @@ const App = () => {
                     <Route path="/auth" element={<AuthPage activeTab={'login'} />} />
                     {/* <Route path="/login" element={<LoginForm />} /> */}
                     <Route path="/parent-dashboard" element={<ParentDashboardPage />} />
-                    <Route path="/tutor-profile" element={<TutorProfilePage isUpdate={true} />} />
+                    <Route path="/tutor-profile" element={<TutorProfilePage isUpdate />} />
                     {/* <Route path="/tutorcard" element={<TutorCard tutor={undefined} />} /> */}
                     <Route path="/tutorsearch" element={<TutorSearchPage />} />
                     {/* <Route path="*" element={<NotFoundPage />} /> */}

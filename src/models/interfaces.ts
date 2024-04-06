@@ -82,30 +82,7 @@ export interface GlobalState {
     // teacherSearchResults: string[];
     updateStudents: () => Promise<void>;
 }
-export interface Subject {
-    _id: string; // Subject ID from the database
-    name: string; // Subject name
-}
-export interface Tutor {
-    availability: string[]; //availability is array : needed change for multiselect in tutorProfilePage
-    userId: {
-        _id: string;
-        firstName: string;
-        lastName: string;
-        email: string;
-    };
-    about: string;
-    grades: string[];
-    avatar?: string;
-    education: string;
-    yearsOfExperience: number;
-    MathSubject: string[];
-    ForeignLanguages: string[];
-    English: string[];
-    SocialStudies: string[];
-    Science: string[];
-    _id: string;
-}
+
 //interface for tutorProfilePage form assembele
 export interface TutorRequest {
     availability: string[];
@@ -119,14 +96,7 @@ export interface TutorRequest {
     English: string[];
     SocialStudies: string[];
     Science: string[];
-    _id: string;
-    userId: string;
-    __v: number;
 }
-export interface AuthPageProps {
-    activeTab: 'register' | 'login';
-}
-
 export interface AuthPageProps {
     activeTab: 'register' | 'login';
 }

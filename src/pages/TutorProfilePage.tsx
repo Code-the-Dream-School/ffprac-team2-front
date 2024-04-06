@@ -21,7 +21,7 @@ import {
 } from '@chakra-ui/react';
 
 interface TutorProfilePageProps {
-    isUpdate: boolean;
+    isUpdate?: boolean;
 }
 import { MultiSelect, Option, useMultiSelect } from 'chakra-multiselect';
 import { AddIcon } from '@chakra-ui/icons';
@@ -31,7 +31,7 @@ import axios from 'axios';
 import { theme } from '../util/theme.ts';
 import { headers } from '../util';
 
-const TutorProfilePage: React.FC<TutorProfilePageProps> = (isUpdate) => {
+const TutorProfilePage: React.FC<TutorProfilePageProps> = ({ isUpdate = false }) => {
     const { firstName, lastName, email } = JSON.parse(localStorage.getItem('userData') ?? '{}');
     const [selectedImage, setSelectedImage] = useState<Blob | null>(null);
     const [initialValues, setInitialValues] = useState<TutorRequest>({
@@ -46,12 +46,7 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = (isUpdate) => {
         SocialStudies: [],
         Science: [],
         yearsOfExperience: 0,
-        _id: '',
-        userId: '',
-        __v: 0,
     });
-    //  const cld = new Cloudinary({ cloud: { cloudName: 'dcgkkskk5' } });
-
     const tutorData: TutorRequest = {
         //MOCK DATA FOR A MEANWHILE//
         availability: [
@@ -67,7 +62,7 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = (isUpdate) => {
         grades: ['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
         avatar: '',
         education: '',
-        yearsOfExperience: 0,
+        yearsOfExperience: 1,
         MathSubject: [
             'Math',
             'Algebra',
@@ -108,23 +103,23 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = (isUpdate) => {
             'Science',
             'ACT Science Test Prep',
         ],
-        _id: '',
-        userId: '',
-        __v: 0,
     };
 
     //FETCHING TUTOR DATA FOR AN UPDATE
 
     const tutorId = localStorage.getItem('tutorId');
     useEffect(() => {
-        if (!isUpdate && tutorId) {
+        console.log(`isUpdate : ${isUpdate}`);
+        if (!isUpdate || tutorId === '') {
+            console.log('exiting useeffect');
             return;
         }
 
         const fetchTutor = async () => {
             try {
+                console.log('fetching tutor info from data base');
                 const response = await axios.get(
-                    `https://ffprac-team2-back.onrender.com/api/v1/tutors/${tutorId}`
+                    `${import.meta.env.VITE_REACT_URL}tutors/${tutorId}`
                 );
                 const { data, status } = response;
                 if (status === 200) {
@@ -142,7 +137,7 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = (isUpdate) => {
                 return;
             }
         };
-        fetchTutor();
+        if (!(tutorId === '')) fetchTutor();
     }, []);
 
     //populating mathSubjectOptions for using in Multiselect Component
@@ -208,37 +203,31 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = (isUpdate) => {
     const handleSubmit = async (values: TutorRequest, actions: FormikHelpers<TutorRequest>) => {
         console.log(`Logger:inside handleSubmit `);
 
-        const formData = new FormData();
+        // const formData = new FormData();
 
-        if (selectedImage) {
-            formData.append('file', selectedImage);
-            formData.append('upload_preset', 'docs_upload_example_us_preset');
+        // if (selectedImage) {
+        //     formData.append('file', selectedImage);
+        //     formData.append('upload_preset', 'docs_upload_example_us_preset');
 
-            const url = 'https://api.cloudinary.com/v1_1/hzxyensd5/image/upload';
-            fetch(url, {
-                method: 'POST',
-                body: formData,
-            })
-                .then((response) => {
-                    return response.text();
-                })
-                .then((data) => {
-                    // document.getElementById('data').innerHTML += data;
-                    console.log('Upload success', data);
-                });
-        }
+        //     const url = 'https://api.cloudinary.com/v1_1/hzxyensd5/image/upload';
+        //     fetch(url, {
+        //         method: 'POST',
+        //         body: formData,
+        //     })
+        //         .then((response) => {
+        //             return response.text();
+        //         })
+        //         .then((data) => {
+        //             // document.getElementById('data').innerHTML += data;
+        //             console.log('Upload success', data);
+        //         });
+        // }
         const tutorId = localStorage.getItem('tutorId');
-        if (!tutorId) {
-            console.log(
-                'There are no tutor Id in Local Storage for an Update, please create a new tutor '
-            );
-        }
         if (isUpdate && tutorId) {
-            const tutorId = localStorage.getItem('tutorId');
             const updateTutor = async () => {
                 try {
                     const response = await axios.patch(
-                        `https://ffprac-team2-back.onrender.com/api/v1/tutors/${tutorId}`,
+                        `${import.meta.env.VITE_REACT_URL}tutors/${tutorId}`,
                         {
                             grades: values.grades,
                             about: values.about,
@@ -256,8 +245,8 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = (isUpdate) => {
                     );
                     const { data, status } = response;
                     console.log(data);
-                    if (status === 201) console.log('Tutor was updatedted successfully');
-                    if (status !== 201) {
+                    if (status === 200) console.log('Tutor was updated successfully');
+                    if (status !== 200) {
                         throw new Error('Tutor update failed');
                     }
                 } catch (error) {
@@ -270,7 +259,7 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = (isUpdate) => {
             const createTutor = async () => {
                 try {
                     const response = await axios.post(
-                        `https://ffprac-team2-back.onrender.com/api/v1/tutors`,
+                        `${import.meta.env.VITE_REACT_URL}tutors`,
                         {
                             grades: values.grades,
                             about: values.about,
@@ -462,7 +451,7 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = (isUpdate) => {
                                                 name="education"
                                                 h="40px"
                                                 textColor="black.400"
-                                                placeholder={`MS Berkley`}
+                                                placeholder={`e.g. MS Berkley`}
                                             />
                                         </FormControl>
                                     </VStack>
@@ -498,7 +487,7 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = (isUpdate) => {
                                                     {...field}
                                                     options={yearsOfExperienceOptions}
                                                     value={form.values.yearsOfExperience} //for displaying selected values
-                                                    label="yearsOfExperience"
+                                                    label="Experience (in years)"
                                                     single
                                                     onChange={(selectedOption) => {
                                                         console.log(field.name, selectedOption);
@@ -657,40 +646,6 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = (isUpdate) => {
                                             </Field>
                                         </FormControl>
                                     </Box>
-                                    {/* GRADES*/}
-                                    <Box maxW="35em" p="3px">
-                                        <FormControl>
-                                            <Field name="grades">
-                                                {({ field, form }: FieldProps) => (
-                                                    <MultiSelect
-                                                        {...field}
-                                                        options={gradesOptions}
-                                                        value={form.values.grades.map(
-                                                            (item: Option) => {
-                                                                return {
-                                                                    label: item,
-                                                                    value: item,
-                                                                };
-                                                            }
-                                                        )} //for displaying selected values
-                                                        label="Grades"
-                                                        onChange={(
-                                                            selectedOption: Option[] | Option
-                                                        ) => {
-                                                            if (Array.isArray(selectedOption)) {
-                                                                form.setFieldValue(
-                                                                    field.name,
-                                                                    selectedOption.map(
-                                                                        (item: Option) => item.value
-                                                                    )
-                                                                ); //updates selected options in tutorRequest
-                                                            }
-                                                        }}
-                                                    />
-                                                )}
-                                            </Field>
-                                        </FormControl>
-                                    </Box>
                                     {/* FOREIGN LANGUAGES */}
                                     <Box maxW="35em" p="3px">
                                         <FormControl>
@@ -708,6 +663,40 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = (isUpdate) => {
                                                             }
                                                         )}
                                                         label="Foreign Languages"
+                                                        onChange={(
+                                                            selectedOption: Option[] | Option
+                                                        ) => {
+                                                            if (Array.isArray(selectedOption)) {
+                                                                form.setFieldValue(
+                                                                    field.name,
+                                                                    selectedOption.map(
+                                                                        (item: Option) => item.value
+                                                                    )
+                                                                ); //updates selected options in tutorRequest
+                                                            }
+                                                        }}
+                                                    />
+                                                )}
+                                            </Field>
+                                        </FormControl>
+                                    </Box>
+                                    {/* GRADES*/}
+                                    <Box maxW="35em" p="3px">
+                                        <FormControl>
+                                            <Field name="grades">
+                                                {({ field, form }: FieldProps) => (
+                                                    <MultiSelect
+                                                        {...field}
+                                                        options={gradesOptions}
+                                                        value={form.values.grades.map(
+                                                            (item: Option) => {
+                                                                return {
+                                                                    label: item,
+                                                                    value: item,
+                                                                };
+                                                            }
+                                                        )} //for displaying selected values
+                                                        label="Grades"
                                                         onChange={(
                                                             selectedOption: Option[] | Option
                                                         ) => {
@@ -779,7 +768,7 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = (isUpdate) => {
                                         fontWeight="bold"
                                         width="175px"
                                     >
-                                        Submit
+                                        Save
                                     </Button>
                                     <Button
                                         type="button"
