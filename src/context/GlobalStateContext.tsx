@@ -1,24 +1,43 @@
 /* eslint-disable indent */
 import { ReactNode, createContext, useReducer } from 'react';
-import { Student } from '../models/interfaces';
+import { Student, Tutor, User } from '../models/interfaces';
 
 interface GlobalStateProviderProps {
     children: ReactNode;
 }
 
-type Action = { type: 'SET_STUDENTS'; payload: Student[] };
+type Action =
+    | { type: 'SET_STUDENTS'; payload: Student[] }
+    | { type: 'SET_USER'; payload: User }
+    | { type: 'SET_IS_LOGGED_IN'; payload: boolean }
+    | { type: 'SET_TUTOR'; payload: Tutor };
 
 export interface GlobalStateProps {
     students: Student[];
+    user: User | null;
+    isLoggedIn: boolean;
+    tutor: Tutor | null;
     dispatch: React.Dispatch<Action>;
 }
 
-const initialState: Student[] = [];
+const initialState: GlobalStateProps = {
+    students: [],
+    user: null,
+    isLoggedIn: false,
+    tutor: null,
+    dispatch: () => {},
+};
 
-const reducer = (state: Student[], action: Action): Student[] => {
+const reducer = (state: GlobalStateProps, action: Action): GlobalStateProps => {
     switch (action.type) {
         case 'SET_STUDENTS':
-            return action.payload;
+            return { ...state, students: action.payload };
+        case 'SET_USER':
+            return { ...state, user: action.payload };
+        case 'SET_IS_LOGGED_IN':
+            return { ...state, isLoggedIn: action.payload };
+        case 'SET_TUTOR':
+            return { ...state, tutor: action.payload };
         default:
             return state;
     }
@@ -27,14 +46,11 @@ const reducer = (state: Student[], action: Action): Student[] => {
 export const GlobalStateContext = createContext<GlobalStateProps | undefined>(undefined);
 
 export const GlobalStateProvider: React.FC<GlobalStateProviderProps> = ({ children }) => {
-    const [students, dispatch] = useReducer(reducer, initialState);
-
-    const contextValue: GlobalStateProps = {
-        students,
-        dispatch,
-    };
+    const [state, dispatch] = useReducer(reducer, initialState);
 
     return (
-        <GlobalStateContext.Provider value={contextValue}>{children}</GlobalStateContext.Provider>
+        <GlobalStateContext.Provider value={{ ...state, dispatch }}>
+            {children}
+        </GlobalStateContext.Provider>
     );
 };

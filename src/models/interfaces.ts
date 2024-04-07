@@ -64,13 +64,14 @@ export interface TutorConnectionRequest {
     availability: string;
 }
 
-export interface GlobalState {
-    // isLoggedIn: boolean;
-    // user: User | null;
-    students: Student[] | [];
-    // teacherSearchResults: string[];
-    updateStudents: () => Promise<void>;
-}
 export interface AuthPageProps {
     activeTab: 'register' | 'login';
+}
+
+export interface User {
+    firstName: string;
+    lastName: string;
+    email: string;
+    role: 'parent' | 'tutor';
+    token: string;
 }
