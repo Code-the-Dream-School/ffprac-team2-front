@@ -20,9 +20,6 @@ import {
     Textarea,
 } from '@chakra-ui/react';
 
-interface TutorProfilePageProps {
-    isUpdate?: boolean;
-}
 import { MultiSelect, Option, useMultiSelect } from 'chakra-multiselect';
 import { AddIcon } from '@chakra-ui/icons';
 import avatar from '../assets/avatar.jpg';
@@ -31,7 +28,7 @@ import axios from 'axios';
 import { theme } from '../util/theme.ts';
 import { headers } from '../util';
 
-const TutorProfilePage: React.FC<TutorProfilePageProps> = ({ isUpdate = false }) => {
+const TutorProfilePage: React.FC = () => {
     const { firstName, lastName, email } = JSON.parse(localStorage.getItem('userData') ?? '{}');
     const [selectedImage, setSelectedImage] = useState<Blob | null>(null);
     const [initialValues, setInitialValues] = useState<TutorRequest>({
@@ -45,7 +42,7 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = ({ isUpdate = false })
         English: [],
         SocialStudies: [],
         Science: [],
-        yearsOfExperience: 0,
+        yearsOfExperience: 1,
     });
     const tutorData: TutorRequest = {
         //MOCK DATA FOR A MEANWHILE//
@@ -109,9 +106,8 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = ({ isUpdate = false })
 
     const tutorId = localStorage.getItem('tutorId');
     useEffect(() => {
-        console.log(`isUpdate : ${isUpdate}`);
-        if (!isUpdate || tutorId === '') {
-            console.log('exiting useeffect');
+        if (tutorId === '') {
+            // assume this is the initial tutor profile creation
             return;
         }
 
@@ -137,8 +133,8 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = ({ isUpdate = false })
                 return;
             }
         };
-        if (!(tutorId === '')) fetchTutor();
-    }, [isUpdate, tutorId]);
+        fetchTutor();
+    }, [tutorId]);
 
     //populating mathSubjectOptions for using in Multiselect Component
     const mathSubjectInitialOptions = tutorData.MathSubject.map((el) => {
@@ -203,27 +199,8 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = ({ isUpdate = false })
     const handleSubmit = async (values: TutorRequest, actions: FormikHelpers<TutorRequest>) => {
         console.log(`Logger:inside handleSubmit `);
 
-        // const formData = new FormData();
-
-        // if (selectedImage) {
-        //     formData.append('file', selectedImage);
-        //     formData.append('upload_preset', 'docs_upload_example_us_preset');
-
-        //     const url = 'https://api.cloudinary.com/v1_1/hzxyensd5/image/upload';
-        //     fetch(url, {
-        //         method: 'POST',
-        //         body: formData,
-        //     })
-        //         .then((response) => {
-        //             return response.text();
-        //         })
-        //         .then((data) => {
-        //             // document.getElementById('data').innerHTML += data;
-        //             console.log('Upload success', data);
-        //         });
-        // }
         const tutorId = localStorage.getItem('tutorId');
-        if (isUpdate && tutorId) {
+        if (tutorId) {
             const updateTutor = async () => {
                 try {
                     const response = await axios.patch(
@@ -277,13 +254,14 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = ({ isUpdate = false })
                     );
                     const { data, status } = response;
                     console.log(data);
-                    if (status === 201) console.log('Tutor was created successfully');
-                    localStorage.setItem('tutorId', data.tutor._id);
-                    actions.resetForm();
-
-                    if (status !== 201) {
-                        throw new Error('Tutor creation failed');
+                    if (status === 201) {
+                        console.log('Tutor was created successfully');
+                        localStorage.setItem('tutorId', data.tutor._id);
+                        actions.resetForm();
+                        return;
                     }
+
+                    throw new Error('Tutor creation failed');
                 } catch (error) {
                     console.error('Error create tutor profile:', error);
                     return;
@@ -486,7 +464,10 @@ const TutorProfilePage: React.FC<TutorProfilePageProps> = ({ isUpdate = false })
                                                 <MultiSelect
                                                     {...field}
                                                     options={yearsOfExperienceOptions}
-                                                    value={form.values.yearsOfExperience} //for displaying selected values
+                                                    value={{
+                                                        label: form.values.yearsOfExperience,
+                                                        value: form.values.yearsOfExperience,
+                                                    }} //for displaying selected values
                                                     label="Experience (in years)"
                                                     single
                                                     onChange={(selectedOption) => {
