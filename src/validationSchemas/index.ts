@@ -77,3 +77,11 @@ export const connectSchema = yup.object().shape({
         .oneOf(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
         .required('Please select a day'),
 });
+
+export const loginValidationSchema = yup.object().shape({
+    email: yup
+        .string()
+        .email('Invalid email address')
+        .required('Please enter the email address you provided during registration'),
+    password: yup.string().required('Password is required'),
+});
