@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Flex, Heading, Spinner, Stack, useDisclosure } from '@chakra-ui/react';
+import { Button, Flex, Heading, Stack, useDisclosure } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { Student } from '../models/interfaces';
 import StudentCard from '../components/StudentCard';
 import StudentForm from '../components/StudentForm';
 import { useGlobal } from '../context/useGlobal';
 import { getAllData } from '../util';
+import AppLoader from '../components/AppLoader';
 
 const ParentDashboardPage: React.FC = () => {
     // const [students, setStudents] = useState<Student[] | []>([]);
@@ -54,17 +55,7 @@ const ParentDashboardPage: React.FC = () => {
                     setNeedUpdate={setNeedUpdate}
                 />
             </Stack>
-            {isLoading && (
-                <Flex justifyContent="center" alignItems="center">
-                    <Spinner
-                        thickness="4px"
-                        speed="0.65s"
-                        emptyColor="gray.200"
-                        color="#59D3C8"
-                        size="xl"
-                    />
-                </Flex>
-            )}
+            {isLoading && <AppLoader />}
             {students && students.length > 0 ? (
                 <Stack direction="column">
                     {students.map((student: Student) => (

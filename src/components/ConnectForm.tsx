@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import {
     Button,
-    Flex,
     FormControl,
     FormErrorMessage,
     FormLabel,
@@ -14,7 +13,6 @@ import {
     ModalHeader,
     ModalOverlay,
     Select,
-    Spinner,
     Text,
 } from '@chakra-ui/react';
 import { Field, Formik, FormikHelpers } from 'formik';
@@ -24,6 +22,7 @@ import axios from 'axios';
 import { headers } from '../util';
 import { useGlobal } from '../context/useGlobal';
 import { useNavigate } from 'react-router-dom';
+import AppLoader from './AppLoader';
 
 interface ConnectFormProps {
     isOpen: boolean;
@@ -114,19 +113,7 @@ const ConnectForm: React.FC<ConnectFormProps> = ({ isOpen, onClose, tutor }) => 
                     {(formik) => (
                         <ModalContent backgroundColor="#E7E0D6">
                             <form onSubmit={formik.handleSubmit}>
-                                <ModalHeader>
-                                    {isLoading && (
-                                        <Flex justifyContent="center" alignItems="center">
-                                            <Spinner
-                                                thickness="4px"
-                                                speed="0.65s"
-                                                emptyColor="gray.200"
-                                                color="#59D3C8"
-                                                size="xl"
-                                            />
-                                        </Flex>
-                                    )}
-                                </ModalHeader>
+                                <ModalHeader>{isLoading && <AppLoader />}</ModalHeader>
                                 <ModalCloseButton />
                                 <ModalBody pb={6}>
                                     <FormControl

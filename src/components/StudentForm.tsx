@@ -1,6 +1,5 @@
 import {
     Button,
-    Flex,
     FormControl,
     FormErrorMessage,
     FormLabel,
@@ -13,7 +12,6 @@ import {
     ModalHeader,
     ModalOverlay,
     Select,
-    Spinner,
 } from '@chakra-ui/react';
 import { Field, Formik, FormikHelpers } from 'formik';
 import React, { useState } from 'react';
@@ -23,6 +21,7 @@ import { studentSchema } from '../validationSchemas';
 import { headers } from '../util';
 import AlertPopUp from './AlertPopUp';
 import UploadImage from './UploadImage';
+import AppLoader from './AppLoader';
 
 interface StudentFormProps {
     isOpenForm: boolean;
@@ -122,17 +121,7 @@ const StudentForm: React.FC<StudentFormProps> = ({
                             <ModalContent backgroundColor="#E7E0D6">
                                 <form onSubmit={formik.handleSubmit}>
                                     <ModalHeader>{title}</ModalHeader>
-                                    {isLoading && (
-                                        <Flex justifyContent="center" alignItems="center">
-                                            <Spinner
-                                                thickness="4px"
-                                                speed="0.65s"
-                                                emptyColor="gray.200"
-                                                color="#59D3C8"
-                                                size="xl"
-                                            />
-                                        </Flex>
-                                    )}
+                                    {isLoading && <AppLoader />}
                                     <ModalCloseButton />
                                     <ModalBody pb={6}>
                                         <UploadImage

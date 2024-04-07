@@ -17,7 +17,6 @@ import {
     CardFooter,
     Stack,
     useDisclosure,
-    Spinner,
 } from '@chakra-ui/react';
 import avatar from '../assets/avatar.jpg';
 import { EditIcon, CalendarIcon, EmailIcon } from '@chakra-ui/icons';
@@ -25,6 +24,7 @@ import StudentForm from './StudentForm';
 import { headers } from '../util';
 import axios from 'axios';
 import AlertPopUp from './AlertPopUp';
+import AppLoader from './AppLoader';
 
 interface StudentCardProps {
     student: Student;
@@ -92,17 +92,7 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => 
                                 <Th></Th>
                             </Tr>
                         </Thead>
-                        {isLoading && (
-                            <Flex justifyContent="center" alignItems="center">
-                                <Spinner
-                                    thickness="4px"
-                                    speed="0.65s"
-                                    emptyColor="gray.200"
-                                    color="#59D3C8"
-                                    size="xl"
-                                />
-                            </Flex>
-                        )}
+                        {isLoading && <AppLoader />}
                         <Tbody>
                             {student.tutorInfo &&
                                 student.tutorInfo?.length > 0 &&
