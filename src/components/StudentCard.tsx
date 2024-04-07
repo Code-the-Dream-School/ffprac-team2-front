@@ -19,10 +19,11 @@ import {
     useDisclosure,
 } from '@chakra-ui/react';
 import avatar from '../assets/avatar.jpg';
-import { EditIcon, CalendarIcon, EmailIcon, DeleteIcon } from '@chakra-ui/icons';
+import { EditIcon, CalendarIcon, EmailIcon } from '@chakra-ui/icons';
 import StudentForm from './StudentForm';
 import { headers } from '../util';
 import axios from 'axios';
+import AlertPopUp from './AlertPopUp';
 
 interface StudentCardProps {
     student: Student;
@@ -99,18 +100,24 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => 
                                         </Td>
                                         <Td p="0">
                                             <Flex gap="4">
-                                                <CalendarIcon w="15px" h="15px" />
-                                                <EmailIcon w="18px" h="18px" />
-                                                <DeleteIcon
-                                                    w="15px"
-                                                    h="15px"
-                                                    onClick={() =>
-                                                        handleDeleteTutor(
-                                                            element.tutorId,
-                                                            element.subject
-                                                        )
-                                                    }
-                                                />
+                                                <Button backgroundColor="white">
+                                                    <CalendarIcon w="15px" h="15px" />
+                                                </Button>
+                                                <Button backgroundColor="white">
+                                                    <EmailIcon w="18px" h="18px" />
+                                                </Button>
+
+                                                {student && (
+                                                    <AlertPopUp
+                                                        bgColor="white"
+                                                        onClick={() =>
+                                                            handleDeleteTutor(
+                                                                element.tutorId,
+                                                                element.subject
+                                                            )
+                                                        }
+                                                    />
+                                                )}
                                             </Flex>
                                         </Td>
                                     </Tr>

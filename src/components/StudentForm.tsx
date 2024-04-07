@@ -14,12 +14,13 @@ import {
     Select,
 } from '@chakra-ui/react';
 import { Field, Formik, FormikHelpers } from 'formik';
-import React from 'react';
+import React, { useState } from 'react';
 import { Student, StudentRequest } from '../models/interfaces';
 import axios from 'axios';
 import { studentSchema } from '../validationSchemas';
 import { headers } from '../util';
 import AlertPopUp from './AlertPopUp';
+import UploadImage from './UploadImage';
 
 interface StudentFormProps {
     isOpenForm: boolean;
@@ -41,11 +42,12 @@ const StudentForm: React.FC<StudentFormProps> = ({
         grade: student?.grade || '',
         image: student?.image || '',
     };
+    const [selectedImage, setSelectedImage] = useState<Blob | null>(null);
 
     const handleSubmit = async (values: StudentRequest, actions: FormikHelpers<StudentRequest>) => {
         const formData = new FormData();
-        if (values.image) {
-            formData.append('image', values?.image);
+        if (selectedImage) {
+            formData.append('image', selectedImage);
         }
         const imageUrl = await axios.post(`${import.meta.env.VITE_REACT_URL}uploads`, formData, {
             headers: {
@@ -77,6 +79,7 @@ const StudentForm: React.FC<StudentFormProps> = ({
             console.log(studentData);
             actions.resetForm();
             onCloseForm();
+            setSelectedImage(null);
             setNeedUpdate(true);
         } catch (error) {
             console.error('Error submitting form:', error);
@@ -111,6 +114,36 @@ const StudentForm: React.FC<StudentFormProps> = ({
                                     <ModalHeader>{title}</ModalHeader>
                                     <ModalCloseButton />
                                     <ModalBody pb={6}>
+                                        <UploadImage
+                                            selectedImage={selectedImage}
+                                            setSelectedImage={setSelectedImage}
+                                            studentImage={student?.image}
+                                        />
+                                        {/* <FormControl
+                                            mt={4}
+                                            isRequired
+                                            isInvalid={
+                                                !!(formik.errors.image && formik.touched.image)
+                                            }
+                                        >
+                                            <FormLabel>Image</FormLabel>
+                                            <Input
+                                                type="file"
+                                                onChange={(event) => {
+                                                    const file =
+                                                        event.target.files && event.target.files[0];
+                                                    if (file) {
+                                                        formik.setFieldValue('image', file);
+                                                        console.log(file);
+                                                    }
+                                                }}
+                                            />
+                                            {formik.errors.image && formik.touched.image && (
+                                                <FormErrorMessage>
+                                                    {formik.errors.image}
+                                                </FormErrorMessage>
+                                            )}
+                                        </FormControl> */}
                                         <FormControl
                                             isRequired
                                             isInvalid={
@@ -165,31 +198,6 @@ const StudentForm: React.FC<StudentFormProps> = ({
                                                 </FormErrorMessage>
                                             )}
                                         </FormControl>
-                                        <FormControl
-                                            mt={4}
-                                            isRequired
-                                            isInvalid={
-                                                !!(formik.errors.image && formik.touched.image)
-                                            }
-                                        >
-                                            <FormLabel>Image</FormLabel>
-                                            <Input
-                                                type="file"
-                                                onChange={(event) => {
-                                                    const file =
-                                                        event.target.files && event.target.files[0];
-                                                    if (file) {
-                                                        formik.setFieldValue('image', file);
-                                                        console.log(file);
-                                                    }
-                                                }}
-                                            />
-                                            {formik.errors.image && formik.touched.image && (
-                                                <FormErrorMessage>
-                                                    {formik.errors.image}
-                                                </FormErrorMessage>
-                                            )}
-                                        </FormControl>
                                     </ModalBody>
 
                                     <ModalFooter>
@@ -199,11 +207,16 @@ const StudentForm: React.FC<StudentFormProps> = ({
                                         <Button
                                             backgroundColor="#59D3C8"
                                             mr={3}
-                                            onClick={onCloseForm}
+                                            onClick={() => {
+                                                setSelectedImage(null);
+                                                onCloseForm();
+                                            }}
                                         >
                                             Cancel
                                         </Button>
-                                        {student && <AlertPopUp onClick={deleteStudent} />}
+                                        {student && (
+                                            <AlertPopUp bgColor="#E7E0D6" onClick={deleteStudent} />
+                                        )}
                                     </ModalFooter>
                                 </form>
                             </ModalContent>

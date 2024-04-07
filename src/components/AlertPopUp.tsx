@@ -13,14 +13,15 @@ import React from 'react';
 
 interface AlertPopUpProps {
     onClick: () => void;
+    bgColor: string;
 }
 
-const AlertPopUp: React.FC<AlertPopUpProps> = ({ onClick }) => {
+const AlertPopUp: React.FC<AlertPopUpProps> = ({ onClick, bgColor }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = React.useRef<HTMLButtonElement>(null);
     return (
         <>
-            <Button backgroundColor="#E7E0D6" onClick={onOpen}>
+            <Button backgroundColor={bgColor} onClick={onOpen}>
                 <DeleteIcon />
             </Button>
             <AlertDialog

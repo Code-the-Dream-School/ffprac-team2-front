@@ -57,7 +57,11 @@ const LoginForm: React.FC = () => {
                     const { firstName, lastName, email, role } = response.data.user;
                     const userData = { firstName, lastName, email, role };
                     localStorage.setItem('userData', JSON.stringify(userData));
-                    navigate('/');
+                    if (role === 'parent') {
+                        navigate('/parent-dashboard');
+                    } else {
+                        navigate('/tutorsearch');
+                    }
                 } catch (error) {
                     console.error('Login failed:', error);
                     setStatus('failed');
