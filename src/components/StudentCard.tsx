@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Student } from '../models/interfaces';
 import {
     Heading,
@@ -17,6 +17,7 @@ import {
     CardFooter,
     Stack,
     useDisclosure,
+    Spinner,
 } from '@chakra-ui/react';
 import avatar from '../assets/avatar.jpg';
 import { EditIcon, CalendarIcon, EmailIcon } from '@chakra-ui/icons';
@@ -32,17 +33,21 @@ interface StudentCardProps {
 const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const studentImage = student.image ? student.image : avatar;
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleDeleteTutor = async (tutorId: string, subject: string) => {
         try {
+            setIsLoading(true);
             const response = await axios.patch(
                 `${import.meta.env.VITE_REACT_URL}students/${student?._id}`,
                 { tutorToRemove: { tutorId, subject } },
                 { headers }
             );
             setNeedUpdate(true);
+            setIsLoading(false);
             console.log(response);
         } catch (error) {
+            setIsLoading(false);
             console.error(error);
         }
     };
@@ -87,11 +92,22 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => 
                                 <Th></Th>
                             </Tr>
                         </Thead>
+                        {isLoading && (
+                            <Flex justifyContent="center" alignItems="center">
+                                <Spinner
+                                    thickness="4px"
+                                    speed="0.65s"
+                                    emptyColor="gray.200"
+                                    color="#59D3C8"
+                                    size="xl"
+                                />
+                            </Flex>
+                        )}
                         <Tbody>
                             {student.tutorInfo &&
                                 student.tutorInfo?.length > 0 &&
                                 student.tutorInfo?.map((element) => (
-                                    <Tr key={element.tutorId}>
+                                    <Tr key={element.tutorId + element.subject}>
                                         <Td fontSize="md" p="0">
                                             {element.tutorName}
                                         </Td>
@@ -109,6 +125,7 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => 
 
                                                 {student && (
                                                     <AlertPopUp
+                                                        title="Remove subject from student"
                                                         bgColor="white"
                                                         onClick={() =>
                                                             handleDeleteTutor(

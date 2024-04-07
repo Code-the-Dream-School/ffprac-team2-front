@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import {
     Button,
+    Flex,
     FormControl,
     FormErrorMessage,
     FormLabel,
@@ -13,6 +14,7 @@ import {
     ModalHeader,
     ModalOverlay,
     Select,
+    Spinner,
     Text,
 } from '@chakra-ui/react';
 import { Field, Formik, FormikHelpers } from 'formik';
@@ -47,6 +49,7 @@ const ConnectForm: React.FC<ConnectFormProps> = ({ isOpen, onClose, tutor }) => 
     const { students } = useGlobal();
     const [isOptionSelected, setIsOptionSelected] = useState(false);
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
 
     const fieldsToDisplay: (keyof Tutor)[] = [
         'MathSubject',
@@ -68,6 +71,7 @@ const ConnectForm: React.FC<ConnectFormProps> = ({ isOpen, onClose, tutor }) => 
         };
 
         try {
+            setIsLoading(true);
             const response = await axios.patch(
                 `${import.meta.env.VITE_REACT_URL}students/${values.studentId}`,
                 { tutorInfo: [connectionData] },
@@ -78,9 +82,11 @@ const ConnectForm: React.FC<ConnectFormProps> = ({ isOpen, onClose, tutor }) => 
             console.log(studentData);
             actions.resetForm();
             setIsOptionSelected(false);
+            setIsLoading(false);
             onClose();
             navigate('/parent-dashboard');
         } catch (error) {
+            setIsLoading(false);
             console.error('Error submitting form:', error);
         }
     };
@@ -108,7 +114,19 @@ const ConnectForm: React.FC<ConnectFormProps> = ({ isOpen, onClose, tutor }) => 
                     {(formik) => (
                         <ModalContent backgroundColor="#E7E0D6">
                             <form onSubmit={formik.handleSubmit}>
-                                <ModalHeader></ModalHeader>
+                                <ModalHeader>
+                                    {isLoading && (
+                                        <Flex justifyContent="center" alignItems="center">
+                                            <Spinner
+                                                thickness="4px"
+                                                speed="0.65s"
+                                                emptyColor="gray.200"
+                                                color="#59D3C8"
+                                                size="xl"
+                                            />
+                                        </Flex>
+                                    )}
+                                </ModalHeader>
                                 <ModalCloseButton />
                                 <ModalBody pb={6}>
                                     <FormControl

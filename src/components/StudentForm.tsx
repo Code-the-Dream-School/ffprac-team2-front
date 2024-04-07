@@ -1,5 +1,6 @@
 import {
     Button,
+    Flex,
     FormControl,
     FormErrorMessage,
     FormLabel,
@@ -12,6 +13,7 @@ import {
     ModalHeader,
     ModalOverlay,
     Select,
+    Spinner,
 } from '@chakra-ui/react';
 import { Field, Formik, FormikHelpers } from 'formik';
 import React, { useState } from 'react';
@@ -43,22 +45,26 @@ const StudentForm: React.FC<StudentFormProps> = ({
         image: student?.image || '',
     };
     const [selectedImage, setSelectedImage] = useState<Blob | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async (values: StudentRequest, actions: FormikHelpers<StudentRequest>) => {
-        const formData = new FormData();
+        setIsLoading(true);
+        let imageUrl;
         if (selectedImage) {
+            const formData = new FormData();
             formData.append('image', selectedImage);
+            imageUrl = await axios.post(`${import.meta.env.VITE_REACT_URL}uploads`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
         }
-        const imageUrl = await axios.post(`${import.meta.env.VITE_REACT_URL}uploads`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
+
         console.log(imageUrl);
         const newStudent: StudentRequest = {
             name: values.name,
             grade: values.grade,
-            image: imageUrl.data.src,
+            image: imageUrl?.data.src,
         };
         try {
             let response;
@@ -80,19 +86,23 @@ const StudentForm: React.FC<StudentFormProps> = ({
             actions.resetForm();
             onCloseForm();
             setSelectedImage(null);
+            setIsLoading(false);
             setNeedUpdate(true);
         } catch (error) {
+            setIsLoading(false);
             console.error('Error submitting form:', error);
         }
     };
 
     const deleteStudent = async () => {
         try {
+            setIsLoading(true);
             await axios.delete(`${import.meta.env.VITE_REACT_URL}students/${student?._id}`, {
                 headers,
             });
             onCloseForm();
             setNeedUpdate(true);
+            setIsLoading(false);
         } catch (error) {
             console.error('Error deleting product:', error);
         }
@@ -112,6 +122,17 @@ const StudentForm: React.FC<StudentFormProps> = ({
                             <ModalContent backgroundColor="#E7E0D6">
                                 <form onSubmit={formik.handleSubmit}>
                                     <ModalHeader>{title}</ModalHeader>
+                                    {isLoading && (
+                                        <Flex justifyContent="center" alignItems="center">
+                                            <Spinner
+                                                thickness="4px"
+                                                speed="0.65s"
+                                                emptyColor="gray.200"
+                                                color="#59D3C8"
+                                                size="xl"
+                                            />
+                                        </Flex>
+                                    )}
                                     <ModalCloseButton />
                                     <ModalBody pb={6}>
                                         <UploadImage
@@ -215,7 +236,11 @@ const StudentForm: React.FC<StudentFormProps> = ({
                                             Cancel
                                         </Button>
                                         {student && (
-                                            <AlertPopUp bgColor="#E7E0D6" onClick={deleteStudent} />
+                                            <AlertPopUp
+                                                title="Delete Student"
+                                                bgColor="#E7E0D6"
+                                                onClick={deleteStudent}
+                                            />
                                         )}
                                     </ModalFooter>
                                 </form>
