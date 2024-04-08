@@ -1,4 +1,5 @@
 import { extendTheme } from '@chakra-ui/react';
+import { MultiSelectTheme } from 'chakra-multiselect';
 
 // example theme
 export const theme = extendTheme({
@@ -34,6 +35,38 @@ export const theme = extendTheme({
         fontWeight: '700',
     },
     components: {
+        MultiSelect: {
+            ...MultiSelectTheme,
+            baseStyle: (props) => ({
+                ...MultiSelectTheme.baseStyle(props),
+                field: {
+                    ...MultiSelectTheme.baseStyle(props).item,
+                    bgColor: 'customWhite',
+                },
+                input: {
+                    ...MultiSelectTheme.baseStyle(props).input,
+                    bgColor: 'customWhite',
+                },
+                control: {
+                    ...MultiSelectTheme.baseStyle(props).control,
+                    maxWidth: '380px',
+                    minWidth: '250px',
+                },
+                button: {
+                    ...MultiSelectTheme.baseStyle(props).button,
+                    colorScheme: 'black',
+                },
+                list: {
+                    ...MultiSelectTheme.baseStyle(props).list,
+                    boxShadow: '2xl',
+                    color: 'black',
+                },
+                selectedItem: {
+                    ...MultiSelectTheme.baseStyle(props).selectedItem,
+                    colorScheme: 'pink',
+                },
+            }),
+        },
         Button: {
             baseStyle: {
                 fontWeight: 'normal',

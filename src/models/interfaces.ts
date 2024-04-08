@@ -4,7 +4,6 @@ interface StudentTutorInfo {
     availability: string;
     tutorName: string;
 }
-
 export interface Student {
     name: string;
     grade: string;
@@ -68,6 +67,21 @@ export interface GlobalState {
     students: Student[] | [];
     // teacherSearchResults: string[];
     updateStudents: () => Promise<void>;
+}
+
+//interface for tutorProfilePage form assembele
+export interface TutorRequest {
+    availability: string[];
+    about: string;
+    grades: string[];
+    avatar?: string;
+    education: string;
+    yearsOfExperience: number;
+    MathSubject: string[];
+    ForeignLanguages: string[];
+    English: string[];
+    SocialStudies: string[];
+    Science: string[];
 }
 export interface AuthPageProps {
     activeTab: 'register' | 'login';

@@ -54,6 +54,79 @@ export const connectSchema = yup.object().shape({
         .oneOf(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
         .required('Please select a day'),
 });
+export const tutorValidationSchema = yup.object().shape({
+    about: yup.string(),
+    grades: yup.array(
+        yup.string().oneOf(['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'])
+    ),
+    availability: yup.array(
+        yup
+            .string()
+            .oneOf(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
+    ),
+    education: yup.string(),
+    yearsOfExperience: yup.number().min(1).max(50),
+
+    avatar: yup.string(),
+    MathSubject: yup.array(
+        yup
+            .string()
+            .oneOf([
+                'Math',
+                'Algebra',
+                'Geometry',
+                'Trigonometry',
+                'Calculus',
+                'Statistics',
+                'Pre-Calculus',
+                'SAT Math Test Prep',
+                'ACT Math Test Prep',
+            ])
+    ),
+    ForeignLanguages: yup.array(
+        yup.string().oneOf(['Spanish', 'French', 'Chineese', 'German', 'Latin'])
+    ),
+    English: yup.array(
+        yup
+            .string()
+            .oneOf([
+                'Writing',
+                'Reading',
+                'ESL',
+                'Poetry',
+                'Literacy',
+                'ACT English Test Prep',
+                'ACT Reading Test Prep',
+                'ACT Writing Test Prep',
+            ])
+    ),
+    SocialStudies: yup.array(
+        yup
+            .string()
+            .oneOf([
+                'World History',
+                'Psychology',
+                'US Government',
+                'Social Science',
+                'US History',
+                'Political Science',
+                'Geography',
+                'European History',
+            ])
+    ),
+    Science: yup.array(
+        yup
+            .string()
+            .oneOf([
+                'Biology',
+                'Chemistry',
+                'Earth Science',
+                'Physics',
+                'Science',
+                'ACT Science Test Prep',
+            ])
+    ),
+});
 
 export const loginValidationSchema = yup.object().shape({
     email: yup
