@@ -109,7 +109,7 @@ const LandingPage: React.FC = () => {
                 <Link
                     href="http://www.freepik.com/free-photo/-together-university-device-book-reading_1235750.htm"
                     color="white"
-                    fontSize="sm"
+                    fontSize="10px"
                     isExternal
                 >
                     Image by mindandi
