@@ -9,11 +9,8 @@ import {
     HStack,
     Spacer,
     Grid,
-    Avatar,
-    AvatarBadge,
     Input,
     VStack,
-    WrapItem,
     FormControl,
     FormErrorMessage,
     FormLabel,
@@ -21,12 +18,11 @@ import {
 } from '@chakra-ui/react';
 
 import { MultiSelect, Option, useMultiSelect } from 'chakra-multiselect';
-import { AddIcon } from '@chakra-ui/icons';
-import avatar from '../assets/avatar.jpg';
 import { TutorRequest } from '../models/interfaces.ts';
 import axios from 'axios';
 import { theme } from '../util/theme.ts';
 import { headers } from '../util';
+import UploadImage from '../components/UploadImage.tsx';
 
 const TutorProfilePage: React.FC = () => {
     const { firstName, lastName, email } = JSON.parse(localStorage.getItem('userData') ?? '{}');
@@ -285,101 +281,10 @@ const TutorProfilePage: React.FC = () => {
                             {/* UPPER GRID */}
                             <SimpleGrid minChildWidth="250px" spacing="40px">
                                 <SimpleGrid minChildWidth="150px" spacing="20px">
-                                    <WrapItem alignItems="center" justifyContent="center">
-                                        <Avatar
-                                            sx={{
-                                                width: '200px',
-                                                height: '200px',
-                                            }}
-                                            src={
-                                                selectedImage
-                                                    ? URL.createObjectURL(selectedImage)
-                                                    : avatar
-                                            }
-                                            name="avatar"
-                                        >
-                                            <AvatarBadge
-                                                sx={{
-                                                    border: 'none',
-                                                    backgroundColor: 'black',
-                                                    width: '50px',
-                                                    height: '50px',
-                                                    marginBottom: 3,
-                                                    cursor: 'pointer',
-                                                }}
-                                                boxSize="0.9em"
-                                            >
-                                                <Button
-                                                    onClick={() => {
-                                                        document
-                                                            .getElementById('fileInput')
-                                                            ?.click();
-                                                    }}
-                                                    style={{
-                                                        backgroundColor: 'transparent',
-                                                        border: 'none',
-                                                        padding: 0,
-                                                    }}
-                                                >
-                                                    <AddIcon
-                                                        sx={{
-                                                            width: '70%',
-                                                            height: '70%',
-                                                            color: '#E7E0D6',
-                                                        }}
-                                                    />
-                                                    <Input
-                                                        id="fileInput"
-                                                        type="file"
-                                                        accept="image/*"
-                                                        hidden
-                                                        onChange={(
-                                                            event: React.ChangeEvent<HTMLInputElement>
-                                                        ) => {
-                                                            const selectedFile =
-                                                                event.target.files?.[0];
-                                                            if (!selectedFile) {
-                                                                return; // Handle no file selected case (optional: display a message)
-                                                            }
-
-                                                            if (
-                                                                !selectedFile.type.match('image/*')
-                                                            ) {
-                                                                console.error(
-                                                                    'Invalid file type selected'
-                                                                );
-                                                                return;
-                                                            }
-
-                                                            const reader = new FileReader();
-
-                                                            reader.onload = (
-                                                                event: ProgressEvent<FileReader>
-                                                            ) => {
-                                                                if (event.target?.result) {
-                                                                    const blob = new Blob(
-                                                                        [
-                                                                            event.target
-                                                                                .result as ArrayBuffer,
-                                                                        ],
-                                                                        { type: selectedFile.type }
-                                                                    );
-                                                                    // Use the blob
-                                                                    setSelectedImage(blob);
-                                                                }
-                                                            };
-
-                                                            reader.readAsArrayBuffer(selectedFile);
-
-                                                            // formik.setFieldValue();
-
-                                                            setSelectedImage(selectedFile);
-                                                        }}
-                                                    />
-                                                </Button>
-                                            </AvatarBadge>
-                                        </Avatar>
-                                    </WrapItem>
+                                    <UploadImage
+                                        selectedImage={selectedImage}
+                                        setSelectedImage={setSelectedImage}
+                                    />
                                     <VStack spacing={3}>
                                         <Input
                                             pointerEvents="none"

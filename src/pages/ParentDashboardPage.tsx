@@ -15,7 +15,6 @@ const ParentDashboardPage: React.FC = () => {
     const [needUpdate, setNeedUpdate] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const { students, dispatch } = useGlobal();
-    console.log(students);
 
     useEffect(() => {
         const fetchStudent = async () => {

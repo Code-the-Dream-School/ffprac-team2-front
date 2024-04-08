@@ -63,7 +63,7 @@ export interface TutorConnectionRequest {
     availability: string;
 }
 
-//interface for tutorProfilePage form assembele
+//interface for tutorProfilePage form assemble
 export interface TutorRequest {
     availability: string[];
     about: string;
