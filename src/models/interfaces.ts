@@ -77,7 +77,6 @@ export interface TableSearchProps {
     setSubjectQuery: React.Dispatch<React.SetStateAction<string>>;
 }
 
-
 export interface GlobalState {
     // isLoggedIn: boolean;
     // user: User | null;
