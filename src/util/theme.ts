@@ -78,6 +78,11 @@ export const theme = extendTheme({
                     minW: '350px',
                     fontSize: '24px',
                 },
+                navigation: {
+                    h: '60px',
+                    minW: '180px',
+                    fontSize: '24px',
+                },
             },
             variants: {
                 // landing button variants.
