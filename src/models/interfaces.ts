@@ -14,6 +14,14 @@ export interface Student {
     tutorInfo?: StudentTutorInfo[];
 }
 
+export interface TutorStudents {
+    name: string;
+    id: string;
+    parent: string;
+    email: string;
+    subject: string;
+    availability: string;
+}
 export interface StudentRequest {
     name: string;
     grade: string;
@@ -39,7 +47,7 @@ export interface Tutor {
         _id: string;
         firstName: string;
         lastName: string;
-        // email: string;
+        email: string;
     };
     about: string;
     grades: string[];
@@ -59,6 +67,14 @@ export interface TutorConnectionRequest {
     tutorId?: string;
     subject: string;
     availability: string;
+}
+export interface TableSearchProps {
+    studentQuery: string;
+    setStudentQuery: React.Dispatch<React.SetStateAction<string>>;
+    parentQuery: string;
+    setParentQuery: React.Dispatch<React.SetStateAction<string>>;
+    subjectQuery: string;
+    setSubjectQuery: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export interface GlobalState {

@@ -1,6 +1,7 @@
 import { Box, Flex, Grid } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
+import { Spinner } from '@chakra-ui/react';
 import { Tutor } from '../models/interfaces';
 import TutorCard from '../components/TutorCard';
 import TutorSearchForm from '../components/TutorSearchForm';
@@ -61,7 +62,13 @@ const TutorSearchPage: React.FC = () => {
                 justifyItems="center"
             > */}
                 {loading ? (
-                    <div>Loading...</div>
+                    <Spinner
+                        thickness="4px"
+                        speed="0.65s"
+                        emptyColor="gray.200"
+                        color="blue.500"
+                        size="xl"
+                    />
                 ) : tutors && tutors.length > 0 ? (
                     tutors.map((tutor) => <TutorCard key={tutor._id} tutor={tutor} />)
                 ) : (

@@ -2,14 +2,13 @@ import './App.css';
 
 import { Route, Routes } from 'react-router-dom';
 
-import Layout from './components/Layout';
-import ParentDashboardPage from './pages/ParentDashboardPage';
-import TutorProfilePage from './pages/TutorProfilePage';
-import TutorSearchPage from './pages/TutorSearchPage';
 import AuthPage from './pages/AuthPage';
 import LandingPage from './pages/LandingPage';
-
-// import TutorCard from './components/TutorCard';
+import Layout from './components/Layout';
+import ParentDashboardPage from './pages/ParentDashboardPage';
+import TutorDashboard from './pages/TutorDashboard';
+import TutorProfilePage from './pages/TutorProfilePage';
+import TutorSearchPage from './pages/TutorSearchPage';
 
 // import { useEffect, useState } from 'react';
 
@@ -29,8 +28,8 @@ const App = () => {
                     {/* <Route path="/login" element={<LoginForm />} /> */}
                     <Route path="/parent-dashboard" element={<ParentDashboardPage />} />
                     <Route path="/tutor-profile" element={<TutorProfilePage />} />
-                    {/* <Route path="/tutorcard" element={<TutorCard tutor={undefined} />} /> */}
                     <Route path="/tutorsearch" element={<TutorSearchPage />} />
+                    <Route path="/tutordashboard" element={<TutorDashboard />} />
                     {/* <Route path="*" element={<NotFoundPage />} /> */}
                 </Route>
             </Routes>
