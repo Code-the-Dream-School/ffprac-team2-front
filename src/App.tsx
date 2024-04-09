@@ -9,22 +9,6 @@ import ParentDashboardPage from './pages/ParentDashboardPage';
 import TutorDashboard from './pages/TutorDashboard';
 import TutorSearchPage from './pages/TutorSearchPage';
 
-// import TutorProfileMult from './components/TutorProfileMult';
-
-// import Sample from './components/Sample';
-// import Sample01 from './components/Sample';
-
-// import SubjectFilter from './components/SubjectFilter';
-
-// import TutorCard from './components/TutorCard';
-
-// import AuthPage from './pages/AuthPage';
-
-// import Sample from './components/SubjectFilter';
-// import SubjectFilter from './components/SubjectFilter';
-
-// import TutorCard from './components/TutorCard';
-
 // import { useEffect, useState } from 'react';
 
 // import { getAllData } from './util/index';

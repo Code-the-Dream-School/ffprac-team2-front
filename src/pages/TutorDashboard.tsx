@@ -90,12 +90,21 @@ const TutorDashboard: React.FC = () => {
                             size="xl"
                         />
                     ) : (
-                        <TutorTable
-                            students={students}
-                            studentQuery={studentQuery}
-                            parentQuery={parentQuery}
-                            subjectQuery={subjectQuery}
-                        />
+                        <>
+                            {students.length === 0 ? (
+                                <Box textAlign="center" mt="20px" fontSize="18px">
+                                    No students found. Please make sure your profile is fully complete to be 
+                                    appeared in search results and enable parents to connect with you.
+                                </Box>
+                            ) : (
+                                <TutorTable
+                                    students={students}
+                                    studentQuery={studentQuery}
+                                    parentQuery={parentQuery}
+                                    subjectQuery={subjectQuery}
+                                />
+                            )}
+                        </>
                     )}
                 </Box>
             </Flex>
