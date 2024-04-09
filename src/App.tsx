@@ -9,6 +9,8 @@ import ParentDashboardPage from './pages/ParentDashboardPage';
 import TutorDashboard from './pages/TutorDashboard';
 import TutorProfilePage from './pages/TutorProfilePage';
 import TutorSearchPage from './pages/TutorSearchPage';
+import AboutPage from './pages/AboutPage';
+
 
 const App = () => {
     return (
@@ -22,6 +24,7 @@ const App = () => {
                     <Route path="/tutorsearch" element={<TutorSearchPage />} />
                     <Route path="/tutordashboard" element={<TutorDashboard />} />
                     {/* <Route path="*" element={<NotFoundPage />} /> */}
+                    <Route path="/about" element = {<AboutPage/>}/>
                 </Route>
             </Routes>
         </>
