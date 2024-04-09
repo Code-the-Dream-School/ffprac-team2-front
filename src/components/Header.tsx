@@ -17,13 +17,20 @@ const Header: React.FC = () => {
             zIndex="banner"
         >
             <NavLink to="/">
-                <Flex align="center" ml={5} gap={{ base: '4rem', sm: '2rem' }}>
-                    <Image src={logo} alt="GetYourTutor" boxSize={{ base: '60px', lg: '80px' }} />
-                    <Text
-                        fontSize={{ base: '29px', sm: '25g' }}
-                        fontFamily="'Inter', sans-serif"
-                        ml={2}
-                    >
+                <Flex
+                    align="center"
+                    justifyContent={{ base: 'center', md: 'flex-start' }}
+                    gap={{ base: '4rem', sm: '2rem' }}
+                    width={{ md: 'auto', base: '100%' }}
+                >
+                    <Image
+                        src={logo}
+                        alt="GetYourTutor"
+                        boxSize={{ base: '60px', lg: '80px' }}
+                        mb={{ base: 2, md: 0 }}
+                        ml={{ base: 0, md: 4 }}
+                    />
+                    <Text fontSize={{ base: '20px', md: '29px' }} fontFamily="'Inter', sans-serif">
                         GetYourTutor
                     </Text>
                 </Flex>
