@@ -78,6 +78,7 @@ export const connectSchema = yup.object().shape({
         .oneOf(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
         .required('Please select a day'),
 });
+
 export const tutorValidationSchema = yup.object().shape({
     about: yup.string(),
     grades: yup.array(
@@ -90,7 +91,6 @@ export const tutorValidationSchema = yup.object().shape({
     ),
     education: yup.string(),
     yearsOfExperience: yup.number().min(1).max(50),
-
     avatar: yup.string(),
     MathSubject: yup.array(
         yup

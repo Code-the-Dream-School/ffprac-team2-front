@@ -61,10 +61,10 @@ const LoginForm: React.FC = () => {
                     localStorage.setItem('userData', JSON.stringify(userData));
 
                     const globalUser = {
-                        firstName: response.data.user.firstName,
-                        lastName: response.data.user.lastName,
-                        email: response.data.user.email,
-                        role: response.data.user.role,
+                        firstName: firstName,
+                        lastName: lastName,
+                        email: email,
+                        role: role,
                         token: response.data.token,
                     };
                     dispatch({ type: 'SET_USER', payload: globalUser });
@@ -73,7 +73,7 @@ const LoginForm: React.FC = () => {
                     if (role === 'parent') {
                         navigate('/parent-dashboard');
                     } else {
-                        navigate('/tutorsearch');
+                        navigate('/tutor-profile');
                     }
                 } catch (error) {
                     console.error('Login failed:', error);

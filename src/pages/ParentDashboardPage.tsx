@@ -5,11 +5,11 @@ import { Student } from '../models/interfaces';
 import StudentCard from '../components/StudentCard';
 import StudentForm from '../components/StudentForm';
 import { useGlobal } from '../context/useGlobal';
-import { getAllData } from '../util';
+import { headers } from '../util';
 import AppLoader from '../components/AppLoader';
+import axios from 'axios';
 
 const ParentDashboardPage: React.FC = () => {
-    // const [students, setStudents] = useState<Student[] | []>([]);
     const [errMsg, setErrMsg] = useState<string | null>(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [needUpdate, setNeedUpdate] = useState(false);
@@ -20,7 +20,10 @@ const ParentDashboardPage: React.FC = () => {
         const fetchStudent = async () => {
             if (students?.length <= 0 || needUpdate || isLoading) {
                 try {
-                    const data = await getAllData(`${import.meta.env.VITE_REACT_URL}students`);
+                    const res = await axios.get(`${import.meta.env.VITE_REACT_URL}students`, {
+                        headers,
+                    });
+                    const data = await res.data;
                     dispatch({ type: 'SET_STUDENTS', payload: data.students });
                     setNeedUpdate(false);
                     setIsLoading(false);

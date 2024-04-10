@@ -41,7 +41,7 @@ export interface Tutor {
         _id: string;
         firstName: string;
         lastName: string;
-        // email: string;
+        email: string;
     };
     about: string;
     grades: string[];
@@ -54,6 +54,7 @@ export interface Tutor {
     SocialStudies: string[];
     Science: string[];
     _id: string;
+    _v?: number;
 }
 
 export interface TutorConnectionRequest {
