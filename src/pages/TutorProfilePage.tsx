@@ -24,7 +24,7 @@ import { MultiSelect, Option, useMultiSelect } from 'chakra-multiselect';
 import { AddIcon } from '@chakra-ui/icons';
 import avatar from '../assets/avatar.jpg';
 import { TutorRequest } from '../models/interfaces.ts';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { theme } from '../util/theme.ts';
 import { headers } from '../util';
 
@@ -124,10 +124,12 @@ const TutorProfilePage: React.FC = () => {
                     localStorage.setItem('tutorId', tutor._id);
                     console.log('call setInitialValues done');
                 } else {
-                    throw new Error('Tutor update failed');
+                    throw new Error('Tutor fetch failed');
                 }
-            } catch (error) {
-                console.error('Error getting tutor profile:', error);
+            } catch (error: unknown) {
+                if (error && error instanceof AxiosError)
+                    //   assume no profile
+                    console.error('No user profile was created', error.response?.status);
                 return;
             }
         };
