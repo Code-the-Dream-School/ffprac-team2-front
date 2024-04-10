@@ -103,27 +103,25 @@ const TutorProfilePage: React.FC = () => {
     };
 
     //FETCHING TUTOR DATA FOR AN UPDATE
-
-    const tutorId = localStorage.getItem('tutorId');
     useEffect(() => {
-        if (tutorId === '') {
-            // assume this is the initial tutor profile creation
-            return;
-        }
-
         const fetchTutor = async () => {
             try {
-                console.log('fetching tutor info from data base');
+                console.log(`from logged in user fetching tutor data${headers.Authorization}`);
                 const response = await axios.get(
-                    `${import.meta.env.VITE_REACT_URL}tutors/${tutorId}`
+                    `${import.meta.env.VITE_REACT_URL}tutors/my-profile`,
+                    {
+                        headers,
+                    }
                 );
                 const { data, status } = response;
+                console.log(`after fetching data of tutor response from server: ${data.response}`);
                 if (status === 200) {
                     console.log('got tutor data');
                     const { tutor } = data;
                     console.log(tutor);
                     console.log('call setInitialValues');
                     setInitialValues(tutor);
+                    localStorage.setItem('tutorId', tutor._id);
                     console.log('call setInitialValues done');
                 } else {
                     throw new Error('Tutor update failed');
@@ -134,7 +132,7 @@ const TutorProfilePage: React.FC = () => {
             }
         };
         fetchTutor();
-    }, [tutorId]);
+    }, []);
 
     //populating mathSubjectOptions for using in Multiselect Component
     const mathSubjectInitialOptions = tutorData.MathSubject.map((el) => {
@@ -256,7 +254,6 @@ const TutorProfilePage: React.FC = () => {
                     console.log(data);
                     if (status === 201) {
                         console.log('Tutor was created successfully');
-                        localStorage.setItem('tutorId', data.tutor._id);
                         actions.resetForm();
                         return;
                     }
