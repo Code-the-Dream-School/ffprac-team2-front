@@ -283,7 +283,7 @@ const TutorProfilePage: React.FC = () => {
                         <form onSubmit={formik.handleSubmit}>
                             {/* UPPER GRID */}
                             <SimpleGrid minChildWidth="250px" spacing="40px">
-                                <SimpleGrid minChildWidth="150px" spacing="20px">
+                                <SimpleGrid minChildWidth="150px" spacing="20px" alignItems="start">
                                     <WrapItem alignItems="center" justifyContent="center">
                                         <Avatar
                                             sx={{
@@ -412,6 +412,17 @@ const TutorProfilePage: React.FC = () => {
                                             variant={'disable'}
                                             bgColor={theme.styles.global.body.bg}
                                         />
+                                        <Spacer />
+                                        <Spacer />
+                                        <Spacer />
+                                        <Spacer />
+                                        <Spacer />
+                                        <Spacer />
+                                        <Spacer />
+                                        <Spacer />
+                                        <Spacer />
+                                        <Spacer />
+                                        <Spacer />
                                         <Spacer />
                                         <FormControl
                                             isInvalid={
