@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Formik, FormikHelpers, Field, FieldProps } from 'formik';
-
 import { tutorValidationSchema } from '../validationSchemas';
 import {
     Box,
@@ -16,17 +15,19 @@ import {
     FormLabel,
     Textarea,
 } from '@chakra-ui/react';
-
 import { MultiSelect, Option, useMultiSelect } from 'chakra-multiselect';
 import { TutorRequest } from '../models/interfaces.ts';
 import axios from 'axios';
 import { theme } from '../util/theme.ts';
 import { headers } from '../util';
 import UploadImage from '../components/UploadImage.tsx';
+import { useGlobal } from '../context/useGlobal.tsx';
 
 const TutorProfilePage: React.FC = () => {
     const { firstName, lastName, email } = JSON.parse(localStorage.getItem('userData') ?? '{}');
     const [selectedImage, setSelectedImage] = useState<Blob | null>(null);
+    const { tutor, dispatch } = useGlobal();
+
     const [initialValues, setInitialValues] = useState<TutorRequest>({
         grades: [],
         about: '',
@@ -100,37 +101,30 @@ const TutorProfilePage: React.FC = () => {
 
     //FETCHING TUTOR DATA FOR AN UPDATE
 
-    const tutorId = localStorage.getItem('tutorId');
     useEffect(() => {
-        if (tutorId === '') {
-            // assume this is the initial tutor profile creation
-            return;
-        }
-
         const fetchTutor = async () => {
-            try {
-                console.log('fetching tutor info from data base');
-                const response = await axios.get(
-                    `${import.meta.env.VITE_REACT_URL}tutors/${tutorId}`
-                );
-                const { data, status } = response;
-                if (status === 200) {
-                    console.log('got tutor data');
-                    const { tutor } = data;
-                    console.log(tutor);
-                    console.log('call setInitialValues');
-                    setInitialValues(tutor);
-                    console.log('call setInitialValues done');
-                } else {
-                    throw new Error('Tutor update failed');
+            if (!tutor) {
+                try {
+                    const response = await axios.get(
+                        `${import.meta.env.VITE_REACT_URL}tutors/my-profile`,
+                        { headers }
+                    );
+                    const { data, status } = response;
+                    if (status === 200) {
+                        setInitialValues(data.tutor);
+                        dispatch({ type: 'SET_TUTOR', payload: data.tutor });
+                    } else {
+                        throw new Error('Tutor update failed');
+                    }
+                } catch (error) {
+                    console.error('Error getting tutor profile:', error);
+                    return;
                 }
-            } catch (error) {
-                console.error('Error getting tutor profile:', error);
-                return;
             }
         };
         fetchTutor();
-    }, [tutorId]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     //populating mathSubjectOptions for using in Multiselect Component
     const mathSubjectInitialOptions = tutorData.MathSubject.map((el) => {
@@ -194,31 +188,58 @@ const TutorProfilePage: React.FC = () => {
 
     const handleSubmit = async (values: TutorRequest, actions: FormikHelpers<TutorRequest>) => {
         console.log(`Logger:inside handleSubmit `);
+        let imageUrl;
 
-        const tutorId = localStorage.getItem('tutorId');
-        if (tutorId) {
+        if (selectedImage) {
+            const formData = new FormData();
+            formData.append('image', selectedImage);
+            try {
+                const response = (imageUrl = await axios.post(
+                    `${import.meta.env.VITE_REACT_URL}uploads`,
+                    formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    }
+                ));
+                imageUrl = response;
+            } catch (error) {
+                if (error instanceof Error) {
+                    console.error(error.message);
+                }
+            }
+        }
+
+        const tutorFormData: TutorRequest = {
+            grades: values.grades,
+            about: values.about,
+            education: values.education,
+            avatar: imageUrl?.data.src,
+            availability: values.availability,
+            yearsOfExperience: values.yearsOfExperience,
+            MathSubject: values.MathSubject,
+            ForeignLanguages: values.ForeignLanguages,
+            English: values.English,
+            SocialStudies: values.SocialStudies,
+            Science: values.Science,
+        };
+
+        if (tutor) {
             const updateTutor = async () => {
                 try {
                     const response = await axios.patch(
-                        `${import.meta.env.VITE_REACT_URL}tutors/${tutorId}`,
-                        {
-                            grades: values.grades,
-                            about: values.about,
-                            education: values.education,
-                            avatar: values.avatar,
-                            availability: values.availability,
-                            yearsOfExperience: values.yearsOfExperience,
-                            MathSubject: values.MathSubject,
-                            ForeignLanguages: values.ForeignLanguages,
-                            English: values.English,
-                            SocialStudies: values.SocialStudies,
-                            Science: values.Science,
-                        },
+                        `${import.meta.env.VITE_REACT_URL}tutors/${tutor._id}`,
+                        tutorFormData,
                         { headers }
                     );
                     const { data, status } = response;
                     console.log(data);
-                    if (status === 200) console.log('Tutor was updated successfully');
+                    if (status === 200) {
+                        console.log('Tutor was updated successfully');
+                        setSelectedImage(null);
+                        dispatch({ type: 'SET_TUTOR', payload: data.tutor });
+                    }
                     if (status !== 200) {
                         throw new Error('Tutor update failed');
                     }
@@ -233,30 +254,19 @@ const TutorProfilePage: React.FC = () => {
                 try {
                     const response = await axios.post(
                         `${import.meta.env.VITE_REACT_URL}tutors`,
-                        {
-                            grades: values.grades,
-                            about: values.about,
-                            education: values.education,
-                            avatar: values.avatar,
-                            availability: values.availability,
-                            yearsOfExperience: values.yearsOfExperience,
-                            MathSubject: values.MathSubject,
-                            ForeignLanguages: values.ForeignLanguages,
-                            English: values.English,
-                            SocialStudies: values.SocialStudies,
-                            Science: values.Science,
-                        },
+                        tutorFormData,
                         { headers }
                     );
                     const { data, status } = response;
                     console.log(data);
                     if (status === 201) {
                         console.log('Tutor was created successfully');
-                        localStorage.setItem('tutorId', data.tutor._id);
+                        // localStorage.setItem('tutorId', data.tutor._id);
+                        setSelectedImage(null);
+                        dispatch({ type: 'SET_TUTOR', payload: data.tutor });
                         actions.resetForm();
                         return;
                     }
-
                     throw new Error('Tutor creation failed');
                 } catch (error) {
                     console.error('Error create tutor profile:', error);
@@ -266,7 +276,7 @@ const TutorProfilePage: React.FC = () => {
             createTutor();
         }
     };
-    console.log('rendering initialValues', initialValues);
+    // console.log('rendering initialValues', initialValues);
     return (
         <Grid display="flex" justifyContent="center" w="full">
             <Formik
@@ -284,6 +294,7 @@ const TutorProfilePage: React.FC = () => {
                                     <UploadImage
                                         selectedImage={selectedImage}
                                         setSelectedImage={setSelectedImage}
+                                        profileImage={tutor?.avatar}
                                     />
                                     <VStack spacing={3}>
                                         <Input

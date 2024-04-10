@@ -7,14 +7,13 @@ import avatar from '../assets/avatar.jpg';
 type UploadImageProps = {
     selectedImage: Blob | null;
     setSelectedImage: React.Dispatch<React.SetStateAction<Blob | File | null>>;
-    studentImage?: string | undefined;
-    tutorImage?: string | undefined;
+    profileImage: string | undefined;
 };
 
 const UploadImage: React.FC<UploadImageProps> = ({
     selectedImage,
     setSelectedImage,
-    studentImage,
+    profileImage,
 }) => {
     return (
         <WrapItem alignItems="center" justifyContent="center">
@@ -26,8 +25,8 @@ const UploadImage: React.FC<UploadImageProps> = ({
                 src={
                     selectedImage
                         ? URL.createObjectURL(selectedImage)
-                        : studentImage
-                          ? studentImage
+                        : profileImage
+                          ? profileImage
                           : avatar
                 }
                 name="avatar"

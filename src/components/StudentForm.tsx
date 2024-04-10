@@ -22,6 +22,7 @@ import { headers } from '../util';
 import AlertPopUp from './AlertPopUp';
 import UploadImage from './UploadImage';
 import AppLoader from './AppLoader';
+import Notification from './Notification';
 
 interface StudentFormProps {
     isOpenForm: boolean;
@@ -45,6 +46,7 @@ const StudentForm: React.FC<StudentFormProps> = ({
     };
     const [selectedImage, setSelectedImage] = useState<Blob | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [message, setMessage] = useState('');
 
     const handleSubmit = async (values: StudentRequest, actions: FormikHelpers<StudentRequest>) => {
         setIsLoading(true);
@@ -52,14 +54,21 @@ const StudentForm: React.FC<StudentFormProps> = ({
         if (selectedImage) {
             const formData = new FormData();
             formData.append('image', selectedImage);
-            imageUrl = await axios.post(`${import.meta.env.VITE_REACT_URL}uploads`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
+            try {
+                imageUrl = await axios.post(`${import.meta.env.VITE_REACT_URL}uploads`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+            } catch (error) {
+                if (error instanceof Error) {
+                    setMessage(error.message);
+                    <Notification message={message} status="error" setToastMessage={setMessage} />;
+                }
+            }
         }
-
         console.log(imageUrl);
+
         const newStudent: StudentRequest = {
             name: values.name,
             grade: values.grade,
@@ -86,24 +95,49 @@ const StudentForm: React.FC<StudentFormProps> = ({
             onCloseForm();
             setSelectedImage(null);
             setIsLoading(false);
+            setMessage(response?.data.message);
+            <Notification
+                message={response?.data.message}
+                status="error"
+                setToastMessage={setMessage}
+            />;
             setNeedUpdate(true);
         } catch (error) {
-            setIsLoading(false);
-            console.error('Error submitting form:', error);
+            if (error instanceof Error) {
+                setIsLoading(false);
+                setMessage(error.message);
+                <Notification message={message} status="error" setToastMessage={setMessage} />;
+                console.error('Error submitting form:', error);
+            }
         }
     };
 
     const deleteStudent = async () => {
         try {
             setIsLoading(true);
-            await axios.delete(`${import.meta.env.VITE_REACT_URL}students/${student?._id}`, {
-                headers,
-            });
+            const response = await axios.delete(
+                `${import.meta.env.VITE_REACT_URL}students/${student?._id}`,
+                {
+                    headers,
+                }
+            );
+
             onCloseForm();
+            setMessage(response?.data.message);
+            <Notification
+                message={response?.data.message}
+                status="error"
+                setToastMessage={setMessage}
+            />;
             setNeedUpdate(true);
             setIsLoading(false);
         } catch (error) {
-            console.error('Error deleting product:', error);
+            if (error instanceof Error) {
+                setIsLoading(false);
+                setMessage(error.message);
+                <Notification message={message} status="error" setToastMessage={setMessage} />;
+                console.error('Error deleting product:', error);
+            }
         }
     };
 
@@ -127,33 +161,8 @@ const StudentForm: React.FC<StudentFormProps> = ({
                                         <UploadImage
                                             selectedImage={selectedImage}
                                             setSelectedImage={setSelectedImage}
-                                            studentImage={student?.image}
+                                            profileImage={student?.image}
                                         />
-                                        {/* <FormControl
-                                            mt={4}
-                                            isRequired
-                                            isInvalid={
-                                                !!(formik.errors.image && formik.touched.image)
-                                            }
-                                        >
-                                            <FormLabel>Image</FormLabel>
-                                            <Input
-                                                type="file"
-                                                onChange={(event) => {
-                                                    const file =
-                                                        event.target.files && event.target.files[0];
-                                                    if (file) {
-                                                        formik.setFieldValue('image', file);
-                                                        console.log(file);
-                                                    }
-                                                }}
-                                            />
-                                            {formik.errors.image && formik.touched.image && (
-                                                <FormErrorMessage>
-                                                    {formik.errors.image}
-                                                </FormErrorMessage>
-                                            )}
-                                        </FormControl> */}
                                         <FormControl
                                             isRequired
                                             isInvalid={
