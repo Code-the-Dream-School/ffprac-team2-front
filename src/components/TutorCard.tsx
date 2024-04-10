@@ -16,12 +16,12 @@ import {
 } from '@chakra-ui/react';
 
 import { CalendarIcon } from '@chakra-ui/icons';
+import ConnectForm from './ConnectForm';
 import React from 'react';
 import { Tutor } from '../models/interfaces';
 import iconEducation from '../assets/experience.png';
 import iconExperience from '../assets/education.png';
 import { theme } from '../util/theme';
-import ConnectForm from './ConnectForm';
 
 // import iconCalendar from '../assets/calendar.png';
 // import { EmailIcon } from '@chakra-ui/icons';
@@ -37,8 +37,15 @@ export interface TutorCardProps {
 }
 
 const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
-    // const TutorCard: React.FC = ({tutor: }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const handleSendEmail = () => {
+        const recipientEmail = tutor.userId?.email;
+        const subject = encodeURIComponent('Tutoring inquiry');
+        const body = encodeURIComponent('');
+
+        window.location.href = `mailto:${recipientEmail}?subject=${subject}&body=${body}`;
+    };
+
     const getButtonColor = (day: string) => {
         return tutor.availability.includes(day) ? 'green.400' : 'red.500';
     };
@@ -70,6 +77,7 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
                             height={theme.dashboardButtons.height}
                             fontSize={theme.dashboardButtons.fontSize}
                             fontWeight={theme.dashboardButtons.fontWeight}
+                            onClick={handleSendEmail}
                         >
                             Send email
                         </Button>
@@ -151,7 +159,7 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
                                     >
                                         Teaching skills
                                     </Text>
-                                    <Text>
+                                    <Text h="65px">
                                         {[
                                             ...tutor.MathSubject,
                                             ...tutor.ForeignLanguages,

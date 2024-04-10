@@ -16,6 +16,7 @@ export const theme = extendTheme({
     //styles for Dashboard
     colors: {
         customWhite: '#FFFFFF',
+        customYellow: '#F5E0B1',
     },
     dashboardButtons: {
         buttonYellow: {
@@ -75,6 +76,11 @@ export const theme = extendTheme({
                 landing: {
                     h: '75px',
                     minW: '350px',
+                    fontSize: '24px',
+                },
+                navigation: {
+                    h: '60px',
+                    minW: '180px',
                     fontSize: '24px',
                 },
             },
