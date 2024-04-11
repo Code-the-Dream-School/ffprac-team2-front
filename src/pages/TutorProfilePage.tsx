@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { MultiSelect, Option, useMultiSelect } from 'chakra-multiselect';
 import { TutorRequest } from '../models/interfaces.ts';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { theme } from '../util/theme.ts';
 import { headers } from '../util';
 import UploadImage from '../components/UploadImage.tsx';
@@ -329,6 +329,17 @@ const TutorProfilePage: React.FC = () => {
                                             variant={'disable'}
                                             bgColor={theme.styles.global.body.bg}
                                         />
+                                        <Spacer />
+                                        <Spacer />
+                                        <Spacer />
+                                        <Spacer />
+                                        <Spacer />
+                                        <Spacer />
+                                        <Spacer />
+                                        <Spacer />
+                                        <Spacer />
+                                        <Spacer />
+                                        <Spacer />
                                         <Spacer />
                                         <FormControl
                                             isInvalid={
