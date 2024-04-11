@@ -98,7 +98,7 @@ const StudentForm: React.FC<StudentFormProps> = ({
             setMessage(response?.data.message);
             <Notification
                 message={response?.data.message}
-                status="error"
+                status="success"
                 setToastMessage={setMessage}
             />;
             setNeedUpdate(true);
@@ -126,7 +126,7 @@ const StudentForm: React.FC<StudentFormProps> = ({
             setMessage(response?.data.message);
             <Notification
                 message={response?.data.message}
-                status="error"
+                status="success"
                 setToastMessage={setMessage}
             />;
             setNeedUpdate(true);
