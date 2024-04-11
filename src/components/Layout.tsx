@@ -16,7 +16,6 @@ const Layout: React.FC = () => {
         sizeHeader = {
             maxWidth: '1440px',
             margin: '0 auto',
-            display: 'flex',
         };
         showBackground = true;
     } else {
@@ -26,7 +25,6 @@ const Layout: React.FC = () => {
         sizeHeader = {
             maxWidth: 'inherit',
             margin: '0 auto',
-            display: 'flex',
         };
         showBackground = false;
     }

@@ -8,7 +8,6 @@ type HeaderProps = {
     sizeHeader: {
         maxWidth: string;
         margin: string;
-        display: string;
     };
 };
 
@@ -16,6 +15,8 @@ const Header: React.FC<HeaderProps> = ({ sizeHeader }) => {
     return (
         <Flex
             as="header"
+            w={sizeHeader.maxWidth}
+            margin={sizeHeader.margin}
             align="center"
             justify="space-between"
             wrap="wrap"
@@ -23,7 +24,6 @@ const Header: React.FC<HeaderProps> = ({ sizeHeader }) => {
             position="sticky"
             top="0"
             zIndex="banner"
-            style={sizeHeader}
         >
             <NavLink to="/">
                 <Flex

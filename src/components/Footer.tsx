@@ -4,7 +4,6 @@ type FooterProps = {
     sizeHeader: {
         maxWidth: string;
         margin: string;
-        display: string;
     };
 };
 
