@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { MultiSelect, Option, useMultiSelect } from 'chakra-multiselect';
 import { TutorRequest } from '../models/interfaces.ts';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { theme } from '../util/theme.ts';
 import { headers } from '../util';
 import UploadImage from '../components/UploadImage.tsx';
