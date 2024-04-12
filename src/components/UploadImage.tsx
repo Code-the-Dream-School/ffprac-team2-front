@@ -2,7 +2,7 @@
 import { AddIcon } from '@chakra-ui/icons';
 import { WrapItem, Avatar, AvatarBadge, Button, Input } from '@chakra-ui/react';
 import React from 'react';
-import avatar from '../assets/avatar.jpg';
+import avatar from '../assets/avatar.png';
 
 type UploadImageProps = {
     selectedImage: Blob | null;

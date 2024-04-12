@@ -12,6 +12,10 @@ type FooterProps = {
 const Footer: React.FC<FooterProps> = ({ sizeHeader }) => {
     const currentYear = new Date().getFullYear();
     const fontSize = useBreakpointValue({ base: '16px', md: '20px' });
+    const headerStyles = {
+        maxWidth: sizeHeader.maxWidth,
+        margin: sizeHeader.margin,
+    };
     const linkStyle = {
         fontSize: fontSize,
         marginRight: '20px',
@@ -19,14 +23,12 @@ const Footer: React.FC<FooterProps> = ({ sizeHeader }) => {
     };
 
     return (
-        <Box as="footer" className="footer">
+        <Box as="footer" className="footer" {...headerStyles} width={'full'}>
             <Flex
                 justifyContent="space-between"
                 alignItems="center"
                 direction={{ base: 'column-reverse', md: 'row' }}
                 padding={3}
-                w={sizeHeader.maxWidth}
-                m={sizeHeader.margin}
             >
                 <Text
                     fontSize="sm"

@@ -1,7 +1,6 @@
 import { extendTheme } from '@chakra-ui/react';
 import { MultiSelectTheme } from 'chakra-multiselect';
 
-// example theme
 export const theme = extendTheme({
     styles: {
         global: {
@@ -38,7 +37,7 @@ export const theme = extendTheme({
     components: {
         MultiSelect: {
             ...MultiSelectTheme,
-            baseStyle: (props) => ({
+            baseStyle: (props: Record<string, number>) => ({
                 ...MultiSelectTheme.baseStyle(props),
                 field: {
                     ...MultiSelectTheme.baseStyle(props).item,

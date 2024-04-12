@@ -8,33 +8,23 @@ import backgroundImage from '../assets/new_bg.jpg';
 
 const Layout: React.FC = () => {
     const location = useLocation();
-    let bgLayout, sizeHeader, showBackground;
-    if (location.pathname === '/') {
-        bgLayout = {
-            maxWidth: '100',
-        };
-        sizeHeader = {
-            maxWidth: '1440px',
-            margin: '0 auto',
-        };
-        showBackground = true;
-    } else {
-        bgLayout = {
-            maxWidth: '1440px',
-        };
-        sizeHeader = {
-            maxWidth: 'inherit',
-            margin: '0 auto',
-        };
-        showBackground = false;
-    }
+    const isHomePage = location.pathname === '/';
+    const sizeHeader = { maxWidth: '1440px', margin: '0 auto' };
+    const contentStyle = {
+        maxWidth: isHomePage ? 'full' : '1440px',
+        margin: isHomePage ? '0 auto' : '0 auto',
+        width: 'full',
+        justifyContent: 'center',
+        alignItems: 'center',
+    };
 
     return (
-        <Flex w="full" direction="column" className="layout" style={bgLayout}>
+        <Flex w="full" direction="column" className="layout">
             <Header sizeHeader={sizeHeader} />
             <Flex direction="column" w="full" className="main-content" position="relative">
-                {showBackground && (
+                {isHomePage && (
                     <Box
+                        as="body"
                         w="full"
                         h="full"
                         bgImage={`url(${backgroundImage})`}
@@ -43,6 +33,10 @@ const Layout: React.FC = () => {
                         bgRepeat="no-repeat"
                         position="absolute"
                         zIndex="-1"
+                        left={0}
+                        right={0}
+                        top={0}
+                        bottom={0}
                         _after={{
                             content: '""',
                             position: 'absolute',
@@ -55,7 +49,9 @@ const Layout: React.FC = () => {
                         }}
                     />
                 )}
-                <Outlet />
+                <Flex sx={contentStyle}>
+                    <Outlet />
+                </Flex>
             </Flex>
             <Footer sizeHeader={sizeHeader} />
         </Flex>
