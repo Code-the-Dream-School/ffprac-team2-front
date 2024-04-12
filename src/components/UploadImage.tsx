@@ -8,12 +8,14 @@ type UploadImageProps = {
     selectedImage: Blob | null;
     setSelectedImage: React.Dispatch<React.SetStateAction<Blob | File | null>>;
     profileImage: string | undefined;
+    disabled?: boolean;
 };
 
 const UploadImage: React.FC<UploadImageProps> = ({
     selectedImage,
     setSelectedImage,
     profileImage,
+    disabled,
 }) => {
     return (
         <WrapItem alignItems="center" justifyContent="center">
@@ -65,6 +67,7 @@ const UploadImage: React.FC<UploadImageProps> = ({
                             name="image"
                             accept="image/*"
                             hidden
+                            disabled={disabled}
                             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                                 const selectedFile = event.target.files?.[0];
                                 if (!selectedFile) {

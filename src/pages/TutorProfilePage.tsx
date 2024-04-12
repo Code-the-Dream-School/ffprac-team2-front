@@ -22,12 +22,14 @@ import { theme } from '../util/theme.ts';
 import { headers } from '../util';
 import UploadImage from '../components/UploadImage.tsx';
 import { useGlobal } from '../context/useGlobal.tsx';
+import AppLoader from '../components/AppLoader.tsx';
 
 const TutorProfilePage: React.FC = () => {
     const { firstName, lastName, email } = JSON.parse(localStorage.getItem('userData') ?? '{}');
     const [selectedImage, setSelectedImage] = useState<Blob | null>(null);
     const { tutor, dispatch } = useGlobal();
     const [isEditing, setIsEditing] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const [initialValues, setInitialValues] = useState<TutorRequest>({
         grades: tutor?.grades || [],
@@ -106,6 +108,7 @@ const TutorProfilePage: React.FC = () => {
         const fetchTutor = async () => {
             if (!tutor) {
                 try {
+                    setIsLoading(true);
                     const response = await axios.get(
                         `${import.meta.env.VITE_REACT_URL}tutors/my-profile`,
                         { headers }
@@ -114,11 +117,13 @@ const TutorProfilePage: React.FC = () => {
                     if (status === 200) {
                         setInitialValues(data.tutor);
                         dispatch({ type: 'SET_TUTOR', payload: data.tutor });
+                        setIsLoading(false);
                     } else {
                         throw new Error('Tutor update failed');
                     }
                 } catch (error) {
                     console.error('Error getting tutor profile:', error);
+                    setIsLoading(false);
                     return;
                 }
             }
@@ -195,6 +200,7 @@ const TutorProfilePage: React.FC = () => {
             const formData = new FormData();
             formData.append('image', selectedImage);
             try {
+                setIsLoading(true);
                 const response = (imageUrl = await axios.post(
                     `${import.meta.env.VITE_REACT_URL}uploads`,
                     formData,
@@ -205,9 +211,11 @@ const TutorProfilePage: React.FC = () => {
                     }
                 ));
                 imageUrl = response;
+                setIsLoading(false);
             } catch (error) {
                 if (error instanceof Error) {
                     console.error(error.message);
+                    setIsLoading(false);
                 }
             }
         }
@@ -229,6 +237,7 @@ const TutorProfilePage: React.FC = () => {
         if (tutor) {
             const updateTutor = async () => {
                 try {
+                    setIsLoading(true);
                     const response = await axios.patch(
                         `${import.meta.env.VITE_REACT_URL}tutors/${tutor._id}`,
                         tutorFormData,
@@ -240,6 +249,7 @@ const TutorProfilePage: React.FC = () => {
                         console.log('Tutor was updated successfully');
                         setSelectedImage(null);
                         dispatch({ type: 'SET_TUTOR', payload: data.tutor });
+                        setIsLoading(false);
                         setIsEditing(false);
                     }
                     if (status !== 200) {
@@ -247,6 +257,7 @@ const TutorProfilePage: React.FC = () => {
                     }
                 } catch (error) {
                     console.error('Error update tutor profile:', error);
+                    setIsLoading(false);
                     return;
                 }
             };
@@ -254,6 +265,7 @@ const TutorProfilePage: React.FC = () => {
         } else {
             const createTutor = async () => {
                 try {
+                    setIsLoading(true);
                     const response = await axios.post(
                         `${import.meta.env.VITE_REACT_URL}tutors`,
                         tutorFormData,
@@ -266,6 +278,7 @@ const TutorProfilePage: React.FC = () => {
                         // localStorage.setItem('tutorId', data.tutor._id);
                         setSelectedImage(null);
                         dispatch({ type: 'SET_TUTOR', payload: data.tutor });
+                        setIsLoading(false);
                         setIsEditing(false);
                         actions.resetForm();
                         return;
@@ -273,6 +286,7 @@ const TutorProfilePage: React.FC = () => {
                     throw new Error('Tutor creation failed');
                 } catch (error) {
                     console.error('Error create tutor profile:', error);
+                    setIsLoading(false);
                     return;
                 }
             };
@@ -298,6 +312,7 @@ const TutorProfilePage: React.FC = () => {
                                         selectedImage={selectedImage}
                                         setSelectedImage={setSelectedImage}
                                         profileImage={tutor?.avatar}
+                                        disabled={!isEditing}
                                     />
                                     <VStack spacing={3}>
                                         <Input
@@ -633,6 +648,7 @@ const TutorProfilePage: React.FC = () => {
                                                 )}
                                             </Field>
                                         </FormControl>
+                                        {isLoading && <AppLoader />}
                                     </Box>
                                 </Box>
                             </SimpleGrid>
