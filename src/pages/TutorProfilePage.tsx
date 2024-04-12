@@ -23,13 +23,15 @@ import { headers } from '../util';
 import UploadImage from '../components/UploadImage.tsx';
 import { useGlobal } from '../context/useGlobal.tsx';
 import AppLoader from '../components/AppLoader.tsx';
+import { useNavigate } from 'react-router-dom';
 
 const TutorProfilePage: React.FC = () => {
     const { firstName, lastName, email } = JSON.parse(localStorage.getItem('userData') ?? '{}');
     const [selectedImage, setSelectedImage] = useState<Blob | null>(null);
     const { tutor, dispatch } = useGlobal();
-    const [isEditing, setIsEditing] = useState(false);
+    const [isEditing, setIsEditing] = useState(tutor ? false : true);
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
     const [initialValues, setInitialValues] = useState<TutorRequest>({
         grades: tutor?.grades || [],
@@ -720,7 +722,13 @@ const TutorProfilePage: React.FC = () => {
                                                 size="lg"
                                                 fontWeight="bold"
                                                 width="175px"
-                                                onClick={() => setIsEditing(false)}
+                                                onClick={() => {
+                                                    if (tutor) {
+                                                        setIsEditing(false);
+                                                    } else {
+                                                        navigate('/tutor-dashboard');
+                                                    }
+                                                }}
                                             >
                                                 Cancel
                                             </Button>
