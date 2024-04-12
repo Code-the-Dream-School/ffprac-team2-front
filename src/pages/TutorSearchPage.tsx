@@ -1,4 +1,4 @@
-import { Box, Flex, Grid } from '@chakra-ui/react';
+import { Box, Button, Flex, Grid } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
 import { Spinner } from '@chakra-ui/react';
@@ -8,7 +8,17 @@ import TutorSearchForm from '../components/TutorSearchForm';
 import axios from 'axios';
 
 const TutorSearchPage: React.FC = () => {
-    const [tutors, setTutors] = useState<Tutor[] | []>([]);
+    const [tutorsData, setTutorsData] = useState<{
+        tutors: Tutor[];
+        tutorCount: number;
+        currentPage: number;
+        tutorsPerPage: number;
+    }>({
+        tutors: [],
+        tutorCount: 0,
+        currentPage: 1,
+        tutorsPerPage: 3,
+    });
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -16,12 +26,10 @@ const TutorSearchPage: React.FC = () => {
             try {
                 const res = await axios.get(`${import.meta.env.VITE_REACT_URL}tutors`);
                 const response = await res.data;
-                // console.log(response);
-                setTutors(response.tutors);
+                setTutorsData(response);
                 setLoading(false);
             } catch (error) {
                 console.error(error);
-                // setErrMsg('Something went wrong. Please try again later.');
             }
         };
         fetchTutors();
@@ -33,14 +41,26 @@ const TutorSearchPage: React.FC = () => {
             const res = await axios.get(
                 `${import.meta.env.VITE_REACT_URL}tutors/search?subject=${query}`
             );
-            setTutors(res.data.tutors);
+            setTutorsData(res.data);
             setLoading(false);
         } catch (error) {
             console.error(error);
-
             setLoading(false);
         }
     };
+
+    const handlePageChange = async (page: number) => {
+        setLoading(true);
+        try {
+            const res = await axios.get(`${import.meta.env.VITE_REACT_URL}tutors?page=${page}`);
+            setTutorsData(res.data);
+            setLoading(false);
+        } catch (error) {
+            console.error(error);
+            setLoading(false);
+        }
+    };
+
     return (
         <Box p="4">
             <Flex justify="flex-end" mt={4}>
@@ -69,12 +89,46 @@ const TutorSearchPage: React.FC = () => {
                         color="blue.500"
                         size="xl"
                     />
-                ) : tutors && tutors.length > 0 ? (
-                    tutors.map((tutor) => <TutorCard key={tutor._id} tutor={tutor} />)
+                ) : tutorsData.tutors.length > 0 ? (
+                    tutorsData.tutors.map((tutor) => <TutorCard key={tutor._id} tutor={tutor} />)
                 ) : (
                     <div>No tutors found</div>
                 )}
             </Grid>
+            {tutorsData.tutorCount > 0 && (
+                <Flex justify="center" mt={4}>
+                    <Button
+                        onClick={() => handlePageChange(tutorsData.currentPage - 1)}
+                        disabled={tutorsData.currentPage === 1}
+                        mr={3}
+                    >
+                        Previous
+                    </Button>
+                    {[
+                        ...Array(
+                            Math.ceil(tutorsData.tutorCount / tutorsData.tutorsPerPage)
+                        ).keys(),
+                    ].map((page) => (
+                        <Button
+                            key={page + 1}
+                            onClick={() => handlePageChange(page + 1)}
+                            variant={tutorsData.currentPage === page + 1 ? 'solid' : 'outline'}
+                            mr={3}
+                        >
+                            {page + 1}
+                        </Button>
+                    ))}
+                    <Button
+                        onClick={() => handlePageChange(tutorsData.currentPage + 1)}
+                        disabled={
+                            tutorsData.currentPage ===
+                            Math.ceil(tutorsData.tutorCount / tutorsData.tutorsPerPage)
+                        }
+                    >
+                        Next
+                    </Button>
+                </Flex>
+            )}
         </Box>
     );
 };
