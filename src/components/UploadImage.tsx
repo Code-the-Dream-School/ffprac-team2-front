@@ -92,7 +92,7 @@ const UploadImage: React.FC<UploadImageProps> = ({
                                     }
                                 };
                                 reader.readAsArrayBuffer(selectedFile);
-                                setSelectedImage(selectedFile);
+                                // setSelectedImage(selectedFile);
                             }}
                         />
                     </Button>

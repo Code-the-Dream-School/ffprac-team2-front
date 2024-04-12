@@ -201,16 +201,11 @@ const TutorProfilePage: React.FC = () => {
             formData.append('image', selectedImage);
             try {
                 setIsLoading(true);
-                const response = (imageUrl = await axios.post(
-                    `${import.meta.env.VITE_REACT_URL}uploads`,
-                    formData,
-                    {
-                        headers: {
-                            'Content-Type': 'multipart/form-data',
-                        },
-                    }
-                ));
-                imageUrl = response;
+                imageUrl = await axios.post(`${import.meta.env.VITE_REACT_URL}uploads`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
                 setIsLoading(false);
             } catch (error) {
                 if (error instanceof Error) {
