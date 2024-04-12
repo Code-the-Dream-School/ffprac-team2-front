@@ -13,7 +13,7 @@ const ParentDashboardPage: React.FC = () => {
     const [errMsg, setErrMsg] = useState<string | null>(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [needUpdate, setNeedUpdate] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const { students, dispatch } = useGlobal();
 
     useEffect(() => {
@@ -38,7 +38,7 @@ const ParentDashboardPage: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [needUpdate]);
     return (
-        <Flex direction="column" justify="flex-end" w="full">
+        <Flex direction="column" justify="flex-end" w="full" mb="20px">
             <Stack spacing={4} direction="row" align="center" justify="end" w="full" display="flex">
                 <Button
                     leftIcon={<AddIcon />}

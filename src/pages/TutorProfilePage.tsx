@@ -292,7 +292,7 @@ const TutorProfilePage: React.FC = () => {
     };
     // console.log('rendering initialValues', initialValues);
     return (
-        <Grid display="flex" justifyContent="center" w="full">
+        <Grid display="flex" justifyContent="center" w="full" mb="25px">
             <Formik
                 enableReinitialize
                 onSubmit={handleSubmit}
@@ -697,7 +697,7 @@ const TutorProfilePage: React.FC = () => {
                                 >
                                     {!isEditing ? (
                                         <Button
-                                            variant="buttonYellow"
+                                            variant="buttonTeal"
                                             size="lg"
                                             fontWeight="bold"
                                             width="175px"

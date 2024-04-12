@@ -49,25 +49,26 @@ const StudentForm: React.FC<StudentFormProps> = ({
     const [message, setMessage] = useState('');
 
     const handleSubmit = async (values: StudentRequest, actions: FormikHelpers<StudentRequest>) => {
-        setIsLoading(true);
         let imageUrl;
         if (selectedImage) {
             const formData = new FormData();
             formData.append('image', selectedImage);
             try {
+                setIsLoading(true);
                 imageUrl = await axios.post(`${import.meta.env.VITE_REACT_URL}uploads`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
                 });
+                setIsLoading(false);
             } catch (error) {
                 if (error instanceof Error) {
                     setMessage(error.message);
+                    setIsLoading(false);
                     <Notification message={message} status="error" setToastMessage={setMessage} />;
                 }
             }
         }
-        console.log(imageUrl);
 
         const newStudent: StudentRequest = {
             name: values.name,
@@ -77,12 +78,14 @@ const StudentForm: React.FC<StudentFormProps> = ({
         try {
             let response;
             if (title === 'Add Student') {
+                setIsLoading(true);
                 response = await axios.post(
                     `${import.meta.env.VITE_REACT_URL}students`,
                     newStudent,
                     { headers }
                 );
             } else {
+                setIsLoading(true);
                 response = await axios.patch(
                     `${import.meta.env.VITE_REACT_URL}students/${student?._id}`,
                     newStudent,
