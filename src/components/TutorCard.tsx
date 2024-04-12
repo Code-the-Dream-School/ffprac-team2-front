@@ -110,7 +110,7 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
                             style={customAvatarStyle}
                         />
                     </Stack>
-                    <Text mt="4" w="100%" fontSize={theme.dashboardButtons.fontSize}>
+                    <Text mt="4" w="100%" h="65px" fontSize={theme.dashboardButtons.fontSize}>
                         {tutor.about}
                     </Text>
                     <Box position="relative" mt="4" mb="4">
@@ -178,7 +178,7 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
                                     >
                                         Grades
                                     </Text>
-                                    <Text>{tutor.grades.join(', ')}</Text>
+                                    <Text h="15px">{tutor.grades.join(', ')}</Text>
                                 </Stack>
                                 <Stack spacing="4" align="flex-start">
                                     <Flex align="start">
