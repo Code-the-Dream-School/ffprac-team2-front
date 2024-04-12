@@ -27,19 +27,20 @@ const TutorProfilePage: React.FC = () => {
     const { firstName, lastName, email } = JSON.parse(localStorage.getItem('userData') ?? '{}');
     const [selectedImage, setSelectedImage] = useState<Blob | null>(null);
     const { tutor, dispatch } = useGlobal();
+    const [isEditing, setIsEditing] = useState(false);
 
     const [initialValues, setInitialValues] = useState<TutorRequest>({
-        grades: [],
-        about: '',
-        education: '',
-        avatar: '',
-        availability: [],
-        MathSubject: [],
-        ForeignLanguages: [],
-        English: [],
-        SocialStudies: [],
-        Science: [],
-        yearsOfExperience: 1,
+        grades: tutor?.grades || [],
+        about: tutor?.about || '',
+        education: tutor?.education || '',
+        avatar: tutor?.avatar || '',
+        availability: tutor?.availability || [],
+        MathSubject: tutor?.MathSubject || [],
+        ForeignLanguages: tutor?.ForeignLanguages || [],
+        English: tutor?.English || [],
+        SocialStudies: tutor?.SocialStudies || [],
+        Science: tutor?.Science || [],
+        yearsOfExperience: tutor?.yearsOfExperience || 1,
     });
     const tutorData: TutorRequest = {
         //MOCK DATA FOR A MEANWHILE//
@@ -239,6 +240,7 @@ const TutorProfilePage: React.FC = () => {
                         console.log('Tutor was updated successfully');
                         setSelectedImage(null);
                         dispatch({ type: 'SET_TUTOR', payload: data.tutor });
+                        setIsEditing(false);
                     }
                     if (status !== 200) {
                         throw new Error('Tutor update failed');
@@ -264,6 +266,7 @@ const TutorProfilePage: React.FC = () => {
                         // localStorage.setItem('tutorId', data.tutor._id);
                         setSelectedImage(null);
                         dispatch({ type: 'SET_TUTOR', payload: data.tutor });
+                        setIsEditing(false);
                         actions.resetForm();
                         return;
                     }
@@ -357,6 +360,7 @@ const TutorProfilePage: React.FC = () => {
                                                 h="40px"
                                                 textColor="black.400"
                                                 placeholder={`e.g. MS Berkley`}
+                                                disabled={!isEditing}
                                             />
                                         </FormControl>
                                     </VStack>
@@ -375,6 +379,7 @@ const TutorProfilePage: React.FC = () => {
                                             w="90%"
                                             h="200px"
                                             // placeholder={`${tutorData.about}`}
+                                            disabled={!isEditing}
                                         />
                                         {formik.errors.about && formik.touched.about && (
                                             <FormErrorMessage>
@@ -405,6 +410,7 @@ const TutorProfilePage: React.FC = () => {
                                                             selectedOption
                                                         ); //updates selected options in tutorRequest
                                                     }}
+                                                    disabled={!isEditing}
                                                 />
                                             )}
                                         </Field>
@@ -443,6 +449,7 @@ const TutorProfilePage: React.FC = () => {
                                                                 ); //updates selected options in tutorRequest
                                                             }
                                                         }}
+                                                        disabled={!isEditing}
                                                     />
                                                 )}
                                             </Field>
@@ -476,6 +483,7 @@ const TutorProfilePage: React.FC = () => {
                                                                 ); //updates selected options in tutorRequest
                                                             }
                                                         }}
+                                                        disabled={!isEditing}
                                                     />
                                                 )}
                                             </Field>
@@ -512,6 +520,7 @@ const TutorProfilePage: React.FC = () => {
                                                                 ); //updates selected options in tutorRequest
                                                             }
                                                         }}
+                                                        disabled={!isEditing}
                                                     />
                                                 )}
                                             </Field>
@@ -549,6 +558,7 @@ const TutorProfilePage: React.FC = () => {
                                                                 ); //updates selected options in tutorRequest
                                                             }
                                                         }}
+                                                        disabled={!isEditing}
                                                     />
                                                 )}
                                             </Field>
@@ -583,6 +593,7 @@ const TutorProfilePage: React.FC = () => {
                                                                 ); //updates selected options in tutorRequest
                                                             }
                                                         }}
+                                                        disabled={!isEditing}
                                                     />
                                                 )}
                                             </Field>
@@ -617,6 +628,7 @@ const TutorProfilePage: React.FC = () => {
                                                                 ); //updates selected options in tutorRequest
                                                             }
                                                         }}
+                                                        disabled={!isEditing}
                                                     />
                                                 )}
                                             </Field>
@@ -655,6 +667,7 @@ const TutorProfilePage: React.FC = () => {
                                                             ); //updates selected options in tutorRequest
                                                         }
                                                     }}
+                                                    disabled={!isEditing}
                                                 />
                                             )}
                                         </Field>
@@ -669,24 +682,39 @@ const TutorProfilePage: React.FC = () => {
                                     spacing={10}
                                     mt="30px"
                                 >
-                                    <Button
-                                        type="submit"
-                                        variant="buttonYellow"
-                                        size="lg"
-                                        fontWeight="bold"
-                                        width="175px"
-                                    >
-                                        Save
-                                    </Button>
-                                    <Button
-                                        type="button"
-                                        variant="buttonTeal"
-                                        size="lg"
-                                        fontWeight="bold"
-                                        width="175px"
-                                    >
-                                        Cancel
-                                    </Button>
+                                    {!isEditing ? (
+                                        <Button
+                                            variant="buttonYellow"
+                                            size="lg"
+                                            fontWeight="bold"
+                                            width="175px"
+                                            onClick={() => setIsEditing(true)}
+                                        >
+                                            Edit
+                                        </Button>
+                                    ) : (
+                                        <>
+                                            <Button
+                                                type="submit"
+                                                variant="buttonYellow"
+                                                size="lg"
+                                                fontWeight="bold"
+                                                width="175px"
+                                            >
+                                                Save
+                                            </Button>
+                                            <Button
+                                                type="button"
+                                                variant="buttonTeal"
+                                                size="lg"
+                                                fontWeight="bold"
+                                                width="175px"
+                                                onClick={() => setIsEditing(false)}
+                                            >
+                                                Cancel
+                                            </Button>
+                                        </>
+                                    )}
                                 </HStack>
                             </SimpleGrid>
                         </form>
