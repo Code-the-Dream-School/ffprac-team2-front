@@ -4,10 +4,23 @@ import { Flex, Image, Text } from '@chakra-ui/react';
 import Navigation from './Navigation';
 import logo from '../assets/logo.png';
 
-const Header: React.FC = () => {
+type HeaderProps = {
+    sizeHeader: {
+        maxWidth: string;
+        margin: string;
+    };
+};
+
+const Header: React.FC<HeaderProps> = ({ sizeHeader }) => {
+    const headerStyles = {
+        maxWidth: sizeHeader.maxWidth,
+        margin: sizeHeader.margin,
+    };
+
     return (
         <Flex
             as="header"
+            {...headerStyles}
             align="center"
             justify="space-between"
             wrap="wrap"
@@ -15,6 +28,7 @@ const Header: React.FC = () => {
             position="sticky"
             top="0"
             zIndex="banner"
+            w="full"
         >
             <NavLink to="/">
                 <Flex

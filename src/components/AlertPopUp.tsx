@@ -13,14 +13,16 @@ import React from 'react';
 
 interface AlertPopUpProps {
     onClick: () => void;
+    bgColor: string;
+    title: string;
 }
 
-const AlertPopUp: React.FC<AlertPopUpProps> = ({ onClick }) => {
+const AlertPopUp: React.FC<AlertPopUpProps> = ({ onClick, bgColor, title }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = React.useRef<HTMLButtonElement>(null);
     return (
         <>
-            <Button backgroundColor="#E7E0D6" onClick={onOpen}>
+            <Button backgroundColor={bgColor} onClick={onOpen}>
                 <DeleteIcon />
             </Button>
             <AlertDialog
@@ -32,7 +34,7 @@ const AlertPopUp: React.FC<AlertPopUpProps> = ({ onClick }) => {
                 <AlertDialogOverlay>
                     <AlertDialogContent>
                         <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                            Delete Student
+                            {title}
                         </AlertDialogHeader>
 
                         <AlertDialogBody>

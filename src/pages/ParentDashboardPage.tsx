@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Flex, Heading, Spinner, Stack, useDisclosure } from '@chakra-ui/react';
+import { Button, Flex, Heading, Stack, useDisclosure } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { Student } from '../models/interfaces';
 import StudentCard from '../components/StudentCard';
 import StudentForm from '../components/StudentForm';
 import { useGlobal } from '../context/useGlobal';
-import { getAllData } from '../util';
+import { headers } from '../util';
+import AppLoader from '../components/AppLoader';
+import axios from 'axios';
 
 const ParentDashboardPage: React.FC = () => {
-    // const [students, setStudents] = useState<Student[] | []>([]);
     const [errMsg, setErrMsg] = useState<string | null>(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [needUpdate, setNeedUpdate] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const { students, dispatch } = useGlobal();
-    console.log(students);
 
     useEffect(() => {
         const fetchStudent = async () => {
             if (students?.length <= 0 || needUpdate || isLoading) {
                 try {
-                    const data = await getAllData(`${import.meta.env.VITE_REACT_URL}students`);
+                    const res = await axios.get(`${import.meta.env.VITE_REACT_URL}students`, {
+                        headers,
+                    });
+                    const data = await res.data;
                     dispatch({ type: 'SET_STUDENTS', payload: data.students });
                     setNeedUpdate(false);
                     setIsLoading(false);
@@ -35,7 +38,7 @@ const ParentDashboardPage: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [needUpdate]);
     return (
-        <Flex direction="column" justify="flex-end" w="full">
+        <Flex direction="column" justify="flex-end" w="full" mb="20px">
             <Stack spacing={4} direction="row" align="center" justify="end" w="full" display="flex">
                 <Button
                     leftIcon={<AddIcon />}
@@ -54,17 +57,7 @@ const ParentDashboardPage: React.FC = () => {
                     setNeedUpdate={setNeedUpdate}
                 />
             </Stack>
-            {isLoading && (
-                <Flex justifyContent="center" alignItems="center">
-                    <Spinner
-                        thickness="4px"
-                        speed="0.65s"
-                        emptyColor="gray.200"
-                        color="#59D3C8"
-                        size="xl"
-                    />
-                </Flex>
-            )}
+            {isLoading && <AppLoader />}
             {students && students.length > 0 ? (
                 <Stack direction="column">
                     {students.map((student: Student) => (

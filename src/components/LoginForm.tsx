@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { LoginData } from '../models/interfaces';
 import { loginValidationSchema } from '../validationSchemas';
+import { useGlobal } from '../context/useGlobal';
 
 const labelStyle = {
     fontSize: '14px',
@@ -23,6 +24,7 @@ const labelStyle = {
 
 const LoginForm: React.FC = () => {
     const navigate = useNavigate();
+    const { dispatch } = useGlobal();
     const fieldLength = useBreakpointValue({ base: '300px', md: '350px' });
     const fieldHeight = useBreakpointValue({ base: '40px', md: '50px' });
     const inputStyle = {
@@ -57,7 +59,22 @@ const LoginForm: React.FC = () => {
                     const { firstName, lastName, email, role } = response.data.user;
                     const userData = { firstName, lastName, email, role };
                     localStorage.setItem('userData', JSON.stringify(userData));
-                    navigate('/');
+
+                    const globalUser = {
+                        firstName: firstName,
+                        lastName: lastName,
+                        email: email,
+                        role: role,
+                        token: response.data.token,
+                    };
+                    dispatch({ type: 'SET_USER', payload: globalUser });
+                    dispatch({ type: 'SET_IS_LOGGED_IN', payload: true });
+
+                    if (role === 'parent') {
+                        navigate('/parent-dashboard');
+                    } else {
+                        navigate('/tutor-profile');
+                    }
                 } catch (error) {
                     console.error('Login failed:', error);
                     setStatus('failed');

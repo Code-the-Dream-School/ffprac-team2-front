@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Formik, FormikHelpers, Field, FieldProps } from 'formik';
-
 import { tutorValidationSchema } from '../validationSchemas';
 import {
     Box,
@@ -9,40 +8,43 @@ import {
     HStack,
     Spacer,
     Grid,
-    Avatar,
-    AvatarBadge,
     Input,
     VStack,
-    WrapItem,
     FormControl,
     FormErrorMessage,
     FormLabel,
     Textarea,
 } from '@chakra-ui/react';
-
 import { MultiSelect, Option, useMultiSelect } from 'chakra-multiselect';
-import { AddIcon } from '@chakra-ui/icons';
-import avatar from '../assets/avatar.jpg';
 import { TutorRequest } from '../models/interfaces.ts';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { theme } from '../util/theme.ts';
 import { headers } from '../util';
+import UploadImage from '../components/UploadImage.tsx';
+import { useGlobal } from '../context/useGlobal.tsx';
+import AppLoader from '../components/AppLoader.tsx';
+import { useNavigate } from 'react-router-dom';
 
 const TutorProfilePage: React.FC = () => {
     const { firstName, lastName, email } = JSON.parse(localStorage.getItem('userData') ?? '{}');
     const [selectedImage, setSelectedImage] = useState<Blob | null>(null);
+    const { tutor, dispatch } = useGlobal();
+    const [isEditing, setIsEditing] = useState(tutor ? false : true);
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
+
     const [initialValues, setInitialValues] = useState<TutorRequest>({
-        grades: [],
-        about: '',
-        education: '',
-        avatar: '',
-        availability: [],
-        MathSubject: [],
-        ForeignLanguages: [],
-        English: [],
-        SocialStudies: [],
-        Science: [],
-        yearsOfExperience: 1,
+        grades: tutor?.grades || [],
+        about: tutor?.about || '',
+        education: tutor?.education || '',
+        avatar: tutor?.avatar || '',
+        availability: tutor?.availability || [],
+        MathSubject: tutor?.MathSubject || [],
+        ForeignLanguages: tutor?.ForeignLanguages || [],
+        English: tutor?.English || [],
+        SocialStudies: tutor?.SocialStudies || [],
+        Science: tutor?.Science || [],
+        yearsOfExperience: tutor?.yearsOfExperience || 1,
     });
     const tutorData: TutorRequest = {
         //MOCK DATA FOR A MEANWHILE//
@@ -103,37 +105,33 @@ const TutorProfilePage: React.FC = () => {
     };
 
     //FETCHING TUTOR DATA FOR AN UPDATE
+
     useEffect(() => {
         const fetchTutor = async () => {
-            try {
-                console.log(`from logged in user fetching tutor data${headers.Authorization}`);
-                const response = await axios.get(
-                    `${import.meta.env.VITE_REACT_URL}tutors/my-profile`,
-                    {
-                        headers,
+            if (!tutor) {
+                try {
+                    setIsLoading(true);
+                    const response = await axios.get(
+                        `${import.meta.env.VITE_REACT_URL}tutors/my-profile`,
+                        { headers }
+                    );
+                    const { data, status } = response;
+                    if (status === 200) {
+                        setInitialValues(data.tutor);
+                        dispatch({ type: 'SET_TUTOR', payload: data.tutor });
+                        setIsLoading(false);
+                    } else {
+                        throw new Error('Tutor update failed');
                     }
-                );
-                const { data, status } = response;
-                console.log(`after fetching data of tutor response from server: ${data.response}`);
-                if (status === 200) {
-                    console.log('got tutor data');
-                    const { tutor } = data;
-                    console.log(tutor);
-                    console.log('call setInitialValues');
-                    setInitialValues(tutor);
-                    localStorage.setItem('tutorId', tutor._id);
-                    console.log('call setInitialValues done');
-                } else {
-                    throw new Error('Tutor fetch failed');
+                } catch (error) {
+                    console.error('Error getting tutor profile:', error);
+                    setIsLoading(false);
+                    return;
                 }
-            } catch (error: unknown) {
-                if (error && error instanceof AxiosError)
-                    //   assume no profile
-                    console.error('No user profile was created', error.response?.status);
-                return;
             }
         };
         fetchTutor();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     //populating mathSubjectOptions for using in Multiselect Component
@@ -198,36 +196,65 @@ const TutorProfilePage: React.FC = () => {
 
     const handleSubmit = async (values: TutorRequest, actions: FormikHelpers<TutorRequest>) => {
         console.log(`Logger:inside handleSubmit `);
+        let imageUrl;
 
-        const tutorId = localStorage.getItem('tutorId');
-        if (tutorId) {
+        if (selectedImage) {
+            const formData = new FormData();
+            formData.append('image', selectedImage);
+            try {
+                setIsLoading(true);
+                imageUrl = await axios.post(`${import.meta.env.VITE_REACT_URL}uploads`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+                setIsLoading(false);
+            } catch (error) {
+                if (error instanceof Error) {
+                    console.error(error.message);
+                    setIsLoading(false);
+                }
+            }
+        }
+
+        const tutorFormData: TutorRequest = {
+            grades: values.grades,
+            about: values.about,
+            education: values.education,
+            avatar: imageUrl?.data.src,
+            availability: values.availability,
+            yearsOfExperience: values.yearsOfExperience,
+            MathSubject: values.MathSubject,
+            ForeignLanguages: values.ForeignLanguages,
+            English: values.English,
+            SocialStudies: values.SocialStudies,
+            Science: values.Science,
+        };
+
+        if (tutor) {
             const updateTutor = async () => {
                 try {
+                    setIsLoading(true);
                     const response = await axios.patch(
-                        `${import.meta.env.VITE_REACT_URL}tutors/${tutorId}`,
-                        {
-                            grades: values.grades,
-                            about: values.about,
-                            education: values.education,
-                            avatar: values.avatar,
-                            availability: values.availability,
-                            yearsOfExperience: values.yearsOfExperience,
-                            MathSubject: values.MathSubject,
-                            ForeignLanguages: values.ForeignLanguages,
-                            English: values.English,
-                            SocialStudies: values.SocialStudies,
-                            Science: values.Science,
-                        },
+                        `${import.meta.env.VITE_REACT_URL}tutors/${tutor._id}`,
+                        tutorFormData,
                         { headers }
                     );
                     const { data, status } = response;
                     console.log(data);
-                    if (status === 200) console.log('Tutor was updated successfully');
+                    if (status === 200) {
+                        console.log('Tutor was updated successfully');
+                        setSelectedImage(null);
+                        dispatch({ type: 'SET_TUTOR', payload: data.tutor });
+                        setIsLoading(false);
+                        setIsEditing(false);
+                    }
                     if (status !== 200) {
                         throw new Error('Tutor update failed');
                     }
                 } catch (error) {
                     console.error('Error update tutor profile:', error);
+                    setIsLoading(false);
                     return;
                 }
             };
@@ -235,43 +262,37 @@ const TutorProfilePage: React.FC = () => {
         } else {
             const createTutor = async () => {
                 try {
+                    setIsLoading(true);
                     const response = await axios.post(
                         `${import.meta.env.VITE_REACT_URL}tutors`,
-                        {
-                            grades: values.grades,
-                            about: values.about,
-                            education: values.education,
-                            avatar: values.avatar,
-                            availability: values.availability,
-                            yearsOfExperience: values.yearsOfExperience,
-                            MathSubject: values.MathSubject,
-                            ForeignLanguages: values.ForeignLanguages,
-                            English: values.English,
-                            SocialStudies: values.SocialStudies,
-                            Science: values.Science,
-                        },
+                        tutorFormData,
                         { headers }
                     );
                     const { data, status } = response;
                     console.log(data);
                     if (status === 201) {
                         console.log('Tutor was created successfully');
+                        // localStorage.setItem('tutorId', data.tutor._id);
+                        setSelectedImage(null);
+                        dispatch({ type: 'SET_TUTOR', payload: data.tutor });
+                        setIsLoading(false);
+                        setIsEditing(false);
                         actions.resetForm();
                         return;
                     }
-
                     throw new Error('Tutor creation failed');
                 } catch (error) {
                     console.error('Error create tutor profile:', error);
+                    setIsLoading(false);
                     return;
                 }
             };
             createTutor();
         }
     };
-    console.log('rendering initialValues', initialValues);
+    // console.log('rendering initialValues', initialValues);
     return (
-        <Grid display="flex" justifyContent="center" w="full">
+        <Grid display="flex" justifyContent="center" w="full" mb="25px">
             <Formik
                 enableReinitialize
                 onSubmit={handleSubmit}
@@ -283,102 +304,13 @@ const TutorProfilePage: React.FC = () => {
                         <form onSubmit={formik.handleSubmit}>
                             {/* UPPER GRID */}
                             <SimpleGrid minChildWidth="250px" spacing="40px">
-                                <SimpleGrid minChildWidth="150px" spacing="20px" alignItems="start">
-                                    <WrapItem alignItems="center" justifyContent="center">
-                                        <Avatar
-                                            sx={{
-                                                width: '200px',
-                                                height: '200px',
-                                            }}
-                                            src={
-                                                selectedImage
-                                                    ? URL.createObjectURL(selectedImage)
-                                                    : avatar
-                                            }
-                                            name="avatar"
-                                        >
-                                            <AvatarBadge
-                                                sx={{
-                                                    border: 'none',
-                                                    backgroundColor: 'black',
-                                                    width: '50px',
-                                                    height: '50px',
-                                                    marginBottom: 3,
-                                                    cursor: 'pointer',
-                                                }}
-                                                boxSize="0.9em"
-                                            >
-                                                <Button
-                                                    onClick={() => {
-                                                        document
-                                                            .getElementById('fileInput')
-                                                            ?.click();
-                                                    }}
-                                                    style={{
-                                                        backgroundColor: 'transparent',
-                                                        border: 'none',
-                                                        padding: 0,
-                                                    }}
-                                                >
-                                                    <AddIcon
-                                                        sx={{
-                                                            width: '70%',
-                                                            height: '70%',
-                                                            color: '#E7E0D6',
-                                                        }}
-                                                    />
-                                                    <Input
-                                                        id="fileInput"
-                                                        type="file"
-                                                        accept="image/*"
-                                                        hidden
-                                                        onChange={(
-                                                            event: React.ChangeEvent<HTMLInputElement>
-                                                        ) => {
-                                                            const selectedFile =
-                                                                event.target.files?.[0];
-                                                            if (!selectedFile) {
-                                                                return; // Handle no file selected case (optional: display a message)
-                                                            }
-
-                                                            if (
-                                                                !selectedFile.type.match('image/*')
-                                                            ) {
-                                                                console.error(
-                                                                    'Invalid file type selected'
-                                                                );
-                                                                return;
-                                                            }
-
-                                                            const reader = new FileReader();
-
-                                                            reader.onload = (
-                                                                event: ProgressEvent<FileReader>
-                                                            ) => {
-                                                                if (event.target?.result) {
-                                                                    const blob = new Blob(
-                                                                        [
-                                                                            event.target
-                                                                                .result as ArrayBuffer,
-                                                                        ],
-                                                                        { type: selectedFile.type }
-                                                                    );
-                                                                    // Use the blob
-                                                                    setSelectedImage(blob);
-                                                                }
-                                                            };
-
-                                                            reader.readAsArrayBuffer(selectedFile);
-
-                                                            // formik.setFieldValue();
-
-                                                            setSelectedImage(selectedFile);
-                                                        }}
-                                                    />
-                                                </Button>
-                                            </AvatarBadge>
-                                        </Avatar>
-                                    </WrapItem>
+                                <SimpleGrid minChildWidth="150px" spacing="20px">
+                                    <UploadImage
+                                        selectedImage={selectedImage}
+                                        setSelectedImage={setSelectedImage}
+                                        profileImage={tutor?.avatar}
+                                        disabled={!isEditing}
+                                    />
                                     <VStack spacing={3}>
                                         <Input
                                             pointerEvents="none"
@@ -440,6 +372,7 @@ const TutorProfilePage: React.FC = () => {
                                                 h="40px"
                                                 textColor="black.400"
                                                 placeholder={`e.g. MS Berkley`}
+                                                disabled={!isEditing}
                                             />
                                         </FormControl>
                                     </VStack>
@@ -458,6 +391,7 @@ const TutorProfilePage: React.FC = () => {
                                             w="90%"
                                             h="200px"
                                             // placeholder={`${tutorData.about}`}
+                                            disabled={!isEditing}
                                         />
                                         {formik.errors.about && formik.touched.about && (
                                             <FormErrorMessage>
@@ -488,6 +422,7 @@ const TutorProfilePage: React.FC = () => {
                                                             selectedOption
                                                         ); //updates selected options in tutorRequest
                                                     }}
+                                                    disabled={!isEditing}
                                                 />
                                             )}
                                         </Field>
@@ -526,6 +461,7 @@ const TutorProfilePage: React.FC = () => {
                                                                 ); //updates selected options in tutorRequest
                                                             }
                                                         }}
+                                                        disabled={!isEditing}
                                                     />
                                                 )}
                                             </Field>
@@ -559,6 +495,7 @@ const TutorProfilePage: React.FC = () => {
                                                                 ); //updates selected options in tutorRequest
                                                             }
                                                         }}
+                                                        disabled={!isEditing}
                                                     />
                                                 )}
                                             </Field>
@@ -595,6 +532,7 @@ const TutorProfilePage: React.FC = () => {
                                                                 ); //updates selected options in tutorRequest
                                                             }
                                                         }}
+                                                        disabled={!isEditing}
                                                     />
                                                 )}
                                             </Field>
@@ -632,6 +570,7 @@ const TutorProfilePage: React.FC = () => {
                                                                 ); //updates selected options in tutorRequest
                                                             }
                                                         }}
+                                                        disabled={!isEditing}
                                                     />
                                                 )}
                                             </Field>
@@ -666,6 +605,7 @@ const TutorProfilePage: React.FC = () => {
                                                                 ); //updates selected options in tutorRequest
                                                             }
                                                         }}
+                                                        disabled={!isEditing}
                                                     />
                                                 )}
                                             </Field>
@@ -700,10 +640,12 @@ const TutorProfilePage: React.FC = () => {
                                                                 ); //updates selected options in tutorRequest
                                                             }
                                                         }}
+                                                        disabled={!isEditing}
                                                     />
                                                 )}
                                             </Field>
                                         </FormControl>
+                                        {isLoading && <AppLoader />}
                                     </Box>
                                 </Box>
                             </SimpleGrid>
@@ -738,6 +680,7 @@ const TutorProfilePage: React.FC = () => {
                                                             ); //updates selected options in tutorRequest
                                                         }
                                                     }}
+                                                    disabled={!isEditing}
                                                 />
                                             )}
                                         </Field>
@@ -752,24 +695,45 @@ const TutorProfilePage: React.FC = () => {
                                     spacing={10}
                                     mt="30px"
                                 >
-                                    <Button
-                                        type="submit"
-                                        variant="buttonYellow"
-                                        size="lg"
-                                        fontWeight="bold"
-                                        width="175px"
-                                    >
-                                        Save
-                                    </Button>
-                                    <Button
-                                        type="button"
-                                        variant="buttonTeal"
-                                        size="lg"
-                                        fontWeight="bold"
-                                        width="175px"
-                                    >
-                                        Cancel
-                                    </Button>
+                                    {!isEditing ? (
+                                        <Button
+                                            variant="buttonTeal"
+                                            size="lg"
+                                            fontWeight="bold"
+                                            width="175px"
+                                            onClick={() => setIsEditing(true)}
+                                        >
+                                            Edit
+                                        </Button>
+                                    ) : (
+                                        <>
+                                            <Button
+                                                type="submit"
+                                                variant="buttonYellow"
+                                                size="lg"
+                                                fontWeight="bold"
+                                                width="175px"
+                                            >
+                                                Save
+                                            </Button>
+                                            <Button
+                                                type="button"
+                                                variant="buttonTeal"
+                                                size="lg"
+                                                fontWeight="bold"
+                                                width="175px"
+                                                onClick={() => {
+                                                    if (tutor) {
+                                                        setIsEditing(false);
+                                                    } else {
+                                                        navigate('/tutor-dashboard');
+                                                    }
+                                                }}
+                                            >
+                                                Cancel
+                                            </Button>
+                                        </>
+                                    )}
                                 </HStack>
                             </SimpleGrid>
                         </form>

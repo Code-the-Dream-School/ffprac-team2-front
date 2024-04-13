@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Student } from '../models/interfaces';
 import {
     Heading,
@@ -18,11 +18,13 @@ import {
     Stack,
     useDisclosure,
 } from '@chakra-ui/react';
-import avatar from '../assets/avatar.jpg';
-import { EditIcon, CalendarIcon, EmailIcon, DeleteIcon } from '@chakra-ui/icons';
+import avatar from '../assets/avatar.png';
+import { EditIcon, CalendarIcon, EmailIcon } from '@chakra-ui/icons';
 import StudentForm from './StudentForm';
 import { headers } from '../util';
 import axios from 'axios';
+import AlertPopUp from './AlertPopUp';
+import AppLoader from './AppLoader';
 
 interface StudentCardProps {
     student: Student;
@@ -30,17 +32,22 @@ interface StudentCardProps {
 }
 const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const profileImage = student.image ? student.image : avatar;
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleDeleteTutor = async (tutorId: string, subject: string) => {
         try {
+            setIsLoading(true);
             const response = await axios.patch(
                 `${import.meta.env.VITE_REACT_URL}students/${student?._id}`,
                 { tutorToRemove: { tutorId, subject } },
                 { headers }
             );
             setNeedUpdate(true);
+            setIsLoading(false);
             console.log(response);
         } catch (error) {
+            setIsLoading(false);
             console.error(error);
         }
     };
@@ -55,13 +62,13 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => 
         >
             <Stack
                 direction={{ base: 'row', sm: 'column', md: 'row' }}
-                m={{ base: 'auto' }}
+                m={{ base: '5', sm: 'auto' }}
                 display={'flex'}
                 alignItems={'center'}
                 justifyContent={'center'}
                 w={{ base: '100%', sm: '30%' }}
             >
-                <Avatar size={{ base: 'xl', md: '2xl' }} name={student.name} src={avatar} />
+                <Avatar size={{ base: 'xl', md: '2xl' }} name={student.name} src={profileImage} />
                 <Stack direction={{ base: 'row', sm: 'column' }}>
                     <Heading as="h4" size="md">
                         {student.name}
@@ -71,13 +78,13 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => 
             </Stack>
 
             <Stack
-                w={{ base: '100%', sm: '75%' }}
+                w={{ base: '100%', md: '75%' }}
                 display={'flex'}
                 justifyContent={'flex-end'}
                 alignItems={'flex-end'}
             >
-                <CardBody w={{ base: '100%', md: '80%' }}>
-                    <Table variant="unstyled" size="lg">
+                <CardBody w={{ base: '100%', md: '80%' }} p={{ base: '0', sm: '2' }}>
+                    <Table variant="simple" size={{ base: 'sm', md: 'lg' }}>
                         <Thead>
                             <Tr>
                                 <Th>Tutor</Th>
@@ -85,25 +92,39 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => 
                                 <Th></Th>
                             </Tr>
                         </Thead>
+                        {isLoading && <AppLoader />}
                         <Tbody>
                             {student.tutorInfo &&
                                 student.tutorInfo?.length > 0 &&
                                 student.tutorInfo?.map((element) => (
-                                    <Tr key={element.tutorId}>
-                                        <Td p="0">{element.tutorName}</Td>
-                                        <Td p="0">{element.subject}</Td>
-                                        <Td p="0">
-                                            <Flex gap="4">
-                                                <CalendarIcon />
-                                                <EmailIcon />
-                                                <DeleteIcon
-                                                    onClick={() =>
-                                                        handleDeleteTutor(
-                                                            element.tutorId,
-                                                            element.subject
-                                                        )
-                                                    }
-                                                />
+                                    <Tr key={element.tutorId + element.subject}>
+                                        <Td fontSize="md" px={{ base: '0', sm: '4' }}>
+                                            {element.tutorName}
+                                        </Td>
+                                        <Td fontSize="md" px={{ base: '0', sm: '4' }}>
+                                            {element.subject}
+                                        </Td>
+                                        <Td px={{ base: '0', sm: '0' }}>
+                                            <Flex gap={{ base: '1', md: '4' }}>
+                                                <Button backgroundColor="white">
+                                                    <CalendarIcon w="15px" h="15px" />
+                                                </Button>
+                                                <Button backgroundColor="white">
+                                                    <EmailIcon w="18px" h="18px" />
+                                                </Button>
+
+                                                {student && (
+                                                    <AlertPopUp
+                                                        title="Remove subject from student"
+                                                        bgColor="white"
+                                                        onClick={() =>
+                                                            handleDeleteTutor(
+                                                                element.tutorId,
+                                                                element.subject
+                                                            )
+                                                        }
+                                                    />
+                                                )}
                                             </Flex>
                                         </Td>
                                     </Tr>

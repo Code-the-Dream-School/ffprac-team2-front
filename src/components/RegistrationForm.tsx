@@ -18,6 +18,7 @@ import { Formik, Form, Field } from 'formik';
 import axios from 'axios';
 import { RegistrationFormData } from '../models/interfaces';
 import { registrationValidationSchema } from '../validationSchemas';
+import { useGlobal } from '../context/useGlobal';
 
 const labelStyle = {
     fontSize: '14px',
@@ -35,6 +36,7 @@ const tooltipStyle = {
 
 const RegistrationForm: React.FC = () => {
     const navigate = useNavigate();
+    const { dispatch } = useGlobal();
     const fieldLength = useBreakpointValue({ base: '300px', md: '350px' });
     const fieldHeight = useBreakpointValue({ base: '40px', md: '50px' });
     const inputStyle = {
@@ -78,12 +80,28 @@ const RegistrationForm: React.FC = () => {
                         `${import.meta.env.VITE_REACT_URL}auth/register`,
                         requestData
                     );
+
                     const { firstName, lastName, email, role } = response.data.user;
                     const token = response.data.token;
                     localStorage.setItem('token', token);
                     const userData = { firstName, lastName, email, role };
                     localStorage.setItem('userData', JSON.stringify(userData));
-                    navigate('/');
+
+                    const globalUser = {
+                        firstName: firstName,
+                        lastName: lastName,
+                        email: email,
+                        role: role,
+                        token: response.data.token,
+                    };
+                    dispatch({ type: 'SET_USER', payload: globalUser });
+                    dispatch({ type: 'SET_IS_LOGGED_IN', payload: true });
+
+                    if (role === 'parent') {
+                        navigate('/parent-dashboard');
+                    } else {
+                        navigate('/tutor-profile');
+                    }
                 } catch (error) {
                     console.error('Registration failed:', error);
                     setStatus('failed');

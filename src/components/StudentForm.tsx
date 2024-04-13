@@ -14,12 +14,15 @@ import {
     Select,
 } from '@chakra-ui/react';
 import { Field, Formik, FormikHelpers } from 'formik';
-import React from 'react';
+import React, { useState } from 'react';
 import { Student, StudentRequest } from '../models/interfaces';
 import axios from 'axios';
 import { studentSchema } from '../validationSchemas';
 import { headers } from '../util';
 import AlertPopUp from './AlertPopUp';
+import UploadImage from './UploadImage';
+import AppLoader from './AppLoader';
+import Notification from './Notification';
 
 interface StudentFormProps {
     isOpenForm: boolean;
@@ -36,20 +39,53 @@ const StudentForm: React.FC<StudentFormProps> = ({
     student,
     setNeedUpdate,
 }) => {
+    const initialValues: StudentRequest = {
+        name: student?.name || '',
+        grade: student?.grade || '',
+        image: student?.image || '',
+    };
+    const [selectedImage, setSelectedImage] = useState<Blob | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [message, setMessage] = useState('');
+
     const handleSubmit = async (values: StudentRequest, actions: FormikHelpers<StudentRequest>) => {
+        let imageUrl;
+        if (selectedImage) {
+            const formData = new FormData();
+            formData.append('image', selectedImage);
+            try {
+                setIsLoading(true);
+                imageUrl = await axios.post(`${import.meta.env.VITE_REACT_URL}uploads`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+                setIsLoading(false);
+            } catch (error) {
+                if (error instanceof Error) {
+                    setMessage(error.message);
+                    setIsLoading(false);
+                    <Notification message={message} status="error" setToastMessage={setMessage} />;
+                }
+            }
+        }
+
         const newStudent: StudentRequest = {
             name: values.name,
             grade: values.grade,
+            image: imageUrl?.data.src,
         };
         try {
             let response;
             if (title === 'Add Student') {
+                setIsLoading(true);
                 response = await axios.post(
                     `${import.meta.env.VITE_REACT_URL}students`,
                     newStudent,
                     { headers }
                 );
             } else {
+                setIsLoading(true);
                 response = await axios.patch(
                     `${import.meta.env.VITE_REACT_URL}students/${student?._id}`,
                     newStudent,
@@ -60,21 +96,51 @@ const StudentForm: React.FC<StudentFormProps> = ({
             console.log(studentData);
             actions.resetForm();
             onCloseForm();
+            setSelectedImage(null);
+            setIsLoading(false);
+            setMessage(response?.data.message);
+            <Notification
+                message={response?.data.message}
+                status="success"
+                setToastMessage={setMessage}
+            />;
             setNeedUpdate(true);
         } catch (error) {
-            console.error('Error submitting form:', error);
+            if (error instanceof Error) {
+                setIsLoading(false);
+                setMessage(error.message);
+                <Notification message={message} status="error" setToastMessage={setMessage} />;
+                console.error('Error submitting form:', error);
+            }
         }
     };
 
     const deleteStudent = async () => {
         try {
-            await axios.delete(`${import.meta.env.VITE_REACT_URL}students/${student?._id}`, {
-                headers,
-            });
+            setIsLoading(true);
+            const response = await axios.delete(
+                `${import.meta.env.VITE_REACT_URL}students/${student?._id}`,
+                {
+                    headers,
+                }
+            );
+
             onCloseForm();
+            setMessage(response?.data.message);
+            <Notification
+                message={response?.data.message}
+                status="success"
+                setToastMessage={setMessage}
+            />;
             setNeedUpdate(true);
+            setIsLoading(false);
         } catch (error) {
-            console.error('Error deleting product:', error);
+            if (error instanceof Error) {
+                setIsLoading(false);
+                setMessage(error.message);
+                <Notification message={message} status="error" setToastMessage={setMessage} />;
+                console.error('Error deleting product:', error);
+            }
         }
     };
 
@@ -86,17 +152,20 @@ const StudentForm: React.FC<StudentFormProps> = ({
                     <Formik
                         onSubmit={handleSubmit}
                         validationSchema={studentSchema}
-                        initialValues={{
-                            name: student?.name || '',
-                            grade: student?.grade || '',
-                        }}
+                        initialValues={initialValues}
                     >
                         {(formik) => (
                             <ModalContent backgroundColor="#E7E0D6">
                                 <form onSubmit={formik.handleSubmit}>
                                     <ModalHeader>{title}</ModalHeader>
+                                    {isLoading && <AppLoader />}
                                     <ModalCloseButton />
                                     <ModalBody pb={6}>
+                                        <UploadImage
+                                            selectedImage={selectedImage}
+                                            setSelectedImage={setSelectedImage}
+                                            profileImage={student?.image}
+                                        />
                                         <FormControl
                                             isRequired
                                             isInvalid={
@@ -160,11 +229,20 @@ const StudentForm: React.FC<StudentFormProps> = ({
                                         <Button
                                             backgroundColor="#59D3C8"
                                             mr={3}
-                                            onClick={onCloseForm}
+                                            onClick={() => {
+                                                setSelectedImage(null);
+                                                onCloseForm();
+                                            }}
                                         >
                                             Cancel
                                         </Button>
-                                        {student && <AlertPopUp onClick={deleteStudent} />}
+                                        {student && (
+                                            <AlertPopUp
+                                                title="Delete Student"
+                                                bgColor="#E7E0D6"
+                                                onClick={deleteStudent}
+                                            />
+                                        )}
                                     </ModalFooter>
                                 </form>
                             </ModalContent>

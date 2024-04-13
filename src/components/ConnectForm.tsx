@@ -22,6 +22,7 @@ import axios from 'axios';
 import { headers } from '../util';
 import { useGlobal } from '../context/useGlobal';
 import { useNavigate } from 'react-router-dom';
+import AppLoader from './AppLoader';
 
 interface ConnectFormProps {
     isOpen: boolean;
@@ -47,6 +48,7 @@ const ConnectForm: React.FC<ConnectFormProps> = ({ isOpen, onClose, tutor }) => 
     const { students } = useGlobal();
     const [isOptionSelected, setIsOptionSelected] = useState(false);
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
 
     const fieldsToDisplay: (keyof Tutor)[] = [
         'MathSubject',
@@ -68,6 +70,7 @@ const ConnectForm: React.FC<ConnectFormProps> = ({ isOpen, onClose, tutor }) => 
         };
 
         try {
+            setIsLoading(true);
             const response = await axios.patch(
                 `${import.meta.env.VITE_REACT_URL}students/${values.studentId}`,
                 { tutorInfo: [connectionData] },
@@ -78,9 +81,11 @@ const ConnectForm: React.FC<ConnectFormProps> = ({ isOpen, onClose, tutor }) => 
             console.log(studentData);
             actions.resetForm();
             setIsOptionSelected(false);
+            setIsLoading(false);
             onClose();
             navigate('/parent-dashboard');
         } catch (error) {
+            setIsLoading(false);
             console.error('Error submitting form:', error);
         }
     };
@@ -108,7 +113,7 @@ const ConnectForm: React.FC<ConnectFormProps> = ({ isOpen, onClose, tutor }) => 
                     {(formik) => (
                         <ModalContent backgroundColor="#E7E0D6">
                             <form onSubmit={formik.handleSubmit}>
-                                <ModalHeader></ModalHeader>
+                                <ModalHeader>{isLoading && <AppLoader />}</ModalHeader>
                                 <ModalCloseButton />
                                 <ModalBody pb={6}>
                                     <FormControl
@@ -192,11 +197,11 @@ const ConnectForm: React.FC<ConnectFormProps> = ({ isOpen, onClose, tutor }) => 
                                             return (
                                                 <FormControl key={field} mt={4}>
                                                     <FormLabel fontSize="14px" fontWeight="400">
-                                                        {field}
+                                                        {field === 'MathSubject' ? 'Math' : field}
                                                     </FormLabel>
                                                     <Field
                                                         as={Select}
-                                                        placeholder={`Select ${field}`}
+                                                        placeholder={`Select ${field === 'MathSubject' ? 'Math' : field}`}
                                                         backgroundColor="white"
                                                         name={'subject'}
                                                         onChange={(event: SelectChangeEvent) => {

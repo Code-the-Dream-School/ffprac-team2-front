@@ -2,9 +2,20 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Flex, Box, Text, useBreakpointValue } from '@chakra-ui/react';
 
-const Footer: React.FC = () => {
+type FooterProps = {
+    sizeHeader: {
+        maxWidth: string;
+        margin: string;
+    };
+};
+
+const Footer: React.FC<FooterProps> = ({ sizeHeader }) => {
     const currentYear = new Date().getFullYear();
     const fontSize = useBreakpointValue({ base: '16px', md: '20px' });
+    const headerStyles = {
+        maxWidth: sizeHeader.maxWidth,
+        margin: sizeHeader.margin,
+    };
     const linkStyle = {
         fontSize: fontSize,
         marginRight: '20px',
@@ -12,7 +23,7 @@ const Footer: React.FC = () => {
     };
 
     return (
-        <Box as="footer" className="footer">
+        <Box as="footer" className="footer" {...headerStyles} width={'full'}>
             <Flex
                 justifyContent="space-between"
                 alignItems="center"

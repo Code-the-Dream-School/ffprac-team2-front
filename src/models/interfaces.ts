@@ -11,6 +11,7 @@ export interface Student {
     createdAt: string;
     parentId: string;
     updatedAt: string;
+    image: string;
     tutorInfo?: StudentTutorInfo[];
 }
 
@@ -25,6 +26,7 @@ export interface TutorStudents {
 export interface StudentRequest {
     name: string;
     grade: string;
+    image?: string;
 }
 
 export interface RegistrationFormData {
@@ -60,6 +62,7 @@ export interface Tutor {
     SocialStudies: string[];
     Science: string[];
     _id: string;
+    _v?: number;
 }
 
 export interface TutorConnectionRequest {
@@ -77,15 +80,7 @@ export interface TableSearchProps {
     setSubjectQuery: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export interface GlobalState {
-    // isLoggedIn: boolean;
-    // user: User | null;
-    students: Student[] | [];
-    // teacherSearchResults: string[];
-    updateStudents: () => Promise<void>;
-}
-
-//interface for tutorProfilePage form assembele
+//interface for tutorProfilePage form assemble
 export interface TutorRequest {
     availability: string[];
     about: string;
@@ -101,4 +96,12 @@ export interface TutorRequest {
 }
 export interface AuthPageProps {
     activeTab: 'register' | 'login';
+}
+
+export interface User {
+    firstName: string;
+    lastName: string;
+    email: string;
+    role: 'parent' | 'tutor';
+    token: string;
 }
