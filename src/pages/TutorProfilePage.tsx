@@ -73,7 +73,7 @@ const TutorProfilePage: React.FC = () => {
             'SAT Math Test Prep',
             'ACT Math Test Prep',
         ],
-        ForeignLanguages: ['Spanish', 'French', 'Chineese', 'German', 'Latin'],
+        ForeignLanguages: ['Spanish', 'French', 'Chinese', 'German', 'Latin'],
         English: [
             'Writing',
             'Reading',
@@ -303,8 +303,8 @@ const TutorProfilePage: React.FC = () => {
                     <Grid width="90%" mt={7}>
                         <form onSubmit={formik.handleSubmit}>
                             {/* UPPER GRID */}
-                            <SimpleGrid minChildWidth="250px" spacing="40px">
-                                <SimpleGrid minChildWidth="150px" spacing="20px">
+                            <SimpleGrid minChildWidth="16rem" spacing="2.5rem">
+                                <SimpleGrid minChildWidth="10rem" spacing="20px" alignItems="start">
                                     <UploadImage
                                         selectedImage={selectedImage}
                                         setSelectedImage={setSelectedImage}
@@ -344,39 +344,8 @@ const TutorProfilePage: React.FC = () => {
                                             variant={'disable'}
                                             bgColor={theme.styles.global.body.bg}
                                         />
-                                        <Spacer />
-                                        <Spacer />
-                                        <Spacer />
-                                        <Spacer />
-                                        <Spacer />
-                                        <Spacer />
-                                        <Spacer />
-                                        <Spacer />
-                                        <Spacer />
-                                        <Spacer />
-                                        <Spacer />
-                                        <Spacer />
-                                        <FormControl
-                                            isInvalid={
-                                                !!(
-                                                    formik.errors.education &&
-                                                    formik.touched.education
-                                                )
-                                            }
-                                        >
-                                            <FormLabel>Education</FormLabel>
-                                            <Field
-                                                as={Input}
-                                                backgroundColor="white"
-                                                name="education"
-                                                h="40px"
-                                                textColor="black.400"
-                                                placeholder={`e.g. MS Berkley`}
-                                                disabled={!isEditing}
-                                            />
-                                        </FormControl>
                                     </VStack>
-                                    <Spacer />
+                                    {/* <Spacer /> */}
                                 </SimpleGrid>
                                 <VStack>
                                     <FormControl
@@ -388,7 +357,6 @@ const TutorProfilePage: React.FC = () => {
                                             backgroundColor="white"
                                             name="about"
                                             textColor="black"
-                                            w="90%"
                                             h="200px"
                                             // placeholder={`${tutorData.about}`}
                                             disabled={!isEditing}
@@ -400,74 +368,61 @@ const TutorProfilePage: React.FC = () => {
                                         )}
                                     </FormControl>
                                     <Spacer />
-
-                                    {/* Experience*/}
+                                </VStack>
+                            </SimpleGrid>
+                            {/* MULTiSELECTS GRID */}
+                            <SimpleGrid minChildWidth="250px" spacing="40px">
+                                <Box>
+                                    <FormControl
+                                        isInvalid={
+                                            !!(formik.errors.education && formik.touched.education)
+                                        }
+                                    >
+                                        <FormLabel>Education</FormLabel>
+                                        <Field
+                                            as={Input}
+                                            backgroundColor="white"
+                                            name="education"
+                                            h="40px"
+                                            textColor="black.400"
+                                            placeholder={`e.g. MS Berkley`}
+                                            disabled={!isEditing}
+                                        />
+                                    </FormControl>
                                     <FormControl>
-                                        <Field name="yearsOfExperience">
+                                        <Field name="English">
                                             {({ field, form }: FieldProps) => (
                                                 <MultiSelect
                                                     {...field}
-                                                    options={yearsOfExperienceOptions}
-                                                    value={{
-                                                        label: form.values.yearsOfExperience,
-                                                        value: form.values.yearsOfExperience,
-                                                    }} //for displaying selected values
-                                                    label="Experience (in years)"
-                                                    single
-                                                    onChange={(selectedOption) => {
-                                                        console.log(field.name, selectedOption);
-                                                        console.log(form);
-                                                        form.setFieldValue(
-                                                            field.name,
-                                                            selectedOption
-                                                        ); //updates selected options in tutorRequest
+                                                    options={EnglishOptions}
+                                                    value={form.values.English.map(
+                                                        (item: Option) => {
+                                                            return {
+                                                                label: item,
+                                                                value: item,
+                                                            };
+                                                        }
+                                                    )}
+                                                    label="English"
+                                                    onChange={(
+                                                        selectedOption: Option[] | Option
+                                                    ) => {
+                                                        if (Array.isArray(selectedOption)) {
+                                                            form.setFieldValue(
+                                                                field.name,
+                                                                selectedOption.map(
+                                                                    (item: Option) => item.value
+                                                                )
+                                                            ); //updates selected options in tutorRequest
+                                                        }
                                                     }}
                                                     disabled={!isEditing}
                                                 />
                                             )}
                                         </Field>
                                     </FormControl>
-                                </VStack>
-                            </SimpleGrid>
-                            {/* MULTiSELECTS GRID */}
-                            <SimpleGrid minChildWidth="250px" spacing="40px">
-                                <Box>
-                                    {/* ENGLISH*/}
-                                    <Box maxW="35em" p="3px">
-                                        <FormControl>
-                                            <Field name="English">
-                                                {({ field, form }: FieldProps) => (
-                                                    <MultiSelect
-                                                        {...field}
-                                                        options={EnglishOptions}
-                                                        value={form.values.English.map(
-                                                            (item: Option) => {
-                                                                return {
-                                                                    label: item,
-                                                                    value: item,
-                                                                };
-                                                            }
-                                                        )}
-                                                        label="English"
-                                                        onChange={(
-                                                            selectedOption: Option[] | Option
-                                                        ) => {
-                                                            if (Array.isArray(selectedOption)) {
-                                                                form.setFieldValue(
-                                                                    field.name,
-                                                                    selectedOption.map(
-                                                                        (item: Option) => item.value
-                                                                    )
-                                                                ); //updates selected options in tutorRequest
-                                                            }
-                                                        }}
-                                                        disabled={!isEditing}
-                                                    />
-                                                )}
-                                            </Field>
-                                        </FormControl>
-                                    </Box>
-                                    <Box maxW="35em" p="3px">
+
+                                    <Box id="SocialStudies">
                                         <FormControl>
                                             <Field name="SocialStudies">
                                                 {({ field, form }: FieldProps) => (
@@ -504,7 +459,7 @@ const TutorProfilePage: React.FC = () => {
 
                                     {/* SCIENCE */}
 
-                                    <Box maxW="35em" p="3px">
+                                    <Box>
                                         <FormControl>
                                             <Field name="Science">
                                                 {({ field, form }: FieldProps) => (
@@ -541,9 +496,35 @@ const TutorProfilePage: React.FC = () => {
                                 </Box>
 
                                 <Box>
-                                    {/* MATH*/}
-                                    <Box maxW="35em" p="3px">
+                                    <Box>
+                                        {/* Experience*/}
                                         <FormControl>
+                                            <Field name="yearsOfExperience">
+                                                {({ field, form }: FieldProps) => (
+                                                    <MultiSelect
+                                                        {...field}
+                                                        options={yearsOfExperienceOptions}
+                                                        value={{
+                                                            label: form.values.yearsOfExperience,
+                                                            value: form.values.yearsOfExperience,
+                                                        }} //for displaying selected values
+                                                        label="Experience (in years)"
+                                                        single
+                                                        onChange={(selectedOption) => {
+                                                            console.log(field.name, selectedOption);
+                                                            console.log(form);
+                                                            form.setFieldValue(
+                                                                field.name,
+                                                                selectedOption
+                                                            ); //updates selected options in tutorRequest
+                                                        }}
+                                                        disabled={!isEditing}
+                                                    />
+                                                )}
+                                            </Field>
+                                        </FormControl>
+                                        <FormControl>
+                                            {/* MATH*/}
                                             <Field name="MathSubject">
                                                 {({ field, form }: FieldProps) => (
                                                     <MultiSelect
@@ -575,9 +556,10 @@ const TutorProfilePage: React.FC = () => {
                                                 )}
                                             </Field>
                                         </FormControl>
+                                        {isLoading && <AppLoader />}
                                     </Box>
                                     {/* FOREIGN LANGUAGES */}
-                                    <Box maxW="35em" p="3px">
+                                    <Box p="3px">
                                         <FormControl>
                                             <Field name="ForeignLanguages">
                                                 {({ field, form }: FieldProps) => (
@@ -612,7 +594,7 @@ const TutorProfilePage: React.FC = () => {
                                         </FormControl>
                                     </Box>
                                     {/* GRADES*/}
-                                    <Box maxW="35em" p="3px">
+                                    <Box p="3px">
                                         <FormControl>
                                             <Field name="grades">
                                                 {({ field, form }: FieldProps) => (
@@ -645,14 +627,13 @@ const TutorProfilePage: React.FC = () => {
                                                 )}
                                             </Field>
                                         </FormControl>
-                                        {isLoading && <AppLoader />}
                                     </Box>
                                 </Box>
                             </SimpleGrid>
                             {/* BOTTOM GRID */}
-                            <SimpleGrid minChildWidth="250px" spacing="40px">
+                            <SimpleGrid spacing="40px">
                                 {/* AVAILABILITY */}
-                                <Box maxW="35em" p="3px">
+                                <Box>
                                     <FormControl>
                                         <Field name="availability">
                                             {({ field, form }: FieldProps) => (

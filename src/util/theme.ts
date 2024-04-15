@@ -49,7 +49,7 @@ export const theme = extendTheme({
                 },
                 control: {
                     ...MultiSelectTheme.baseStyle(props).control,
-                    maxWidth: '380px',
+                    // maxWidth: '380px',
                     minWidth: '250px',
                 },
                 button: {
