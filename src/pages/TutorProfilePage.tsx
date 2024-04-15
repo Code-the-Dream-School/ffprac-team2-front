@@ -73,7 +73,7 @@ const TutorProfilePage: React.FC = () => {
             'SAT Math Test Prep',
             'ACT Math Test Prep',
         ],
-        ForeignLanguages: ['Spanish', 'French', 'Chineese', 'German', 'Latin'],
+        ForeignLanguages: ['Spanish', 'French', 'Chinese', 'German', 'Latin'],
         English: [
             'Writing',
             'Reading',

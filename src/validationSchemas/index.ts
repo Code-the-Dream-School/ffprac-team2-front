@@ -108,7 +108,7 @@ export const tutorValidationSchema = yup.object().shape({
             ])
     ),
     ForeignLanguages: yup.array(
-        yup.string().oneOf(['Spanish', 'French', 'Chineese', 'German', 'Latin'])
+        yup.string().oneOf(['Spanish', 'French', 'Chinese', 'German', 'Latin'])
     ),
     English: yup.array(
         yup
