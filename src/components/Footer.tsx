@@ -26,22 +26,30 @@ const Footer: React.FC<FooterProps> = ({ sizeHeader }) => {
         <Box as="footer" className="footer" {...headerStyles} width={'full'}>
             <Flex
                 justifyContent="space-between"
-                alignItems="center"
+                alignItems={{ base: 'left', sm: 'center' }}
                 direction={{ base: 'column-reverse', md: 'row' }}
                 padding={3}
             >
                 <Text
                     fontSize="sm"
-                    marginLeft={'10px'}
+                    marginLeft={{ base: '0px', sm: '10px' }}
                 >{`@ ${currentYear} All Rights Reserved`}</Text>
-                <Flex marginBottom={{ base: '4px', md: '0' }}>
+                <Flex
+                    marginBottom={{ base: '4px', md: '0' }}
+                    direction={{ base: 'column', sm: 'row' }}
+                >
                     <Link to="/about" style={linkStyle}>
                         About
                     </Link>
                     <Link to="/team" style={linkStyle}>
                         Our Team
                     </Link>
-                    <Link to="/api-docs" style={linkStyle}>
+                    <Link
+                        to="https://ffprac-team2-back.onrender.com/docs"
+                        style={linkStyle}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
                         API Documentation
                     </Link>
                 </Flex>
