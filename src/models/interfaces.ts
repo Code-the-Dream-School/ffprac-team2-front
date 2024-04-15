@@ -104,3 +104,10 @@ export interface User {
     role: 'parent' | 'tutor';
     token: string;
 }
+
+export interface Member {
+    name: string;
+    role: string;
+    image: string;
+    description: string;
+}

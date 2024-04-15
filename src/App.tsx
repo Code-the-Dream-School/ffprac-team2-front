@@ -9,6 +9,7 @@ import TutorProfilePage from './pages/TutorProfilePage';
 import TutorSearchPage from './pages/TutorSearchPage';
 import AboutPage from './pages/AboutPage';
 import NotFoundPage from './pages/NotFoundPage';
+import OurTeamPage from './pages/OurTeam';
 
 const App = () => {
     return (
@@ -24,6 +25,7 @@ const App = () => {
                     <Route path="/about" element={<AboutPage />} />
                     <Route path="/notFound" element={<NotFoundPage />} />
                     <Route path="*" element={<Navigate replace to="/notFound" />} />
+                    <Route path="/team" element={<OurTeamPage />} />
                 </Route>
             </Routes>
         </>
