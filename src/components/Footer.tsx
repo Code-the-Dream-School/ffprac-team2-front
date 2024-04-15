@@ -44,7 +44,12 @@ const Footer: React.FC<FooterProps> = ({ sizeHeader }) => {
                     <Link to="/team" style={linkStyle}>
                         Our Team
                     </Link>
-                    <Link to="https://ffprac-team2-back.onrender.com/docs" style={linkStyle} target="_blank" rel="noopener noreferrer">
+                    <Link
+                        to="https://ffprac-team2-back.onrender.com/docs"
+                        style={linkStyle}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
                         API Documentation
                     </Link>
                 </Flex>
