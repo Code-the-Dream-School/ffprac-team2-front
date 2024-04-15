@@ -1,19 +1,30 @@
 import React, { useState } from 'react';
-import { Box, Button, Text, Flex, Avatar, Heading, Card, CardHeader, CardBody } from '@chakra-ui/react';
+import {
+    Box,
+    Button,
+    Text,
+    Flex,
+    Avatar,
+    Heading,
+    Card,
+    CardHeader,
+    CardBody,
+} from '@chakra-ui/react';
 import { Member } from '../models/interfaces';
 
-
-const MemberCard: React.FC<Member> = ({ name, role, image, description, }) => {
+const MemberCard: React.FC<Member> = ({ name, role, image, description }) => {
     const MAX_LENGTH = 250;
     const [isExpanded, setIsExpanded] = useState(false);
     const itCanOverflowButton = description && description.length > MAX_LENGTH;
 
     const getDescription = () => {
         if (!description) {
-            return "";
-        } else if (name === "Team Mentors") {
+            return '';
+        } else if (name === 'Team Mentors') {
             return description.split(',').map((name, index) => (
-                <Text key={index} fontWeight="bold">{name.trim()}</Text>
+                <Text key={index} fontWeight="bold">
+                    {name.trim()}
+                </Text>
             ));
         } else if (isExpanded || description.length <= MAX_LENGTH) {
             return description;
@@ -22,12 +33,20 @@ const MemberCard: React.FC<Member> = ({ name, role, image, description, }) => {
         }
     };
     return (
-        <Card maxW='md' overflowY='scroll' fontSize={{ base: '16px', lg: '18px' }} margin="1rem" minH={'300px'}>
+        <Card
+            maxW="md"
+            overflowY="scroll"
+            fontSize={{ base: '16px', lg: '18px' }}
+            margin="1rem"
+            minH={'300px'}
+        >
             <CardHeader>
-                <Flex gap={2} alignItems='center'>
+                <Flex gap={2} alignItems="center">
                     <Avatar name={name} size={{ base: 'md', md: 'xl' }} src={image} />
                     <Box>
-                        <Heading size='sm' fontWeight="bold" >{name}</Heading>
+                        <Heading size="sm" fontWeight="bold">
+                            {name}
+                        </Heading>
                         <Text fontWeight="bold">{role}</Text>
                     </Box>
                 </Flex>
@@ -35,13 +54,16 @@ const MemberCard: React.FC<Member> = ({ name, role, image, description, }) => {
             <CardBody>
                 <Text>{getDescription()}</Text>
                 {itCanOverflowButton && (
-                    <Button onClick={() => setIsExpanded(!isExpanded)} variant="link" color="blue.500">
+                    <Button
+                        onClick={() => setIsExpanded(!isExpanded)}
+                        variant="link"
+                        color="blue.500"
+                    >
                         {isExpanded ? 'See less' : 'See more...'}
                     </Button>
                 )}
             </CardBody>
         </Card>
-
     );
 };
 
