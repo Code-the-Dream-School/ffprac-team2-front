@@ -34,8 +34,8 @@ const Navigation: React.FC = () => {
 
     // Close drawer on outside click
     useEffect(() => {
-        const closeOnOutsideClick = (event: any) => {
-            if (isOpen && cancelRef.current && !cancelRef.current.contains(event.target)) {
+        const closeOnOutsideClick = (event: MouseEvent) => {
+            if (isOpen && cancelRef.current && !cancelRef.current.contains(event.target as Node)) {
                 onClose();
             }
         };
@@ -190,7 +190,13 @@ const Navigation: React.FC = () => {
                         zIndex="overlay"
                     >
                         <VStack spacing={4} bg="#E7E0D6" p={4} onClick={onClose}>
-                            <Link as={NavLink} fontSize="20px" to="/" onClick={onClose}>
+                            <Link
+                                as={NavLink}
+                                fontSize="20px"
+                                _hover={{ textDecoration: 'none' }}
+                                to="/"
+                                onClick={onClose}
+                            >
                                 Home
                             </Link>
 
@@ -198,6 +204,7 @@ const Navigation: React.FC = () => {
                                 <Link
                                     as={NavLink}
                                     fontSize="20px"
+                                    _hover={{ textDecoration: 'none' }}
                                     to="/tutordashboard"
                                     onClick={onClose}
                                 >
@@ -209,13 +216,20 @@ const Navigation: React.FC = () => {
                                 <Link
                                     as={NavLink}
                                     fontSize="20px"
+                                    _hover={{ textDecoration: 'none' }}
                                     to="/parent-dashboard"
                                     onClick={onClose}
                                 >
                                     My Dashboard
                                 </Link>
                             )}
-                            <Link as={NavLink} fontSize="20px" to="/tutorsearch" onClick={onClose}>
+                            <Link
+                                as={NavLink}
+                                fontSize="20px"
+                                _hover={{ textDecoration: 'none' }}
+                                to="/tutorsearch"
+                                onClick={onClose}
+                            >
                                 Browse Tutors
                             </Link>
                             {isLoggedIn && role === 'tutor' && (
