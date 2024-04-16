@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { IoLogOutSharp } from 'react-icons/io5';
+import { IoLogOutSharp, IoCloseCircleOutline } from 'react-icons/io5';
 
 const Navigation: React.FC = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -74,10 +74,16 @@ const Navigation: React.FC = () => {
             >
                 {/* Mobile Menu Icon */}
                 <IconButton
-                    icon={<HamburgerIcon h="sg" w="sg" />}
-                    onClick={onOpen}
+                    icon={
+                        isOpen ? (
+                            <IoCloseCircleOutline size="24px" />
+                        ) : (
+                            <HamburgerIcon h="20px" w="20px" />
+                        )
+                    }
+                    onClick={isOpen ? onClose : onOpen}
                     display={{ base: 'flex', md: 'none' }}
-                    aria-label="Open Menu"
+                    aria-label={isOpen ? 'Close Menu' : 'Open Menu'}
                     bg="#E7E0D6"
                     _hover={{ bg: '#E7E0D6' }}
                     color="black"
@@ -95,7 +101,8 @@ const Navigation: React.FC = () => {
                     <Link
                         as={NavLink}
                         to="/"
-                        fontSize="20px"
+                        fontSize="14px"
+                        fontWeight="bold"
                         _hover={{ textDecoration: 'none', color: 'yellow.950' }}
                     >
                         Home
@@ -106,7 +113,8 @@ const Navigation: React.FC = () => {
                             <Button
                                 as={NavLink}
                                 to="/tutordashboard"
-                                fontSize="20px"
+                                fontSize="14px"
+                                fontWeight="bold"
                                 _hover={{ textDecoration: 'none', color: 'yellow.950' }}
                                 bg="#E7E0D6"
                             >
@@ -119,7 +127,8 @@ const Navigation: React.FC = () => {
                         <Button
                             as={NavLink}
                             to="/parent-dashboard"
-                            fontSize="20px"
+                            fontSize="14px"
+                            fontWeight="bold"
                             _hover={{ textDecoration: 'none', color: 'yellow.950' }}
                             bg="#E7E0D6"
                         >
@@ -130,7 +139,8 @@ const Navigation: React.FC = () => {
                     <Button
                         as={NavLink}
                         to="/tutorsearch"
-                        fontSize="20px"
+                        fontSize="14px"
+                        fontWeight="bold"
                         ml={{ base: '2rem', sm: '1px' }}
                         mr={{ base: '2rem', sm: '1px' }}
                         bg="#F4CD76"
@@ -157,7 +167,8 @@ const Navigation: React.FC = () => {
                         <IconButton
                             icon={<IoLogOutSharp size="2rem" />}
                             onClick={handleLogout}
-                            fontSize="20px"
+                            fontSize="14px"
+                            fontWeight="bold"
                             variant="unstyled"
                             aria-label="Logout"
                         />
@@ -167,7 +178,8 @@ const Navigation: React.FC = () => {
                         <Button
                             as={NavLink}
                             to="/auth"
-                            fontSize="20px"
+                            fontSize="14px"
+                            fontWeight="bold"
                             bg="#59D3C8"
                             _hover={{ bg: '#59D3C8' }}
                             size="navigation"
@@ -192,7 +204,8 @@ const Navigation: React.FC = () => {
                         <VStack spacing={4} bg="#E7E0D6" p={4} onClick={onClose}>
                             <Link
                                 as={NavLink}
-                                fontSize="20px"
+                                fontSize="14px"
+                                fontWeight="bold"
                                 _hover={{ textDecoration: 'none' }}
                                 to="/"
                                 onClick={onClose}
@@ -203,7 +216,8 @@ const Navigation: React.FC = () => {
                             {isLoggedIn && role === 'tutor' && (
                                 <Link
                                     as={NavLink}
-                                    fontSize="20px"
+                                    fontSize="14px"
+                                    fontWeight="bold"
                                     _hover={{ textDecoration: 'none' }}
                                     to="/tutordashboard"
                                     onClick={onClose}
@@ -215,7 +229,8 @@ const Navigation: React.FC = () => {
                             {isLoggedIn && role === 'parent' && (
                                 <Link
                                     as={NavLink}
-                                    fontSize="20px"
+                                    fontSize="14px"
+                                    fontWeight="bold"
                                     _hover={{ textDecoration: 'none' }}
                                     to="/parent-dashboard"
                                     onClick={onClose}
@@ -223,20 +238,25 @@ const Navigation: React.FC = () => {
                                     My Dashboard
                                 </Link>
                             )}
-                            <Link
+                            <Button
                                 as={NavLink}
-                                fontSize="20px"
-                                _hover={{ textDecoration: 'none' }}
                                 to="/tutorsearch"
+                                fontSize="14px"
+                                fontWeight="bold"
+                                bg="#F4CD76"
+                                height="30px"
+                                width="150px"
+                                _hover={{ bg: 'grey.400' }}
                                 onClick={onClose}
                             >
                                 Browse Tutors
-                            </Link>
+                            </Button>
                             {isLoggedIn && role === 'tutor' && (
                                 <>
                                     <Avatar
                                         as={NavLink}
-                                        fontSize="20px"
+                                        fontSize="10px"
+                                        fontWeight="bold"
                                         to="/tutor-profile"
                                         onClick={onClose}
                                         bg="#D9D9D9"
@@ -247,14 +267,22 @@ const Navigation: React.FC = () => {
                                 </>
                             )}
                             {isLoggedIn ? (
-                                <IconButton
-                                    icon={<IoLogOutSharp size="2rem" />}
-                                    onClick={handleLogout}
-                                    variant="unstyled"
-                                    aria-label="Logout"
-                                />
+                                <Flex align="center" justify="center" ml="15px">
+                                    <IconButton
+                                        icon={<IoLogOutSharp size="2rem" />}
+                                        onClick={handleLogout}
+                                        variant="unstyled"
+                                        aria-label="Logout"
+                                    />
+                                </Flex>
                             ) : (
-                                <Link as={NavLink} fontSize="20px" to="/auth" onClick={onClose}>
+                                <Link
+                                    as={NavLink}
+                                    fontSize="14px"
+                                    fontWeight="bold"
+                                    to="/auth"
+                                    onClick={onClose}
+                                >
                                     Login
                                 </Link>
                             )}
