@@ -19,7 +19,7 @@ import { MultiSelect, Option, useMultiSelect } from 'chakra-multiselect';
 import { TutorRequest } from '../models/interfaces.ts';
 import axios from 'axios';
 import { theme } from '../util/theme.ts';
-import { headers } from '../util';
+import { headers, getHeaders } from '../util';
 import UploadImage from '../components/UploadImage.tsx';
 import { useGlobal } from '../context/useGlobal.tsx';
 import AppLoader from '../components/AppLoader.tsx';
@@ -113,7 +113,7 @@ const TutorProfilePage: React.FC = () => {
                     setIsLoading(true);
                     const response = await axios.get(
                         `${import.meta.env.VITE_REACT_URL}tutors/my-profile`,
-                        { headers }
+                        { headers: getHeaders() } //getting headers for get request to be authorized 
                     );
                     const { data, status } = response;
                     if (status === 200) {
