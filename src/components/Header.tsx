@@ -44,7 +44,11 @@ const Header: React.FC<HeaderProps> = ({ sizeHeader }) => {
                         mb={{ base: 2, md: 0 }}
                         ml={{ base: 0, md: 4 }}
                     />
-                    <Text fontSize={{ base: '20px', md: '29px' }} fontFamily="'Inter', sans-serif">
+                    <Text
+                        fontSize={{ base: '14px', md: '18px' }}
+                        fontWeight="bold"
+                        fontFamily="'Inter', sans-serif"
+                    >
                         GetYourTutor
                     </Text>
                 </Flex>
