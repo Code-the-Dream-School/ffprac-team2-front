@@ -12,6 +12,7 @@ import {
     ModalHeader,
     ModalOverlay,
     Select,
+    useToast,
 } from '@chakra-ui/react';
 import { Field, Formik, FormikHelpers } from 'formik';
 import React, { useState } from 'react';
@@ -22,7 +23,6 @@ import { headers } from '../util';
 import AlertPopUp from './AlertPopUp';
 import UploadImage from './UploadImage';
 import AppLoader from './AppLoader';
-import Notification from './Notification';
 
 interface StudentFormProps {
     isOpenForm: boolean;
@@ -46,7 +46,7 @@ const StudentForm: React.FC<StudentFormProps> = ({
     };
     const [selectedImage, setSelectedImage] = useState<Blob | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [message, setMessage] = useState('');
+    const toast = useToast();
 
     const handleSubmit = async (values: StudentRequest, actions: FormikHelpers<StudentRequest>) => {
         let imageUrl;
@@ -63,9 +63,14 @@ const StudentForm: React.FC<StudentFormProps> = ({
                 setIsLoading(false);
             } catch (error) {
                 if (error instanceof Error) {
-                    setMessage(error.message);
                     setIsLoading(false);
-                    <Notification message={message} status="error" setToastMessage={setMessage} />;
+                    toast({
+                        title: error.message,
+                        status: 'success',
+                        duration: 3000,
+                        isClosable: true,
+                        // onCloseComplete: () => setToastMessage(''),
+                    });
                 }
             }
         }
@@ -98,18 +103,25 @@ const StudentForm: React.FC<StudentFormProps> = ({
             onCloseForm();
             setSelectedImage(null);
             setIsLoading(false);
-            setMessage(response?.data.message);
-            <Notification
-                message={response?.data.message}
-                status="success"
-                setToastMessage={setMessage}
-            />;
+
+            toast({
+                title: response?.data.msg,
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+                // onCloseComplete: () => setToastMessage(''),
+            });
             setNeedUpdate(true);
         } catch (error) {
             if (error instanceof Error) {
                 setIsLoading(false);
-                setMessage(error.message);
-                <Notification message={message} status="error" setToastMessage={setMessage} />;
+                toast({
+                    title: error.message,
+                    status: 'success',
+                    duration: 3000,
+                    isClosable: true,
+                    // onCloseComplete: () => setToastMessage(''),
+                });
                 console.error('Error submitting form:', error);
             }
         }
@@ -126,19 +138,25 @@ const StudentForm: React.FC<StudentFormProps> = ({
             );
 
             onCloseForm();
-            setMessage(response?.data.message);
-            <Notification
-                message={response?.data.message}
-                status="success"
-                setToastMessage={setMessage}
-            />;
+            toast({
+                title: response?.data.msg,
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+                // onCloseComplete: () => setToastMessage(''),
+            });
             setNeedUpdate(true);
             setIsLoading(false);
         } catch (error) {
             if (error instanceof Error) {
                 setIsLoading(false);
-                setMessage(error.message);
-                <Notification message={message} status="error" setToastMessage={setMessage} />;
+                toast({
+                    title: error.message,
+                    status: 'success',
+                    duration: 3000,
+                    isClosable: true,
+                    // onCloseComplete: () => setToastMessage(''),
+                });
                 console.error('Error deleting product:', error);
             }
         }
