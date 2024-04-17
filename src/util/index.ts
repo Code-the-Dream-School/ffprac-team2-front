@@ -5,6 +5,13 @@ const token = localStorage.getItem('token');
 export const headers = {
     Authorization: `Bearer ${token}`,
 };
+export const getHeaders = () => {
+    const token = localStorage.getItem('token');
+    const headers = {
+        Authorization: `Bearer ${token}`,
+    };
+    return headers;
+};
 
 // note: not used, but could be used with GET with params
 const getData = async (url: string, params: AxiosRequestConfig) => {
