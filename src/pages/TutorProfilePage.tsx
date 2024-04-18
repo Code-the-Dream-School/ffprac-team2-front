@@ -14,23 +14,38 @@ import {
     FormErrorMessage,
     FormLabel,
     Textarea,
+    useToast,
+    useDisclosure,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    Modal,
+    Text,
 } from '@chakra-ui/react';
 import { MultiSelect, Option, useMultiSelect } from 'chakra-multiselect';
 import { TutorRequest } from '../models/interfaces.ts';
 import axios from 'axios';
 import { theme } from '../util/theme.ts';
-import { headers, getHeaders } from '../util';
+import { getHeaders } from '../util';
 import UploadImage from '../components/UploadImage.tsx';
 import { useGlobal } from '../context/useGlobal.tsx';
 import AppLoader from '../components/AppLoader.tsx';
 import { useNavigate } from 'react-router-dom';
-
 const TutorProfilePage: React.FC = () => {
     const { firstName, lastName, email } = JSON.parse(localStorage.getItem('userData') ?? '{}');
     const [selectedImage, setSelectedImage] = useState<Blob | null>(null);
     const { tutor, dispatch } = useGlobal();
     const [isEditing, setIsEditing] = useState(tutor ? false : true);
     const [isLoading, setIsLoading] = useState(false);
+    const [ModalActionMessage, setModalActionMessage] = useState('Loading data');
+    const toast = useToast();
+    const Overlay = () => (
+        <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) hue-rotate(90deg)" />
+    );
+
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
     const navigate = useNavigate();
 
     const [initialValues, setInitialValues] = useState<TutorRequest>({
@@ -103,37 +118,6 @@ const TutorProfilePage: React.FC = () => {
             'ACT Science Test Prep',
         ],
     };
-
-    //FETCHING TUTOR DATA FOR AN UPDATE
-
-    useEffect(() => {
-        const fetchTutor = async () => {
-            if (!tutor) {
-                try {
-                    setIsLoading(true);
-                    const response = await axios.get(
-                        `${import.meta.env.VITE_REACT_URL}tutors/my-profile`,
-                        { headers: getHeaders() } //getting headers for get request to be authorized 
-                    );
-                    const { data, status } = response;
-                    if (status === 200) {
-                        setInitialValues(data.tutor);
-                        dispatch({ type: 'SET_TUTOR', payload: data.tutor });
-                        setIsLoading(false);
-                    } else {
-                        throw new Error('Tutor update failed');
-                    }
-                } catch (error) {
-                    console.error('Error getting tutor profile:', error);
-                    setIsLoading(false);
-                    return;
-                }
-            }
-        };
-        fetchTutor();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     //populating mathSubjectOptions for using in Multiselect Component
     const mathSubjectInitialOptions = tutorData.MathSubject.map((el) => {
         return { label: el, value: el };
@@ -194,8 +178,51 @@ const TutorProfilePage: React.FC = () => {
         options: yearsOfExperienceInitialOptions,
     });
 
+    //FETCHING TUTOR DATA FOR AN UPDATE
+
+    useEffect(() => {
+        const fetchTutor = async () => {
+            if (!tutor) {
+                try {
+                    setIsLoading(true);
+                    setModalActionMessage('Please wait, data is loading...');
+                    // opens modal
+                    onOpen();
+                    const response = await axios.get(
+                        `${import.meta.env.VITE_REACT_URL}tutors/my-profile`,
+                        //getting headers for get request to be authorized
+                        { headers: getHeaders() }
+                    );
+                    const { data, status } = response;
+                    if (status === 200) {
+                        setInitialValues(data.tutor);
+                        dispatch({ type: 'SET_TUTOR', payload: data.tutor });
+                        setIsLoading(false);
+                        // setMessage(response?.data.message);
+                    } else {
+                        throw new Error('Tutor update failed');
+                    }
+                } catch (error) {
+                    if (error instanceof Error) {
+                        setIsLoading(false);
+                        toast({
+                            title: 'Error getting tutor data',
+                            status: 'error',
+                            isClosable: true,
+                            position: 'top',
+                            onCloseComplete: () => console.log('Toast Closed'),
+                        });
+                        console.error('Error getting tutor profile:', error);
+                        return;
+                    }
+                }
+            }
+        };
+        fetchTutor();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const handleSubmit = async (values: TutorRequest, actions: FormikHelpers<TutorRequest>) => {
-        console.log(`Logger:inside handleSubmit `);
         let imageUrl;
 
         if (selectedImage) {
@@ -203,6 +230,9 @@ const TutorProfilePage: React.FC = () => {
             formData.append('image', selectedImage);
             try {
                 setIsLoading(true);
+                setModalActionMessage('Please wait, data is loading...');
+                // opens modal
+                onOpen();
                 imageUrl = await axios.post(`${import.meta.env.VITE_REACT_URL}uploads`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
@@ -211,8 +241,13 @@ const TutorProfilePage: React.FC = () => {
                 setIsLoading(false);
             } catch (error) {
                 if (error instanceof Error) {
-                    console.error(error.message);
-                    setIsLoading(false);
+                    toast({
+                        title: 'Error uploading tutor image',
+                        status: 'error',
+                        isClosable: true,
+                        position: 'top',
+                        onCloseComplete: () => console.log('Toast Closed'),
+                    });
                 }
             }
         }
@@ -235,25 +270,44 @@ const TutorProfilePage: React.FC = () => {
             const updateTutor = async () => {
                 try {
                     setIsLoading(true);
+                    setModalActionMessage('Please wait, data is loading...');
+                    // opens modal
+                    onOpen();
                     const response = await axios.patch(
                         `${import.meta.env.VITE_REACT_URL}tutors/${tutor._id}`,
                         tutorFormData,
-                        { headers }
+                        { headers: getHeaders() }
                     );
                     const { data, status } = response;
                     console.log(data);
                     if (status === 200) {
-                        console.log('Tutor was updated successfully');
                         setSelectedImage(null);
                         dispatch({ type: 'SET_TUTOR', payload: data.tutor });
                         setIsLoading(false);
                         setIsEditing(false);
+                        toast({
+                            title: 'Tutor data was updated successfully',
+                            status: 'success',
+                            isClosable: true,
+                            position: 'top',
+                            onCloseComplete: () => console.log('Toast Closed'),
+                        });
                     }
                     if (status !== 200) {
                         throw new Error('Tutor update failed');
                     }
                 } catch (error) {
                     console.error('Error update tutor profile:', error);
+                    if (error instanceof Error) {
+                        setIsLoading(false);
+                        toast({
+                            title: 'Error updating profile',
+                            status: 'error',
+                            isClosable: true,
+                            position: 'top',
+                            onCloseComplete: () => console.log('Toast Closed'),
+                        });
+                    }
                     setIsLoading(false);
                     return;
                 }
@@ -263,27 +317,42 @@ const TutorProfilePage: React.FC = () => {
             const createTutor = async () => {
                 try {
                     setIsLoading(true);
+                    setModalActionMessage('Please wait, saving data...');
+                    // opens modal
+                    onOpen();
                     const response = await axios.post(
                         `${import.meta.env.VITE_REACT_URL}tutors`,
                         tutorFormData,
-                        { headers }
+                        { headers: getHeaders() }
                     );
                     const { data, status } = response;
                     console.log(data);
                     if (status === 201) {
-                        console.log('Tutor was created successfully');
-                        // localStorage.setItem('tutorId', data.tutor._id);
+                        toast({
+                            title: 'Profile created successfully',
+                            status: 'success',
+                            isClosable: true,
+                            position: 'top',
+                            onCloseComplete: () => console.log('Toast Closed'),
+                        });
                         setSelectedImage(null);
                         dispatch({ type: 'SET_TUTOR', payload: data.tutor });
-                        setIsLoading(false);
                         setIsEditing(false);
                         actions.resetForm();
                         return;
                     }
                     throw new Error('Tutor creation failed');
                 } catch (error) {
-                    console.error('Error create tutor profile:', error);
                     setIsLoading(false);
+                    if (error instanceof Error) {
+                        toast({
+                            title: 'Error creating profile',
+                            status: 'error',
+                            isClosable: true,
+                            position: 'top',
+                            onCloseComplete: () => console.log('Toast Closed'),
+                        });
+                    }
                     return;
                 }
             };
@@ -311,7 +380,14 @@ const TutorProfilePage: React.FC = () => {
                                         profileImage={tutor?.avatar}
                                         disabled={!isEditing}
                                     />
-                                    <VStack spacing={3}>
+                                    <VStack
+                                        sx={{
+                                            height: '100%',
+                                            display: 'flex',
+                                            justifyContent: 'space-around',
+                                        }}
+                                        spacing={3}
+                                    >
                                         <Input
                                             pointerEvents="none"
                                             boxShadow="md"
@@ -389,21 +465,22 @@ const TutorProfilePage: React.FC = () => {
                                             disabled={!isEditing}
                                         />
                                     </FormControl>
+                                    {/* GRADES*/}
                                     <FormControl>
-                                        <Field name="English">
+                                        <Field name="grades">
                                             {({ field, form }: FieldProps) => (
                                                 <MultiSelect
                                                     {...field}
-                                                    options={EnglishOptions}
-                                                    value={form.values.English.map(
+                                                    options={gradesOptions}
+                                                    value={form.values.grades.map(
                                                         (item: Option) => {
                                                             return {
                                                                 label: item,
                                                                 value: item,
                                                             };
                                                         }
-                                                    )}
-                                                    label="English"
+                                                    )} //for displaying selected values
+                                                    label="Grades"
                                                     onChange={(
                                                         selectedOption: Option[] | Option
                                                     ) => {
@@ -422,44 +499,9 @@ const TutorProfilePage: React.FC = () => {
                                         </Field>
                                     </FormControl>
 
-                                    <Box id="SocialStudies">
-                                        <FormControl>
-                                            <Field name="SocialStudies">
-                                                {({ field, form }: FieldProps) => (
-                                                    <MultiSelect
-                                                        {...field}
-                                                        options={SocialStudiesOptions}
-                                                        value={form.values.SocialStudies.map(
-                                                            (item: Option) => {
-                                                                return {
-                                                                    label: item,
-                                                                    value: item,
-                                                                };
-                                                            }
-                                                        )}
-                                                        label="Social Studies"
-                                                        onChange={(
-                                                            selectedOption: Option[] | Option
-                                                        ) => {
-                                                            if (Array.isArray(selectedOption)) {
-                                                                form.setFieldValue(
-                                                                    field.name,
-                                                                    selectedOption.map(
-                                                                        (item: Option) => item.value
-                                                                    )
-                                                                ); //updates selected options in tutorRequest
-                                                            }
-                                                        }}
-                                                        disabled={!isEditing}
-                                                    />
-                                                )}
-                                            </Field>
-                                        </FormControl>
-                                    </Box>
-
                                     {/* SCIENCE */}
 
-                                    <Box>
+                                    <Box pb="3px">
                                         <FormControl>
                                             <Field name="Science">
                                                 {({ field, form }: FieldProps) => (
@@ -493,6 +535,39 @@ const TutorProfilePage: React.FC = () => {
                                             </Field>
                                         </FormControl>
                                     </Box>
+                                    <FormControl>
+                                        {/* MATH*/}
+                                        <Field name="MathSubject">
+                                            {({ field, form }: FieldProps) => (
+                                                <MultiSelect
+                                                    {...field}
+                                                    options={mathSubjectOptions}
+                                                    value={form.values.MathSubject.map(
+                                                        (item: Option) => {
+                                                            return {
+                                                                label: item,
+                                                                value: item,
+                                                            };
+                                                        }
+                                                    )}
+                                                    label="Math"
+                                                    onChange={(
+                                                        selectedOption: Option[] | Option
+                                                    ) => {
+                                                        if (Array.isArray(selectedOption)) {
+                                                            form.setFieldValue(
+                                                                field.name,
+                                                                selectedOption.map(
+                                                                    (item: Option) => item.value
+                                                                )
+                                                            ); //updates selected options in tutorRequest
+                                                        }
+                                                    }}
+                                                    disabled={!isEditing}
+                                                />
+                                            )}
+                                        </Field>
+                                    </FormControl>
                                 </Box>
 
                                 <Box>
@@ -523,50 +598,83 @@ const TutorProfilePage: React.FC = () => {
                                                 )}
                                             </Field>
                                         </FormControl>
-                                        <FormControl>
-                                            {/* MATH*/}
-                                            <Field name="MathSubject">
-                                                {({ field, form }: FieldProps) => (
-                                                    <MultiSelect
-                                                        {...field}
-                                                        options={mathSubjectOptions}
-                                                        value={form.values.MathSubject.map(
-                                                            (item: Option) => {
-                                                                return {
-                                                                    label: item,
-                                                                    value: item,
-                                                                };
-                                                            }
-                                                        )}
-                                                        label="Math"
-                                                        onChange={(
-                                                            selectedOption: Option[] | Option
-                                                        ) => {
-                                                            if (Array.isArray(selectedOption)) {
-                                                                form.setFieldValue(
-                                                                    field.name,
-                                                                    selectedOption.map(
-                                                                        (item: Option) => item.value
-                                                                    )
-                                                                ); //updates selected options in tutorRequest
-                                                            }
-                                                        }}
-                                                        disabled={!isEditing}
-                                                    />
-                                                )}
-                                            </Field>
-                                        </FormControl>
+
                                         {isLoading && <AppLoader />}
                                     </Box>
                                     {/* FOREIGN LANGUAGES */}
-                                    <Box p="3px">
+
+                                    <FormControl>
+                                        <Field name="ForeignLanguages">
+                                            {({ field, form }: FieldProps) => (
+                                                <MultiSelect
+                                                    {...field}
+                                                    options={ForeignLanguagesOptions}
+                                                    value={form.values.ForeignLanguages.map(
+                                                        (item: Option) => {
+                                                            return {
+                                                                label: item,
+                                                                value: item,
+                                                            };
+                                                        }
+                                                    )}
+                                                    label="Foreign Languages"
+                                                    onChange={(
+                                                        selectedOption: Option[] | Option
+                                                    ) => {
+                                                        if (Array.isArray(selectedOption)) {
+                                                            form.setFieldValue(
+                                                                field.name,
+                                                                selectedOption.map(
+                                                                    (item: Option) => item.value
+                                                                )
+                                                            ); //updates selected options in tutorRequest
+                                                        }
+                                                    }}
+                                                    disabled={!isEditing}
+                                                />
+                                            )}
+                                        </Field>
+                                    </FormControl>
+                                    <FormControl>
+                                        <Field name="English">
+                                            {({ field, form }: FieldProps) => (
+                                                <MultiSelect
+                                                    {...field}
+                                                    options={EnglishOptions}
+                                                    value={form.values.English.map(
+                                                        (item: Option) => {
+                                                            return {
+                                                                label: item,
+                                                                value: item,
+                                                            };
+                                                        }
+                                                    )}
+                                                    label="English"
+                                                    onChange={(
+                                                        selectedOption: Option[] | Option
+                                                    ) => {
+                                                        if (Array.isArray(selectedOption)) {
+                                                            form.setFieldValue(
+                                                                field.name,
+                                                                selectedOption.map(
+                                                                    (item: Option) => item.value
+                                                                )
+                                                            ); //updates selected options in tutorRequest
+                                                        }
+                                                    }}
+                                                    disabled={!isEditing}
+                                                />
+                                            )}
+                                        </Field>
+                                    </FormControl>
+                                    <Box id="SocialStudies">
                                         <FormControl>
-                                            <Field name="ForeignLanguages">
+                                            <Field name="SocialStudies">
                                                 {({ field, form }: FieldProps) => (
                                                     <MultiSelect
                                                         {...field}
-                                                        options={ForeignLanguagesOptions}
-                                                        value={form.values.ForeignLanguages.map(
+                                                        options={SocialStudiesOptions}
+                                                        value={form.values.SocialStudies.map(
                                                             (item: Option) => {
                                                                 return {
                                                                     label: item,
@@ -574,42 +682,7 @@ const TutorProfilePage: React.FC = () => {
                                                                 };
                                                             }
                                                         )}
-                                                        label="Foreign Languages"
-                                                        onChange={(
-                                                            selectedOption: Option[] | Option
-                                                        ) => {
-                                                            if (Array.isArray(selectedOption)) {
-                                                                form.setFieldValue(
-                                                                    field.name,
-                                                                    selectedOption.map(
-                                                                        (item: Option) => item.value
-                                                                    )
-                                                                ); //updates selected options in tutorRequest
-                                                            }
-                                                        }}
-                                                        disabled={!isEditing}
-                                                    />
-                                                )}
-                                            </Field>
-                                        </FormControl>
-                                    </Box>
-                                    {/* GRADES*/}
-                                    <Box p="3px">
-                                        <FormControl>
-                                            <Field name="grades">
-                                                {({ field, form }: FieldProps) => (
-                                                    <MultiSelect
-                                                        {...field}
-                                                        options={gradesOptions}
-                                                        value={form.values.grades.map(
-                                                            (item: Option) => {
-                                                                return {
-                                                                    label: item,
-                                                                    value: item,
-                                                                };
-                                                            }
-                                                        )} //for displaying selected values
-                                                        label="Grades"
+                                                        label="Social Studies"
                                                         onChange={(
                                                             selectedOption: Option[] | Option
                                                         ) => {
@@ -721,6 +794,25 @@ const TutorProfilePage: React.FC = () => {
                     </Grid>
                 )}
             </Formik>
+            {isLoading ? (
+                <Modal
+                    isCentered
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    closeOnEsc={false}
+                    closeOnOverlayClick={false}
+                >
+                    {<Overlay />}
+                    <ModalContent>
+                        <ModalHeader>{ModalActionMessage}</ModalHeader>
+                        <ModalBody>
+                            <Text>TutorUp</Text>
+                        </ModalBody>
+                    </ModalContent>
+                </Modal>
+            ) : (
+                <></>
+            )}
         </Grid>
     );
 };
