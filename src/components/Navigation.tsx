@@ -143,8 +143,8 @@ const Navigation: React.FC = () => {
                         fontWeight="bold"
                         bg="#F4CD76"
                         _hover={{ bg: '#F4CD76' }}
-                        h='30px'
-                        w='120px'
+                        h="30px"
+                        w="120px"
                     >
                         Browse Tutors
                     </Button>
@@ -153,11 +153,11 @@ const Navigation: React.FC = () => {
                         <>
                             <Avatar
                                 as={NavLink}
-                                fontSize='10px'
+                                fontSize="10px"
                                 to="/tutor-profile"
                                 bg="#D9D9D9"
                                 color="black"
-                                name={initials }
+                                name={initials}
                                 src={userData.avatar}
                                 boxSize="40px"
                             />
@@ -261,7 +261,7 @@ const Navigation: React.FC = () => {
                                         onClick={onClose}
                                         bg="#D9D9D9"
                                         color="black"
-                                        boxSize='40px'
+                                        boxSize="40px"
                                         name={initials}
                                         src={userData.avatar}
                                     />
