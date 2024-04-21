@@ -179,7 +179,7 @@ const Navigation: React.FC = () => {
                     {!isLoggedIn && (
                         <Button
                             as={NavLink}
-                            to="/auth"
+                            to="/auth?activeTab=login"
                             fontSize="12px"
                             fontWeight="bold"
                             bg="#59D3C8"
@@ -284,13 +284,13 @@ const Navigation: React.FC = () => {
                             ) : (
                                 <Button
                                     as={NavLink}
-                                    to="/auth"
+                                    to="/auth?activeTab=login"
                                     bg="#59D3C8"
                                     fontSize="12px"
                                     fontWeight="bold"
                                     height="30px"
                                     width="150px"
-                                    _hover={{ bg: 'grey.400' }}
+                                    _hover={{ bg: 'grey.400' }}          
                                     onClick={onClose}
                                 >
                                     Login

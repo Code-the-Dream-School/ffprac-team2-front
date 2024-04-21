@@ -6,7 +6,7 @@ const LandingPage: React.FC = () => {
     const navigate = useNavigate();
 
     const toRegistration = () => {
-        navigate(`/auth`);
+        navigate('/auth?activeTab=register');
     };
 
     return (
