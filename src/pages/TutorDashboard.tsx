@@ -39,8 +39,8 @@ const TutorDashboard: React.FC = () => {
     }, []);
 
     return (
-        <Flex direction="column">
-            <Box display={{ base: 'block', md: 'none' }} width="100%" mt="20px">
+        <Flex direction="column" w="full">
+            <Box display={{ base: 'block', md: 'none' }} width="100%" >
                 <Button
                     bg={theme.colors.customYellow}
                     rightIcon={<BsChevronDown />}
