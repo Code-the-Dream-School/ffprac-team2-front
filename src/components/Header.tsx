@@ -35,7 +35,7 @@ const Header: React.FC<HeaderProps> = ({ sizeHeader }) => {
                     align="center"
                     justifyContent={{ base: 'center', md: 'flex-start' }}
                     w="full"
-                    // gap={{ base: '1rem', sm: '5px' }}
+                    gap={{ base: '1rem', sm: '5px' }}
                     width={{ md: 'auto', base: '100%' }}
                 >
                     <Image

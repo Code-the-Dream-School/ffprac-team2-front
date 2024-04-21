@@ -71,6 +71,7 @@ const Navigation: React.FC = () => {
                 wrap="wrap"
                 padding="4"
                 bg="#E7E0D6"
+                _hover={{ bg: '#E7E0D6' }}
             >
                 {/* Mobile Menu Icon */}
                 <IconButton
@@ -197,10 +198,14 @@ const Navigation: React.FC = () => {
                     <Box
                         ref={cancelRef}
                         position="fixed"
-                        top="60px"
+                        top="65px"
                         left="0"
                         right="0"
                         zIndex="overlay"
+                        shadow="md"
+                        bg="#E7E0D6"
+                        p={4}
+                        onClick={onClose}
                     >
                         <VStack spacing={4} bg="#E7E0D6" p={4} onClick={onClose}>
                             <Link
@@ -277,15 +282,19 @@ const Navigation: React.FC = () => {
                                     />
                                 </Flex>
                             ) : (
-                                <Link
-                                    as={NavLink}
-                                    fontSize="12px"
-                                    fontWeight="bold"
-                                    to="/auth"
-                                    onClick={onClose}
-                                >
-                                    Login
-                                </Link>
+                                <Button
+                                        as={NavLink}
+                                        to="/auth"
+                                        bg="#59D3C8"
+                                        fontSize="12px"
+                                        fontWeight="bold"
+                                        height="30px"
+                                        width="150px"
+                                        _hover={{ bg: 'grey.400' }}
+                                        onClick={onClose}
+                                    >
+                                        Login
+                                    </Button>
                             )}
                         </VStack>
                     </Box>
