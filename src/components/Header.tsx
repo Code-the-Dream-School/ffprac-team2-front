@@ -24,7 +24,7 @@ const Header: React.FC<HeaderProps> = ({ sizeHeader }) => {
             align="center"
             justify="space-between"
             wrap="wrap"
-            padding="4"
+            padding="3px"
             position="sticky"
             top="0"
             zIndex="banner"
@@ -34,18 +34,19 @@ const Header: React.FC<HeaderProps> = ({ sizeHeader }) => {
                 <Flex
                     align="center"
                     justifyContent={{ base: 'center', md: 'flex-start' }}
-                    gap={{ base: '4rem', sm: '2rem' }}
+                    w="full"
+                    // gap={{ base: '1rem', sm: '5px' }}
                     width={{ md: 'auto', base: '100%' }}
                 >
                     <Image
                         src={logo}
                         alt="GetYourTutor"
-                        boxSize={{ base: '60px', lg: '80px' }}
-                        mb={{ base: 2, md: 0 }}
-                        ml={{ base: 0, md: 4 }}
+                        boxSize={{ base: '50px', xl: '55px' }}
+                        mr={{ base: '1rem', sm: '10px' }}
+                        ml={{ base: '1rem', sm: '10px' }}
                     />
                     <Text
-                        fontSize={{ base: '14px', md: '18px' }}
+                        fontSize={{ base: '14px' }}
                         fontWeight="bold"
                         fontFamily="'Inter', sans-serif"
                     >
