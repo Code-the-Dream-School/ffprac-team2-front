@@ -13,6 +13,7 @@ import {
     FormErrorMessage,
     Tooltip,
     useBreakpointValue,
+    useToast
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { Formik, Form, Field } from 'formik';
@@ -72,6 +73,7 @@ const RegistrationForm: React.FC = () => {
     const toggleConfirmPasswordVisibility = () => {
         setShowConfirmPassword(!showConfirmPassword);
     };
+    const toast = useToast();
 
     return (
         <Formik
@@ -115,9 +117,21 @@ const RegistrationForm: React.FC = () => {
                     }
                 } catch (error: any) {
                     if (error.response && error.response.data && error.response.data.msg) {
-                        setFieldError('email', error.response.data.msg);
+                        toast({
+                            title: 'Registration Error',
+                            description: error.response.data.msg,
+                            status: 'error',
+                            isClosable: true,
+                            position: 'top',
+                        });
                     } else {
-                        setFieldError('email', 'Registration failed. Please try again.');
+                        toast({
+                            title: 'Registration Error',
+                            description: 'Registration failed. Please try again.',
+                            status: 'error',
+                            isClosable: true,
+                            position: 'top',
+                        });
                     }
                     setStatus('failed');
                     
