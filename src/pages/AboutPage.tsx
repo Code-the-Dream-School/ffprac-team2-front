@@ -1,15 +1,28 @@
 import React from 'react';
-import { Box, Heading, Text, UnorderedList, OrderedList, ListItem } from '@chakra-ui/react';
+import {
+    Box,
+    Heading,
+    Text,
+    UnorderedList,
+    OrderedList,
+    ListItem,
+    Accordion,
+    AccordionItem,
+    AccordionButton,
+    AccordionPanel,
+    AccordionIcon,
+} from '@chakra-ui/react';
+import { theme } from '../util/theme';
 
 const AboutPage: React.FC = () => {
     return (
         <Box
-            fontSize={{ base: '16px', lg: '18px' }}
+            fontSize={{ base: 'sm', lg: 'md' }}
             marginLeft={{ base: '1rem', lg: '10rem' }}
             marginRight={{ base: '1rem', lg: '10rem' }}
             marginBottom="2rem"
         >
-            <Heading as="h1" fontSize={{ base: '24px', lg: '32px' }}>
+            <Heading as="h1" fontSize={{ base: 'lg', lg: 'xl' }}>
                 Welcome to GetYourTutor!
             </Heading>
             <Text marginTop={{ base: '1.5rem', lg: '3.5rem' }}>
@@ -23,23 +36,10 @@ const AboutPage: React.FC = () => {
                 expertise, guiding students toward academic success, all while maintaining
                 flexibility in their schedules from any part of the US.
             </Text>
+
             <Heading
                 as="h3"
-                marginTop={{ base: '1.25rem', lg: '2.5rem' }}
-                fontSize={{ base: '18px', lg: '20px' }}
-            >
-                Discover Your Perfect Tutor:
-            </Heading>
-            <Text marginTop={{ base: '0.5rem', lg: '1rem' }}>
-                Our platform empowers parents and students to choose their ideal tutor and schedule
-                sessions with ease. While finding the perfect tutor can often be overwhelming,
-                GetYourTutor simplifies the process. With our intuitive interface, you can
-                effortlessly explore available tutors, view each tutor's profile to examine their
-                subjects, qualifications, and availability, and easily arrange a session.
-            </Text>
-            <Heading
-                as="h3"
-                fontSize={{ base: '18px', lg: '20px' }}
+                fontSize={{ base: 'md', lg: 'lg' }}
                 marginTop={{ base: '1.25rem', lg: '2.5rem' }}
             >
                 Why Choose GetYourTutor?
@@ -47,7 +47,7 @@ const AboutPage: React.FC = () => {
             <Text marginTop={{ base: '0.5rem', lg: '1rem' }}>
                 GetYourTutor isn't your average online tutoring platform! We offer:
             </Text>
-            <OrderedList marginTop={{ base: '0.25rem', lg: '0.5rem' }}>
+            <UnorderedList marginTop={{ base: '0.25rem', lg: '0.5rem' }}>
                 <ListItem>
                     <strong>One-on-One Tutoring:</strong> Our tutors provide individualized
                     attention, ensuring your child receives the support they need to succeed.
@@ -64,54 +64,88 @@ const AboutPage: React.FC = () => {
                     <strong>All Academic Subjects:</strong> Whether it's Math, Science, English, or
                     any other subject, we've got you covered.
                 </ListItem>
-            </OrderedList>
-            <Heading
-                as="h3"
-                fontSize={{ base: '18px', lg: '20px' }}
-                marginTop={{ base: '1.25rem', lg: '2.5rem' }}
-            >
-                How to Get Started for Tutors:{' '}
-            </Heading>
-            <UnorderedList marginTop={{ base: '0.5rem', lg: '1rem' }}>
-                <ListItem>
-                    Sign Up: Register as a tutor on our platform by providing your email.
-                </ListItem>
-                <ListItem>
-                    Complete Your Profile: Fill out your profile with information about your
-                    qualifications, expertise, and availability.
-                </ListItem>
-                <ListItem>
-                    That's it: Get connected with parents regarding their children's educational
-                    needs. Your profile will appear on our search dashboard, making it easy for
-                    parents to discover and connect with you.
-                </ListItem>
             </UnorderedList>
 
-            <Heading
-                as="h3"
-                fontSize={{ base: '18px', lg: '20px' }}
-                marginTop={{ base: '1.25rem', lg: '2.5rem' }}
+            <Accordion
+                allowMultiple
+                allowToggle
+                marginTop={{ base: '2rem', lg: '3rem' }}
+                
+                
             >
-                How to Get Started for Parents:{' '}
-            </Heading>
-            <UnorderedList marginTop={{ base: '0.5rem', lg: '1rem' }}>
-                <ListItem>
-                    Sign Up: Create an account and provide some basic information about your child's
-                    learning needs.
-                </ListItem>
-                <ListItem>
-                    Find a Tutor: Browse through our database of certified tutors and choose the one
-                    that best fits your child's requirements.
-                </ListItem>
-                <ListItem>
-                    Contact the Tutor: Send an email to the tutor to schedule a tutoring session at
-                    a time that works for you and your child.
-                </ListItem>
-                <ListItem>
-                    Start Learning: Join the session and watch your child's confidence and skills
-                    grow with personalized tutoring from GetYourTutor!
-                </ListItem>
-            </UnorderedList>
+                <AccordionItem>
+                    <h2>
+                        <AccordionButton _expanded={{ bg: theme.colors.customWhite}}>
+                            <Box
+                                as="span"
+                                fontSize={{ base: 'md', lg: 'lg' }}
+                                flex='1'
+                                textAlign='left'
+                            >
+                                How to Get Started for Tutors
+                            </Box>
+                            <AccordionIcon />
+                        </AccordionButton>
+                    </h2>
+                    <AccordionPanel>
+                        <OrderedList marginTop={{ base: '0.5rem', lg: '1rem' }}>
+                            <ListItem>
+                                Sign Up: Register as a tutor on our platform by providing your email.
+                            </ListItem>
+                            <ListItem>
+                                Complete Your Profile: Fill out your profile with information about your
+                                qualifications, expertise, and availability.
+                            </ListItem>
+                            <ListItem>
+                                That's it: Get connected with parents regarding their children's educational
+                                needs. Your profile will appear on our search dashboard, making it easy for
+                                parents to discover and connect with you.
+                            </ListItem>
+                        </OrderedList>
+
+                    </AccordionPanel>
+
+                </AccordionItem>
+                <AccordionItem>
+                    <h2>
+                        <AccordionButton _expanded={{ bg: theme.colors.customWhite}}>
+                            <Box
+                                as="span"
+                                fontSize={{ base: 'md', lg: 'lg' }}
+                                flex='1'
+                                textAlign='left'
+                            >
+
+                                How to Get Started for Parents
+                            </Box>
+                            <AccordionIcon />
+                        </AccordionButton>
+                    </h2>
+                    <AccordionPanel>
+                        <OrderedList marginTop={{ base: '0.5rem', lg: '1rem' }}>
+                            <ListItem>
+                                Sign Up: Create an account and provide some basic information about your child's
+                                learning needs.
+                            </ListItem>
+                            <ListItem>
+                                Find a Tutor: Browse through our database of certified tutors and choose the one
+                                that best fits your child's requirements.
+                            </ListItem>
+                            <ListItem>
+                                Contact the Tutor: Send an email to the tutor to schedule a tutoring session at
+                                a time that works for you and your child.
+                            </ListItem>
+                            <ListItem>
+                                Start Learning: Join the session and watch your child's confidence and skills
+                                grow with personalized tutoring from GetYourTutor!
+                            </ListItem>
+                        </OrderedList>
+
+                    </AccordionPanel>
+
+                </AccordionItem>
+            </Accordion>
+
             <Text marginTop={{ base: '1.25rem', lg: '2.5rem' }}>
                 <strong>Embark on your journey to academic success with GetYourTutor!</strong>
                 <br />
