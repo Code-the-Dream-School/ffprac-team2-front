@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     Stack,
@@ -8,8 +8,6 @@ import {
     Radio,
     RadioGroup,
     Button,
-    Box,
-    Spinner,
     FormErrorMessage,
     Tooltip,
     useBreakpointValue,
@@ -37,6 +35,7 @@ const tooltipStyle = {
 const RegistrationForm: React.FC = () => {
     const navigate = useNavigate();
     const { dispatch } = useGlobal();
+    const [isLoading, setIsLoading] = useState(false);
     const fieldLength = useBreakpointValue({ base: '300px', md: '350px' });
     const fieldHeight = useBreakpointValue({ base: '40px', md: '50px' });
     const inputStyle = {
@@ -67,7 +66,7 @@ const RegistrationForm: React.FC = () => {
             initialValues={initialValues}
             validationSchema={registrationValidationSchema}
             onSubmit={async (values, { setSubmitting, setStatus, setFieldError }) => {
-                setStatus('Processing');
+                setIsLoading(true);
                 try {
                     const requestData = {
                         firstName: values.firstName,
@@ -108,6 +107,7 @@ const RegistrationForm: React.FC = () => {
                     setFieldError('email', 'Registration failed. Please try again.');
                 } finally {
                     setSubmitting(false);
+                    setIsLoading(false);
                 }
             }}
         >
@@ -247,6 +247,8 @@ const RegistrationForm: React.FC = () => {
                                     }}
                                     flex="1"
                                     isDisabled={!formik.dirty || !formik.isValid}
+                                    isLoading={isLoading}
+                                    loadingText="Registering..."
                                 >
                                     Register
                                 </Button>
@@ -265,11 +267,6 @@ const RegistrationForm: React.FC = () => {
                                 Cancel
                             </Button>
                         </Stack>
-                        {formik.isSubmitting && (
-                            <Box textAlign="center">
-                                <Spinner size="sm" />
-                            </Box>
-                        )}
                     </Stack>
                 </Form>
             )}
