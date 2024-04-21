@@ -113,10 +113,14 @@ const RegistrationForm: React.FC = () => {
                     } else {
                         navigate('/tutor-profile');
                     }
-                } catch (error) {
-                    console.error('Registration failed:', error);
+                } catch (error: any) {
+                    if (error.response && error.response.data && error.response.data.msg) {
+                        setFieldError('email', error.response.data.msg);
+                    } else {
+                        setFieldError('email', 'Registration failed. Please try again.');
+                    }
                     setStatus('failed');
-                    setFieldError('email', 'Registration failed. Please try again.');
+                    
                 } finally {
                     setSubmitting(false);
                     setIsLoading(false);
