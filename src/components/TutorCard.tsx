@@ -51,7 +51,7 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
     };
     // console.log(tutor);
     return (
-        <Box mt="30px" w="100%">
+        <Box  w="100%">
             {/* <Box borderWidth='0px' borderRadius='md' boxShadow='md' ml='70'> */}
             <Card maxW={{ base: '90%', md: '380px' }} bg={theme.colors.customWhite}>
                 <Flex justify="flex-end" mb="4" mt="20px">
