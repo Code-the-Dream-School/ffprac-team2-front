@@ -74,7 +74,7 @@ const SubjectsFilter: React.FC<SubjectsFilterProps> = ({ onSelectSubjects }) => 
     const toggleSubject = (subject: string) => {
         setShowCheckboxes((prevState) => ({
             ...prevState,
-            [subject]: !prevState[subject] || showAllSubjects, // Учитываем showAllSubjects при изменении состояния
+            [subject]: !prevState[subject] || showAllSubjects, 
         }));
         setSelectedSubjects((prevState) => {
             const newState: SelectedSubjects = { ...prevState };
@@ -109,6 +109,7 @@ const SubjectsFilter: React.FC<SubjectsFilterProps> = ({ onSelectSubjects }) => 
                 [] as (string | boolean)[]
             )
             .filter((value): value is string => typeof value === 'string');
+        
         onSelectSubjects(allSelectedSubjects);
     };
 
