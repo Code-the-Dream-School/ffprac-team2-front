@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Formik, Form, Field } from 'formik';
@@ -9,8 +9,6 @@ import {
     Input,
     Button,
     FormErrorMessage,
-    Box,
-    Spinner,
     useBreakpointValue,
 } from '@chakra-ui/react';
 import { LoginData } from '../models/interfaces';
@@ -25,6 +23,7 @@ const labelStyle = {
 const LoginForm: React.FC = () => {
     const navigate = useNavigate();
     const { dispatch } = useGlobal();
+    const [isLoading, setIsLoading] = useState(false);
     const fieldLength = useBreakpointValue({ base: '300px', md: '350px' });
     const fieldHeight = useBreakpointValue({ base: '40px', md: '50px' });
     const inputStyle = {
@@ -47,7 +46,7 @@ const LoginForm: React.FC = () => {
             initialValues={initialValues}
             validationSchema={loginValidationSchema}
             onSubmit={async (values, { setSubmitting, setStatus, setFieldError }) => {
-                setStatus('Submitting');
+                setIsLoading(true);
 
                 try {
                     const response = await axios.post(
@@ -81,6 +80,7 @@ const LoginForm: React.FC = () => {
                     setFieldError('password', 'Invalid email or password. Please try again.');
                 }
                 setSubmitting(false);
+                setIsLoading(false);
             }}
         >
             {(formik) => (
@@ -138,6 +138,8 @@ const LoginForm: React.FC = () => {
                                     color: 'black',
                                 }}
                                 flex="1"
+                                isLoading={isLoading}
+                                loadingText="Logging in..."
                             >
                                 Login
                             </Button>
@@ -154,11 +156,7 @@ const LoginForm: React.FC = () => {
                                 Cancel
                             </Button>
                         </Stack>
-                        {formik.status === 'Submitting' && (
-                            <Box textAlign="center">
-                                <Spinner size="sm" />
-                            </Box>
-                        )}
+                        
                     </Stack>
                 </Form>
             )}
