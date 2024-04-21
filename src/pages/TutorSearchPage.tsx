@@ -1,134 +1,196 @@
 import { Box, Button, Flex, Grid } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
+import GradesFilter from '../components/GradesFilter';
 import { Spinner } from '@chakra-ui/react';
+import SubjectsFilter from '../components/SubjectsFilter';
 import { Tutor } from '../models/interfaces';
 import TutorCard from '../components/TutorCard';
-import TutorSearchForm from '../components/TutorSearchForm';
 import axios from 'axios';
+import { theme } from '../util/theme';
+
+// import TutorSearchForm from '../components/TutorSearchForm';
 
 const TutorSearchPage: React.FC = () => {
-    const [tutorsData, setTutorsData] = useState<{
-        tutors: Tutor[];
-        tutorCount: number;
-        currentPage: number;
-        tutorsPerPage: number;
-    }>({
-        tutors: [],
-        tutorCount: 0,
-        currentPage: 1,
-        tutorsPerPage: 3,
-    });
+    const [tutorsData, setTutorsData] = useState<{tutors: Tutor[];}>({tutors:[]});
     const [loading, setLoading] = useState(true);
+    const [selectedGrades, setSelectedGrades] = useState<string[]>([]);
+    const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
+    const [searchReset, setSearchReset] = useState<boolean>(false);
+
+    const resetSearch = async () => {
+        setLoading(true);
+        setSearchReset(true);
+        setSelectedGrades([]);
+        setSelectedSubjects([]);
+
+        try {
+            const res = await axios.get(`${import.meta.env.VITE_REACT_URL}tutors`);
+            const response = await res.data;
+            setTutorsData(response);
+            setLoading(false);
+        } catch (error) {
+            console.error(error);
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchTutors = async () => {
-            try {
-                const res = await axios.get(`${import.meta.env.VITE_REACT_URL}tutors`);
-                const response = await res.data;
-                setTutorsData(response);
-                setLoading(false);
-            } catch (error) {
-                console.error(error);
-            }
-        };
+        if (searchReset) {
+            console.log('Search reset!'); 
+            setSearchReset(false); 
+        }
+    }, [searchReset]);
+    useEffect(() => {
         fetchTutors();
     }, []);
 
-    const handleSearch = async (query: string) => {
+    const fetchTutors = async (selectedSubjects?: string[], selectedGrades?: string[]) => {
         setLoading(true);
         try {
-            const res = await axios.get(
-                `${import.meta.env.VITE_REACT_URL}tutors/search?subject=${query}`
-            );
-            setTutorsData(res.data);
+            let queryString = '';
+            if (selectedSubjects) {
+                queryString += `?subjects=${selectedSubjects.join(',')}`;
+            }
+            if (selectedGrades) {
+                queryString += `${queryString ? '&' : '?'}grades=${selectedGrades.join(',')}`;
+            }
+            console.log(queryString);
+            const res = await axios.get(`${import.meta.env.VITE_REACT_URL}tutors${queryString}`);
+            const response = await res.data;
+            setTutorsData(response);
             setLoading(false);
         } catch (error) {
             console.error(error);
             setLoading(false);
         }
+    };
+    
+    const handleSelectSubjects = (subjects: string[]) => {
+        console.log(subjects);
+        setSelectedSubjects(subjects);
+        fetchTutors(subjects, selectedGrades);
     };
 
-    const handlePageChange = async (page: number) => {
-        setLoading(true);
-        try {
-            const res = await axios.get(`${import.meta.env.VITE_REACT_URL}tutors?page=${page}`);
-            setTutorsData(res.data);
-            setLoading(false);
-        } catch (error) {
-            console.error(error);
-            setLoading(false);
-        }
+    const handleSelectGrades = (grades: string[]) => {
+        console.log(grades);
+        setSelectedGrades(grades);
+        fetchTutors(selectedSubjects, grades);
     };
+
+    // useEffect(() => {
+    //     const fetchTutors = async () => {
+    //         try {
+    //             const res = await axios.get(`${import.meta.env.VITE_REACT_URL}tutors`);
+    //             const response = await res.data;
+    //             setTutorsData(response);
+    //             setLoading(false);
+    //         } catch (error) {
+    //             console.error(error);
+    //         }
+    //     };
+    //     fetchTutors();
+    // }, []);
+
+    // const handleSearch = async (query: string) => {
+    //     setLoading(true);
+    //     try {
+    //         const res = await axios.get(
+    //             `${import.meta.env.VITE_REACT_URL}tutors/search?subject=${query}`
+    //         );
+    //         setTutorsData(res.data);
+    //         setLoading(false);
+    //     } catch (error) {
+    //         console.error(error);
+    //         setLoading(false);
+    //     }
+    // };
+
+    // const handlePageChange = async (page: number) => {
+    //     setLoading(true);
+    //     try {
+    //         const res = await axios.get(`${import.meta.env.VITE_REACT_URL}tutors?page=${page}`);
+    //         setTutorsData(res.data);
+    //         setLoading(false);
+    //     } catch (error) {
+    //         console.error(error);
+    //         setLoading(false);
+    //     }
+    // };
 
     return (
-        <Box p="4">
-            <Flex justify="flex-end" mt={4}>
-                <TutorSearchForm onSearch={handleSearch} />
-            </Flex>
-            <Grid
-                gap={10}
-                templateColumns={{
-                    base: 'repeat(1, 1fr)',
-                    sm: 'repeat(2, 1fr)',
-                    md: 'repeat(3, 1fr)',
-                }}
-                justifyItems="center"
-            >
-                {/* OM: Still debating on the layout. Pls, don't remove.
-                <Grid
-                gap={10}
-                templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
-                justifyItems="center"
-            > */}
-                {loading ? (
-                    <Spinner
-                        thickness="4px"
-                        speed="0.65s"
-                        emptyColor="gray.200"
-                        color="blue.500"
-                        size="xl"
-                    />
-                ) : tutorsData.tutors.length > 0 ? (
-                    tutorsData.tutors.map((tutor) => <TutorCard key={tutor._id} tutor={tutor} />)
-                ) : (
-                    <div>No tutors found</div>
-                )}
-            </Grid>
-            {tutorsData.tutorCount > 0 && (
-                <Flex justify="center" mt={4}>
-                    <Button
-                        onClick={() => handlePageChange(tutorsData.currentPage - 1)}
-                        disabled={tutorsData.currentPage === 1}
-                        mr={3}
-                    >
-                        Previous
-                    </Button>
-                    {[
-                        ...Array(
-                            Math.ceil(tutorsData.tutorCount / tutorsData.tutorsPerPage)
-                        ).keys(),
-                    ].map((page) => (
-                        <Button
-                            key={page + 1}
-                            onClick={() => handlePageChange(page + 1)}
-                            variant={tutorsData.currentPage === page + 1 ? 'solid' : 'outline'}
-                            mr={3}
-                        >
-                            {page + 1}
-                        </Button>
-                    ))}
-                    <Button
-                        onClick={() => handlePageChange(tutorsData.currentPage + 1)}
-                        disabled={
-                            tutorsData.currentPage ===
-                            Math.ceil(tutorsData.tutorCount / tutorsData.tutorsPerPage)
-                        }
-                    >
-                        Next
-                    </Button>
+        <Box p="2" mt="20px">
+            <Grid templateColumns="1fr 3fr" gap="2">
+                <Flex direction="column">
+                    <SubjectsFilter onSelectSubjects={handleSelectSubjects} />
+                    <GradesFilter onSelectGrades={handleSelectGrades} />
                 </Flex>
-            )}
+                {/* <Flex direction="column">
+                    <Flex justify="flex-end" mt={4}>
+                        <TutorSearchForm onSearch={handleSearch} />
+                    </Flex> */}
+                {/* <Grid
+                        gap={10}
+                        templateColumns={{
+                            base: 'repeat(1, 1fr)',
+                            sm: 'repeat(2, 1fr)',
+                            md: 'repeat(3, 1fr)',
+                        }}
+                        justifyItems="center"
+                    > */}
+                {/* /* OM: Still debating on the layout. Pls, don't remove. */}
+                <Grid
+                    gap="15px"
+                    templateColumns={{
+                        base: 'repeat(1, 1fr)',
+                        sm: 'repeat(2, 1fr)',
+                        md: 'repeat(3, 1fr)',
+                    }}
+                    justifyItems="flex-start"
+                >
+                    {loading ? (
+                        <Spinner
+                            thickness="4px"
+                            speed="0.65s"
+                            emptyColor="gray.200"
+                            color="blue.500"
+                            size="xl"
+                        />
+                    ) : tutorsData.tutors.length > 0 ? (
+                        tutorsData.tutors.map((tutor) => (
+                            <TutorCard key={tutor._id} tutor={tutor} />
+                        ))
+                    ) : (
+                        <Box>
+                            <Grid
+                                templateColumns="1fr"
+                                gap="4"
+                                alignItems="center"
+                                textAlign="center"
+                            >
+                                <Box mt="20px" fontSize="14px">
+                                    It looks like we don't have tutors that match your search
+                                    criteria. Change your search using the selection menu or clear
+                                    the search using the button below.
+                                </Box>
+                                <Box>
+                                    <Button
+                                        justifyContent="center"
+                                        variant="solid"
+                                        bg={theme.dashboardButtons.buttonTeal.bg}
+                                        height={theme.dashboardButtons.height}
+                                        fontSize={theme.dashboardButtons.fontSize}
+                                        fontWeight={theme.dashboardButtons.fontWeight}
+                                        onClick={resetSearch}
+                                    >
+                                        Reset search
+                                    </Button>
+                                </Box>
+                            </Grid>
+                        </Box>
+                    )}
+                </Grid>
+            </Grid>
         </Box>
     );
 };
