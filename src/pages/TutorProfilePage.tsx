@@ -25,12 +25,11 @@ import {
 } from '@chakra-ui/react';
 import { MultiSelect, Option, useMultiSelect } from 'chakra-multiselect';
 import { TutorRequest } from '../models/interfaces.ts';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { theme } from '../util/theme.ts';
 import { getHeaders } from '../util';
 import UploadImage from '../components/UploadImage.tsx';
 import { useGlobal } from '../context/useGlobal.tsx';
-import AppLoader from '../components/AppLoader.tsx';
 import { useNavigate } from 'react-router-dom';
 const TutorProfilePage: React.FC = () => {
     const { firstName, lastName, email } = JSON.parse(localStorage.getItem('userData') ?? '{}');
@@ -203,16 +202,28 @@ const TutorProfilePage: React.FC = () => {
                         throw new Error('Tutor update failed');
                     }
                 } catch (error) {
-                    if (error instanceof Error) {
+                    if (error instanceof AxiosError) {
                         setIsLoading(false);
-                        toast({
-                            title: 'Error getting tutor data',
-                            status: 'error',
-                            isClosable: true,
-                            position: 'top',
-                            onCloseComplete: () => console.log('Toast Closed'),
-                        });
-                        console.error('Error getting tutor profile:', error);
+                        if (error?.response?.data.error.includes('no tutor')) {
+                            //this IF When accompanied with toast id prevents duplicate
+                            if (!toast.isActive('fillForm-toast')) {
+                                toast({
+                                    title: 'Please fill the form',
+                                    status: 'success',
+                                    isClosable: true,
+                                    position: 'top',
+                                    id: 'fillForm-toast',
+                                });
+                            }
+                        } else {
+                            toast({
+                                title: 'Error getting tutor data',
+                                status: 'error',
+                                isClosable: true,
+                                position: 'top',
+                                id: 2,
+                            });
+                        }
                         return;
                     }
                 }
@@ -246,7 +257,6 @@ const TutorProfilePage: React.FC = () => {
                         status: 'error',
                         isClosable: true,
                         position: 'top',
-                        onCloseComplete: () => console.log('Toast Closed'),
                     });
                 }
             }
@@ -279,7 +289,6 @@ const TutorProfilePage: React.FC = () => {
                         { headers: getHeaders() }
                     );
                     const { data, status } = response;
-                    console.log(data);
                     if (status === 200) {
                         setSelectedImage(null);
                         dispatch({ type: 'SET_TUTOR', payload: data.tutor });
@@ -290,14 +299,12 @@ const TutorProfilePage: React.FC = () => {
                             status: 'success',
                             isClosable: true,
                             position: 'top',
-                            onCloseComplete: () => console.log('Toast Closed'),
                         });
                     }
                     if (status !== 200) {
                         throw new Error('Tutor update failed');
                     }
                 } catch (error) {
-                    console.error('Error update tutor profile:', error);
                     if (error instanceof Error) {
                         setIsLoading(false);
                         toast({
@@ -305,7 +312,6 @@ const TutorProfilePage: React.FC = () => {
                             status: 'error',
                             isClosable: true,
                             position: 'top',
-                            onCloseComplete: () => console.log('Toast Closed'),
                         });
                     }
                     setIsLoading(false);
@@ -326,19 +332,19 @@ const TutorProfilePage: React.FC = () => {
                         { headers: getHeaders() }
                     );
                     const { data, status } = response;
-                    console.log(data);
                     if (status === 201) {
                         toast({
                             title: 'Profile created successfully',
                             status: 'success',
                             isClosable: true,
                             position: 'top',
-                            onCloseComplete: () => console.log('Toast Closed'),
+                            id: 3,
                         });
                         setSelectedImage(null);
                         dispatch({ type: 'SET_TUTOR', payload: data.tutor });
                         setIsEditing(false);
                         actions.resetForm();
+                        onClose();
                         return;
                     }
                     throw new Error('Tutor creation failed');
@@ -350,7 +356,6 @@ const TutorProfilePage: React.FC = () => {
                             status: 'error',
                             isClosable: true,
                             position: 'top',
-                            onCloseComplete: () => console.log('Toast Closed'),
                         });
                     }
                     return;
@@ -359,7 +364,6 @@ const TutorProfilePage: React.FC = () => {
             createTutor();
         }
     };
-    // console.log('rendering initialValues', initialValues);
     return (
         <Grid display="flex" justifyContent="center" w="full" mb="25px">
             <Formik
@@ -586,8 +590,6 @@ const TutorProfilePage: React.FC = () => {
                                                         label="Experience (in years)"
                                                         single
                                                         onChange={(selectedOption) => {
-                                                            console.log(field.name, selectedOption);
-                                                            console.log(form);
                                                             form.setFieldValue(
                                                                 field.name,
                                                                 selectedOption
@@ -598,8 +600,6 @@ const TutorProfilePage: React.FC = () => {
                                                 )}
                                             </Field>
                                         </FormControl>
-
-                                        {isLoading && <AppLoader />}
                                     </Box>
                                     {/* FOREIGN LANGUAGES */}
 
