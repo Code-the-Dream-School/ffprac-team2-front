@@ -283,18 +283,18 @@ const Navigation: React.FC = () => {
                                 </Flex>
                             ) : (
                                 <Button
-                                        as={NavLink}
-                                        to="/auth"
-                                        bg="#59D3C8"
-                                        fontSize="12px"
-                                        fontWeight="bold"
-                                        height="30px"
-                                        width="150px"
-                                        _hover={{ bg: 'grey.400' }}
-                                        onClick={onClose}
-                                    >
-                                        Login
-                                    </Button>
+                                    as={NavLink}
+                                    to="/auth"
+                                    bg="#59D3C8"
+                                    fontSize="12px"
+                                    fontWeight="bold"
+                                    height="30px"
+                                    width="150px"
+                                    _hover={{ bg: 'grey.400' }}
+                                    onClick={onClose}
+                                >
+                                    Login
+                                </Button>
                             )}
                         </VStack>
                     </Box>
