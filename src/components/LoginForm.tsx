@@ -7,10 +7,13 @@ import {
     FormControl,
     FormLabel,
     Input,
+    InputGroup,
+    InputRightElement,
     Button,
     FormErrorMessage,
     useBreakpointValue,
 } from '@chakra-ui/react';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { LoginData } from '../models/interfaces';
 import { loginValidationSchema } from '../validationSchemas';
 import { useGlobal } from '../context/useGlobal';
@@ -24,6 +27,7 @@ const LoginForm: React.FC = () => {
     const navigate = useNavigate();
     const { dispatch } = useGlobal();
     const [isLoading, setIsLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const fieldLength = useBreakpointValue({ base: '300px', md: '350px' });
     const fieldHeight = useBreakpointValue({ base: '40px', md: '50px' });
     const inputStyle = {
@@ -41,6 +45,10 @@ const LoginForm: React.FC = () => {
     };
 
     const initialValues: LoginData = { email: '', password: '' };
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+    
     return (
         <Formik
             initialValues={initialValues}
@@ -111,13 +119,25 @@ const LoginForm: React.FC = () => {
                             <FormLabel htmlFor="password" style={labelStyle}>
                                 Password
                             </FormLabel>
-                            <Field
-                                as={Input}
-                                type="password"
-                                id="password"
-                                name="password"
-                                style={inputStyle}
-                            />
+                            <InputGroup>
+                                <Field
+                                    as={Input}
+                                    pr="4.5rem"
+                                    type={showPassword ? 'text' : 'password'}
+                                    id="password"
+                                    name="password"
+                                    style={inputStyle}
+                                />
+                                <InputRightElement width="4.5rem">
+                                    <Button
+                                        h="1.75rem"
+                                        size="sm"
+                                        onClick={togglePasswordVisibility}
+                                    >
+                                        {showPassword ? <ViewIcon />: <ViewOffIcon />  }
+                                    </Button>
+                                </InputRightElement>
+                            </InputGroup>
                             {formik.errors.password && formik.touched.password && (
                                 <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
                             )}

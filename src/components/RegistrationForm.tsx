@@ -5,6 +5,8 @@ import {
     FormControl,
     FormLabel,
     Input,
+    InputGroup,
+    InputRightElement,
     Radio,
     RadioGroup,
     Button,
@@ -12,6 +14,7 @@ import {
     Tooltip,
     useBreakpointValue,
 } from '@chakra-ui/react';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { Formik, Form, Field } from 'formik';
 import axios from 'axios';
 import { RegistrationFormData } from '../models/interfaces';
@@ -36,6 +39,8 @@ const RegistrationForm: React.FC = () => {
     const navigate = useNavigate();
     const { dispatch } = useGlobal();
     const [isLoading, setIsLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const fieldLength = useBreakpointValue({ base: '300px', md: '350px' });
     const fieldHeight = useBreakpointValue({ base: '40px', md: '50px' });
     const inputStyle = {
@@ -59,6 +64,13 @@ const RegistrationForm: React.FC = () => {
         password: '',
         confirmPassword: '',
         role: '',
+    };
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const toggleConfirmPasswordVisibility = () => {
+        setShowConfirmPassword(!showConfirmPassword);
     };
 
     return (
@@ -175,13 +187,25 @@ const RegistrationForm: React.FC = () => {
                             <FormLabel htmlFor="password" style={labelStyle}>
                                 Password
                             </FormLabel>
-                            <Field
-                                as={Input}
-                                type="password"
-                                id="password"
-                                name="password"
-                                style={inputStyle}
-                            />
+                            <InputGroup>
+                                <Field
+                                    as={Input}
+                                    pr="4.5rem"
+                                    type={showPassword ? 'text' : 'password'}
+                                    id="password"
+                                    name="password"
+                                    style={inputStyle}
+                                />
+                                <InputRightElement width="4.5rem">
+                                    <Button
+                                        h="1.75rem"
+                                        size="sm"
+                                        onClick={togglePasswordVisibility}
+                                    >
+                                        {showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                                    </Button>
+                                </InputRightElement>
+                            </InputGroup>
                             {formik.errors.password && formik.touched.password && (
                                 <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
                             )}
@@ -195,13 +219,25 @@ const RegistrationForm: React.FC = () => {
                             <FormLabel htmlFor="confirmPassword" style={labelStyle}>
                                 Confirm Password
                             </FormLabel>
-                            <Field
-                                as={Input}
-                                type="password"
-                                id="confirmPassword"
-                                name="confirmPassword"
-                                style={inputStyle}
-                            />
+                            <InputGroup>
+                                <Field
+                                    as={Input}
+                                    pr="4.5rem"
+                                    type={showConfirmPassword ? 'text' : 'password'}
+                                    name="confirmPassword"
+                                    id = "confirmPassword"
+                                    style = {inputStyle}
+                                />
+                                <InputRightElement width="4.5rem">
+                                    <Button
+                                        h="1.75rem"
+                                        size="sm"
+                                        onClick={toggleConfirmPasswordVisibility}
+                                    >
+                                        {showConfirmPassword ? <ViewOffIcon /> : <ViewIcon />}
+                                    </Button>
+                                </InputRightElement>
+                            </InputGroup>
                             {formik.errors.confirmPassword && formik.touched.confirmPassword && (
                                 <FormErrorMessage>{formik.errors.confirmPassword}</FormErrorMessage>
                             )}
