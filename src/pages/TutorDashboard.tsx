@@ -92,7 +92,7 @@ const TutorDashboard: React.FC = () => {
                     ) : (
                         <>
                             {students.length === 0 ? (
-                                <Box textAlign="center" mt="50px" fontSize="18px">
+                                <Box textAlign="center" mt="100px" fontSize="16px">
                                     No students found. Please make sure your profile is fully
                                     complete to be appeared in search results and enable parents to
                                     connect with you.
