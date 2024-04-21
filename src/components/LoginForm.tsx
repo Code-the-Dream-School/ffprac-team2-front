@@ -132,7 +132,9 @@ const LoginForm: React.FC = () => {
                                     <Button
                                         h="1.75rem"
                                         size="sm"
+                                        fontSize="20px"
                                         onClick={togglePasswordVisibility}
+                                        style={{ backgroundColor: 'transparent' }}
                                     >
                                         {showPassword ? <ViewIcon />: <ViewOffIcon />  }
                                     </Button>

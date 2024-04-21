@@ -134,7 +134,7 @@ const RegistrationForm: React.FC = () => {
                         });
                     }
                     setStatus('failed');
-                    
+
                 } finally {
                     setSubmitting(false);
                     setIsLoading(false);
@@ -218,9 +218,11 @@ const RegistrationForm: React.FC = () => {
                                     <Button
                                         h="1.75rem"
                                         size="sm"
+                                        fontSize="20px"
                                         onClick={togglePasswordVisibility}
+                                        style={{ backgroundColor: 'transparent' }}
                                     >
-                                        {showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                                        {showPassword ? <ViewIcon /> : <ViewOffIcon />}
                                     </Button>
                                 </InputRightElement>
                             </InputGroup>
@@ -243,16 +245,18 @@ const RegistrationForm: React.FC = () => {
                                     pr="4.5rem"
                                     type={showConfirmPassword ? 'text' : 'password'}
                                     name="confirmPassword"
-                                    id = "confirmPassword"
-                                    style = {inputStyle}
+                                    id="confirmPassword"
+                                    style={inputStyle}
                                 />
                                 <InputRightElement width="4.5rem">
                                     <Button
                                         h="1.75rem"
                                         size="sm"
+                                        fontSize="20px"
                                         onClick={toggleConfirmPasswordVisibility}
+                                        style={{ backgroundColor: 'transparent' }}
                                     >
-                                        {showConfirmPassword ? <ViewOffIcon /> : <ViewIcon />}
+                                        {showConfirmPassword ? <ViewIcon /> : <ViewOffIcon />}
                                     </Button>
                                 </InputRightElement>
                             </InputGroup>
