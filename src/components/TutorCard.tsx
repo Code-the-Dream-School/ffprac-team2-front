@@ -108,6 +108,7 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
                             boxSize="100px"
                             mx="auto"
                             style={customAvatarStyle}
+                            src={tutor.avatar}
                         />
                     </Stack>
                     <Text mt="4" w="100%" h="65px" fontSize={theme.dashboardButtons.fontSize}>
