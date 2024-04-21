@@ -6,7 +6,7 @@ interface SubjectData {
 }
 
 interface SelectedSubjects {
-    [key: string]: boolean | string[];
+    [key: string]: (number | string)[];
 }
 
 interface ShowCheckboxes {
@@ -74,11 +74,11 @@ const SubjectsFilter: React.FC<SubjectsFilterProps> = ({ onSelectSubjects }) => 
     const toggleSubject = (subject: string) => {
         setShowCheckboxes((prevState) => ({
             ...prevState,
-            [subject]: !prevState[subject] || showAllSubjects, 
+            [subject]: !prevState[subject] || showAllSubjects,
         }));
         setSelectedSubjects((prevState) => {
             const newState: SelectedSubjects = { ...prevState };
-            newState[subject] = typeof prevState[subject] === 'boolean' ? !prevState[subject] : [];
+            newState[subject] = typeof prevState[subject] === 'number' ? prevState[subject] : [];
             return newState;
         });
         if (!showAllSubjects) {
@@ -106,10 +106,10 @@ const SubjectsFilter: React.FC<SubjectsFilterProps> = ({ onSelectSubjects }) => 
         const allSelectedSubjects = Object.values(subjects)
             .reduce(
                 (acc, value) => acc.concat(Array.isArray(value) ? value : []),
-                [] as (string | boolean)[]
+                [] as (string | number)[]
             )
             .filter((value): value is string => typeof value === 'string');
-        
+
         onSelectSubjects(allSelectedSubjects);
     };
 

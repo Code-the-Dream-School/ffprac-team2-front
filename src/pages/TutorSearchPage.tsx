@@ -119,7 +119,7 @@ const TutorSearchPage: React.FC = () => {
     // };
 
     return (
-        <Box p="2" mt="20px">
+        <Box p="2" mt="20px" w="full">
             <Grid templateColumns="1fr 3fr" gap="2">
                 <Flex direction="column">
                     <SubjectsFilter onSelectSubjects={handleSelectSubjects} />

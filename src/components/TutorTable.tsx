@@ -26,7 +26,7 @@ const TutorTable: React.FC<TutorTableProps> = ({
 
     return (
         <Box>
-            <Box overflowX="auto" overflowY="hidden" mt="50px" borderRadius="md" width="100%">
+            <Box overflowX="auto" overflowY="hidden" mt="20px" borderRadius="md" width="100%">
                 <Table variant="striped" bg={theme.colors.customWhite}>
                     <Thead>
                         <Tr
