@@ -1,4 +1,5 @@
-import { Box, Button, Checkbox, CheckboxGroup, FormControl } from '@chakra-ui/react';
+import { Box, Button, Checkbox, CheckboxGroup, FormControl, Icon } from '@chakra-ui/react';
+import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import React, { useState } from 'react';
 
 interface SubjectData {
@@ -18,7 +19,7 @@ interface SubjectsFilterProps {
 }
 
 const subjectsData: SubjectData = {
-    MathSubjects: [
+    Math: [
         'Math',
         'Algebra',
         'Geometry',
@@ -63,7 +64,7 @@ const subjectsData: SubjectData = {
 const SubjectsFilter: React.FC<SubjectsFilterProps> = ({ onSelectSubjects }) => {
     const [selectedSubjects, setSelectedSubjects] = useState<SelectedSubjects>({});
     const [showCheckboxes, setShowCheckboxes] = useState<ShowCheckboxes>({
-        MathSubjects: false,
+        Math: false,
         English: false,
         Science: false,
         ForeignLanguages: false,
@@ -114,16 +115,19 @@ const SubjectsFilter: React.FC<SubjectsFilterProps> = ({ onSelectSubjects }) => 
     };
 
     return (
-        <Box p="4px" bg="white" w="225px" shadow="10px" borderRadius="lg">
+        <Box p="1px" bg="white" w="170px" shadow="10px" borderRadius="md">
             <FormControl w="100px" mt="10px" mb="10px" ml="10px">
                 <Button
                     onClick={toggleAllSubjects}
-                    w="200px"
+                    w="150px"
                     fontSize="14px"
                     h="30px"
                     fontWeight="700"
+                    rightIcon={
+                        showAllSubjects ? <Icon as={FiChevronUp} /> : <Icon as={FiChevronDown} />
+                    }
                 >
-                    Teaching skills
+                    Subjects
                 </Button>
             </FormControl>
             {showAllSubjects &&
@@ -131,7 +135,7 @@ const SubjectsFilter: React.FC<SubjectsFilterProps> = ({ onSelectSubjects }) => 
                     <FormControl key={group} w="100px" mt="10px" mb="10px" ml="10px">
                         <Button
                             onClick={() => toggleSubject(group)}
-                            w="200px"
+                            w="150px"
                             fontSize="12px"
                             h="20px"
                             justifyContent="flex-start"

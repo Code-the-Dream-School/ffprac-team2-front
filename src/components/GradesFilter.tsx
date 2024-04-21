@@ -1,4 +1,5 @@
-import { Box, Button, Checkbox, FormControl } from '@chakra-ui/react';
+import { Box, Button, Checkbox, FormControl, Icon } from '@chakra-ui/react';
+import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import React, { useState } from 'react';
 
 interface GradesFilterProps {
@@ -22,9 +23,18 @@ const GradesFilter: React.FC<GradesFilterProps> = ({ onSelectGrades }) => {
     };
 
     return (
-        <Box p="4px" bg="white" w="225px" shadow="10px" borderRadius="lg" mt="20px">
+        <Box p="1px" bg="white" w="170px" shadow="10px" borderRadius="md" mt="10px">
             <FormControl w="100px" mt="10px" mb="10px" ml="10px">
-                <Button onClick={toggleGrades} w="200px" fontSize="14px" h="30px" fontWeight="700">
+                <Button
+                    onClick={toggleGrades}
+                    w="150px"
+                    fontSize="14px"
+                    h="30px"
+                    fontWeight="700"
+                    rightIcon={
+                        showGrades? <Icon as={FiChevronUp} /> : <Icon as={FiChevronDown} />
+                    }
+                >
                     Grades
                 </Button>
             </FormControl>

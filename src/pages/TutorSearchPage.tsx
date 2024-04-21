@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Grid } from '@chakra-ui/react';
+import { Box, Button, Flex, Grid, useBreakpointValue } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
 import GradesFilter from '../components/GradesFilter';
@@ -12,12 +12,12 @@ import { theme } from '../util/theme';
 // import TutorSearchForm from '../components/TutorSearchForm';
 
 const TutorSearchPage: React.FC = () => {
-    const [tutorsData, setTutorsData] = useState<{tutors: Tutor[];}>({tutors:[]});
+    const [tutorsData, setTutorsData] = useState<{ tutors: Tutor[] }>({ tutors: [] });
     const [loading, setLoading] = useState(true);
     const [selectedGrades, setSelectedGrades] = useState<string[]>([]);
     const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
     const [searchReset, setSearchReset] = useState<boolean>(false);
-
+    const displayFiltersOnLeft = useBreakpointValue({ base: false, md: true });
     const resetSearch = async () => {
         setLoading(true);
         setSearchReset(true);
@@ -37,8 +37,8 @@ const TutorSearchPage: React.FC = () => {
 
     useEffect(() => {
         if (searchReset) {
-            console.log('Search reset!'); 
-            setSearchReset(false); 
+            console.log('Search reset!');
+            setSearchReset(false);
         }
     }, [searchReset]);
     useEffect(() => {
@@ -65,7 +65,7 @@ const TutorSearchPage: React.FC = () => {
             setLoading(false);
         }
     };
-    
+
     const handleSelectSubjects = (subjects: string[]) => {
         console.log(subjects);
         setSelectedSubjects(subjects);
@@ -119,9 +119,13 @@ const TutorSearchPage: React.FC = () => {
     // };
 
     return (
-        <Box p="2" mt="20px" w="full">
-            <Grid templateColumns="1fr 3fr" gap="2">
-                <Flex direction="column">
+        <Box p="1" mt="20px" w="full">
+            <Grid
+                templateColumns={{ base: '1fr', md: '1fr 3fr', xl: '1fr 3fr' }}
+                gap={{ base: 1, md: 2 }}
+                fontSize={{ base: '10px', md: '12px' }}
+            >
+                <Flex direction={displayFiltersOnLeft ? 'column' : 'column'}>
                     <SubjectsFilter onSelectSubjects={handleSelectSubjects} />
                     <GradesFilter onSelectGrades={handleSelectGrades} />
                 </Flex>
@@ -129,7 +133,8 @@ const TutorSearchPage: React.FC = () => {
                     <Flex justify="flex-end" mt={4}>
                         <TutorSearchForm onSearch={handleSearch} />
                     </Flex> */}
-                {/* <Grid
+                {/* {/* <Grid 
+                
                         gap={10}
                         templateColumns={{
                             base: 'repeat(1, 1fr)',
@@ -140,7 +145,7 @@ const TutorSearchPage: React.FC = () => {
                     > */}
                 {/* /* OM: Still debating on the layout. Pls, don't remove. */}
                 <Grid
-                    gap="15px"
+                    gap="50px"
                     templateColumns={{
                         base: 'repeat(1, 1fr)',
                         sm: 'repeat(2, 1fr)',
