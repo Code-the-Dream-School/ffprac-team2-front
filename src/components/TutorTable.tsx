@@ -1,4 +1,4 @@
-import { Box, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { Avatar, Box, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 
 import React from 'react';
 import { TutorStudents } from '../models/interfaces';
@@ -37,6 +37,7 @@ const TutorTable: React.FC<TutorTableProps> = ({
                         >
                             <Th>Parent</Th>
                             <Th>Student</Th>
+                            <Th>Avatar</Th>
                             <Th>Email</Th>
                             <Th>Subject</Th>
                             <Th>Schedule</Th>
@@ -47,6 +48,9 @@ const TutorTable: React.FC<TutorTableProps> = ({
                             <Tr key={index}>
                                 <Td>{student.parent}</Td>
                                 <Td>{student.name}</Td>
+                                <Td>
+                                    <Avatar src={student.image} />
+                                </Td>
                                 <Td>
                                     <a href={`mailto:${student.email}`}>{student.email}</a>
                                 </Td>
