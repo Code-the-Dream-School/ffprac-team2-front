@@ -34,7 +34,7 @@ const MemberCard: React.FC<Member> = ({ name, role, image, description }) => {
     };
     return (
         <Card
-            maxW="300px" 
+            maxW="300px"
             borderRadius="10px"
             fontSize={{ base: '11px', lg: '12px' }}
             margin="1rem"
@@ -42,7 +42,7 @@ const MemberCard: React.FC<Member> = ({ name, role, image, description }) => {
         >
             <CardHeader>
                 <Flex gap={2} alignItems="center">
-                    <Avatar name={name} size={{ base: 'md', md: 'xl' }} src={image} />
+                    <Avatar name={name} size={{ base: '2xl', md: '2xl' }} src={image} />
                     <Box>
                         <Heading size="sm" fontWeight="bold">
                             {name}
