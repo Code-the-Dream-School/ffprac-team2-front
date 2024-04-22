@@ -71,6 +71,7 @@ const Navigation: React.FC = () => {
                 wrap="wrap"
                 padding="4"
                 bg="#E7E0D6"
+                _hover={{ bg: '#E7E0D6' }}
             >
                 {/* Mobile Menu Icon */}
                 <IconButton
@@ -101,7 +102,7 @@ const Navigation: React.FC = () => {
                     <Link
                         as={NavLink}
                         to="/"
-                        fontSize="14px"
+                        fontSize="12px"
                         fontWeight="bold"
                         _hover={{ textDecoration: 'none', color: 'yellow.950' }}
                     >
@@ -113,7 +114,7 @@ const Navigation: React.FC = () => {
                             <Button
                                 as={NavLink}
                                 to="/tutordashboard"
-                                fontSize="14px"
+                                fontSize="12px"
                                 fontWeight="bold"
                                 _hover={{ textDecoration: 'none', color: 'yellow.950' }}
                                 bg="#E7E0D6"
@@ -127,7 +128,7 @@ const Navigation: React.FC = () => {
                         <Button
                             as={NavLink}
                             to="/parent-dashboard"
-                            fontSize="14px"
+                            fontSize="12px"
                             fontWeight="bold"
                             _hover={{ textDecoration: 'none', color: 'yellow.950' }}
                             bg="#E7E0D6"
@@ -139,13 +140,12 @@ const Navigation: React.FC = () => {
                     <Button
                         as={NavLink}
                         to="/tutorsearch"
-                        fontSize="14px"
+                        fontSize="12px"
                         fontWeight="bold"
-                        ml={{ base: '2rem', sm: '1px' }}
-                        mr={{ base: '2rem', sm: '1px' }}
                         bg="#F4CD76"
                         _hover={{ bg: '#F4CD76' }}
-                        size="navigation"
+                        h="30px"
+                        w="120px"
                     >
                         Browse Tutors
                     </Button>
@@ -154,20 +154,22 @@ const Navigation: React.FC = () => {
                         <>
                             <Avatar
                                 as={NavLink}
+                                fontSize="10px"
                                 to="/tutor-profile"
                                 bg="#D9D9D9"
                                 color="black"
                                 name={initials}
                                 src={userData.avatar}
+                                boxSize="40px"
                             />
                         </>
                     )}
 
                     {isLoggedIn && (
                         <IconButton
-                            icon={<IoLogOutSharp size="2rem" />}
+                            icon={<IoLogOutSharp size="30px" />}
                             onClick={handleLogout}
-                            fontSize="14px"
+                            fontSize="12px"
                             fontWeight="bold"
                             variant="unstyled"
                             aria-label="Logout"
@@ -178,7 +180,7 @@ const Navigation: React.FC = () => {
                         <Button
                             as={NavLink}
                             to="/auth"
-                            fontSize="14px"
+                            fontSize="12px"
                             fontWeight="bold"
                             bg="#59D3C8"
                             _hover={{ bg: '#59D3C8' }}
@@ -196,15 +198,19 @@ const Navigation: React.FC = () => {
                     <Box
                         ref={cancelRef}
                         position="fixed"
-                        top="80px"
+                        top="65px"
                         left="0"
                         right="0"
                         zIndex="overlay"
+                        shadow="md"
+                        bg="#E7E0D6"
+                        p={4}
+                        onClick={onClose}
                     >
                         <VStack spacing={4} bg="#E7E0D6" p={4} onClick={onClose}>
                             <Link
                                 as={NavLink}
-                                fontSize="14px"
+                                fontSize="12px"
                                 fontWeight="bold"
                                 _hover={{ textDecoration: 'none' }}
                                 to="/"
@@ -216,7 +222,7 @@ const Navigation: React.FC = () => {
                             {isLoggedIn && role === 'tutor' && (
                                 <Link
                                     as={NavLink}
-                                    fontSize="14px"
+                                    fontSize="12px"
                                     fontWeight="bold"
                                     _hover={{ textDecoration: 'none' }}
                                     to="/tutordashboard"
@@ -229,7 +235,7 @@ const Navigation: React.FC = () => {
                             {isLoggedIn && role === 'parent' && (
                                 <Link
                                     as={NavLink}
-                                    fontSize="14px"
+                                    fontSize="12px"
                                     fontWeight="bold"
                                     _hover={{ textDecoration: 'none' }}
                                     to="/parent-dashboard"
@@ -241,7 +247,7 @@ const Navigation: React.FC = () => {
                             <Button
                                 as={NavLink}
                                 to="/tutorsearch"
-                                fontSize="14px"
+                                fontSize="12px"
                                 fontWeight="bold"
                                 bg="#F4CD76"
                                 height="30px"
@@ -256,11 +262,11 @@ const Navigation: React.FC = () => {
                                     <Avatar
                                         as={NavLink}
                                         fontSize="10px"
-                                        fontWeight="bold"
                                         to="/tutor-profile"
                                         onClick={onClose}
                                         bg="#D9D9D9"
                                         color="black"
+                                        boxSize="40px"
                                         name={initials}
                                         src={userData.avatar}
                                     />
@@ -276,15 +282,19 @@ const Navigation: React.FC = () => {
                                     />
                                 </Flex>
                             ) : (
-                                <Link
+                                <Button
                                     as={NavLink}
-                                    fontSize="14px"
-                                    fontWeight="bold"
                                     to="/auth"
+                                    bg="#59D3C8"
+                                    fontSize="12px"
+                                    fontWeight="bold"
+                                    height="30px"
+                                    width="150px"
+                                    _hover={{ bg: 'grey.400' }}
                                     onClick={onClose}
                                 >
                                     Login
-                                </Link>
+                                </Button>
                             )}
                         </VStack>
                     </Box>

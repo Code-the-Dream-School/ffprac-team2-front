@@ -78,9 +78,9 @@ export const theme = extendTheme({
                     fontSize: '24px',
                 },
                 navigation: {
-                    h: '60px',
-                    minW: '180px',
-                    fontSize: '24px',
+                    h: '30px',
+                    minW: '100px',
+                    fontSize: '12px',
                 },
             },
             variants: {
