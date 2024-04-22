@@ -26,7 +26,7 @@ const TableSearch: React.FC<TableSearchProps> = ({
     };
 
     return (
-        <Box mt="50px" bg="#F5E0B1" p="4" borderRadius="md" width="100%">
+        <Box mt="20px" bg="#F5E0B1" p="4" borderRadius="md" width="100%">
             <form>
                 <Box mb="2">
                     <FormLabel fontSize={theme.dashboardButtons.fontSize}>Student search</FormLabel>
