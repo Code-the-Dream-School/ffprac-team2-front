@@ -75,12 +75,13 @@ const AboutPage: React.FC = () => {
             >
                 <AccordionItem>
                     <h2>
-                        <AccordionButton _expanded={{ bg: theme.colors.customWhite}}>
+                        <AccordionButton _expanded={{ bg: theme.colors.customWhite}} borderRadius="10px">
                             <Box
                                 as="span"
                                 fontSize={{ base: 'md', lg: 'lg' }}
                                 flex='1'
                                 textAlign='left'
+                                fontWeight={"bold"}
                             >
                                 How to Get Started for Tutors
                             </Box>
@@ -108,12 +109,13 @@ const AboutPage: React.FC = () => {
                 </AccordionItem>
                 <AccordionItem>
                     <h2>
-                        <AccordionButton _expanded={{ bg: theme.colors.customWhite}}>
+                        <AccordionButton _expanded={{ bg: theme.colors.customWhite}} borderRadius="10px">
                             <Box
                                 as="span"
                                 fontSize={{ base: 'md', lg: 'lg' }}
                                 flex='1'
                                 textAlign='left'
+                                fontWeight={"bold"}
                             >
 
                                 How to Get Started for Parents
