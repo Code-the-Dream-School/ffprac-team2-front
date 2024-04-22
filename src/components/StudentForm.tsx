@@ -164,7 +164,15 @@ const StudentForm: React.FC<StudentFormProps> = ({
     return (
         <>
             {isOpenForm && (
-                <Modal isOpen={isOpenForm} onClose={onCloseForm} size="lg" isCentered>
+                <Modal
+                    isOpen={isOpenForm}
+                    onClose={() => {
+                        setSelectedImage(null);
+                        onCloseForm();
+                    }}
+                    size="lg"
+                    isCentered
+                >
                     <ModalOverlay />
                     <Formik
                         onSubmit={handleSubmit}
@@ -247,7 +255,9 @@ const StudentForm: React.FC<StudentFormProps> = ({
                                             mr={3}
                                             type="submit"
                                             isDisabled={
-                                                !formik.dirty || !formik.isValid || isLoading
+                                                title === 'Add Student'
+                                                    ? !formik.dirty || !formik.isValid || isLoading
+                                                    : !selectedImage || !formik.isValid || isLoading
                                             }
                                         >
                                             Save

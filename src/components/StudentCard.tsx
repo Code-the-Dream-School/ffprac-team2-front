@@ -20,7 +20,7 @@ import {
     useToast,
 } from '@chakra-ui/react';
 import avatar from '../assets/avatar.png';
-import { EditIcon, CalendarIcon, EmailIcon } from '@chakra-ui/icons';
+import { EditIcon, EmailIcon } from '@chakra-ui/icons';
 import StudentForm from './StudentForm';
 
 import axios from 'axios';
@@ -73,6 +73,17 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => 
         }
     };
 
+    const handleSendEmail = async (tutorId: string) => {
+        const tutor = await axios.get(`${import.meta.env.VITE_REACT_URL}tutors/${tutorId}`, {
+            headers: getHeaders(),
+        });
+        const recipientEmail = tutor.data.email;
+        const subject = encodeURIComponent('Tutoring inquiry');
+        const body = encodeURIComponent('');
+
+        window.location.href = `mailto:${recipientEmail}?subject=${subject}&body=${body}`;
+    };
+
     return (
         <Card
             direction={{ base: 'column', sm: 'row' }}
@@ -110,6 +121,7 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => 
                             <Tr>
                                 <Th>Tutor</Th>
                                 <Th>Subject</Th>
+                                <Th>Day</Th>
                                 <Th></Th>
                             </Tr>
                         </Thead>
@@ -125,12 +137,17 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => 
                                         <Td fontSize="md" p={{ base: '0', sm: '0' }}>
                                             {element.subject}
                                         </Td>
+                                        <Td fontSize="md" p={{ base: '0', sm: '0' }}>
+                                            {element.availability}
+                                        </Td>
                                         <Td p={{ base: '0', sm: '0' }}>
                                             <Flex gap={{ base: '0', md: '4' }}>
-                                                <Button backgroundColor="white">
-                                                    <CalendarIcon w="15px" h="15px" />
-                                                </Button>
-                                                <Button backgroundColor="white">
+                                                <Button
+                                                    backgroundColor="white"
+                                                    onClick={() => {
+                                                        handleSendEmail(element.tutorId);
+                                                    }}
+                                                >
                                                     <EmailIcon w="18px" h="18px" />
                                                 </Button>
 
