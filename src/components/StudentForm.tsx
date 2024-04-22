@@ -12,17 +12,19 @@ import {
     ModalHeader,
     ModalOverlay,
     Select,
+    useToast,
 } from '@chakra-ui/react';
 import { Field, Formik, FormikHelpers } from 'formik';
 import React, { useState } from 'react';
 import { Student, StudentRequest } from '../models/interfaces';
 import axios from 'axios';
 import { studentSchema } from '../validationSchemas';
-import { headers } from '../util';
+import { getHeaders } from '../util';
 import AlertPopUp from './AlertPopUp';
 import UploadImage from './UploadImage';
 import AppLoader from './AppLoader';
-import Notification from './Notification';
+import { useGlobal } from '../context/useGlobal';
+import { theme } from '../util/theme';
 
 interface StudentFormProps {
     isOpenForm: boolean;
@@ -46,7 +48,8 @@ const StudentForm: React.FC<StudentFormProps> = ({
     };
     const [selectedImage, setSelectedImage] = useState<Blob | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [message, setMessage] = useState('');
+    const toast = useToast();
+    const { dispatch } = useGlobal();
 
     const handleSubmit = async (values: StudentRequest, actions: FormikHelpers<StudentRequest>) => {
         let imageUrl;
@@ -63,9 +66,14 @@ const StudentForm: React.FC<StudentFormProps> = ({
                 setIsLoading(false);
             } catch (error) {
                 if (error instanceof Error) {
-                    setMessage(error.message);
                     setIsLoading(false);
-                    <Notification message={message} status="error" setToastMessage={setMessage} />;
+                    toast({
+                        title: error.message,
+                        status: 'error',
+                        duration: 3000,
+                        isClosable: true,
+                        position: 'top',
+                    });
                 }
             }
         }
@@ -82,35 +90,41 @@ const StudentForm: React.FC<StudentFormProps> = ({
                 response = await axios.post(
                     `${import.meta.env.VITE_REACT_URL}students`,
                     newStudent,
-                    { headers }
+                    { headers: getHeaders() }
                 );
+                dispatch({ type: 'SET_STUDENTS', payload: response.data.student });
             } else {
                 setIsLoading(true);
                 response = await axios.patch(
                     `${import.meta.env.VITE_REACT_URL}students/${student?._id}`,
                     newStudent,
-                    { headers }
+                    { headers: getHeaders() }
                 );
+                dispatch({ type: 'UPDATE_STUDENTS', payload: response.data.student });
             }
-            const studentData = response?.data;
-            console.log(studentData);
             actions.resetForm();
             onCloseForm();
             setSelectedImage(null);
             setIsLoading(false);
-            setMessage(response?.data.message);
-            <Notification
-                message={response?.data.message}
-                status="success"
-                setToastMessage={setMessage}
-            />;
+
+            toast({
+                title: response?.data.msg,
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+                position: 'top',
+            });
             setNeedUpdate(true);
         } catch (error) {
             if (error instanceof Error) {
                 setIsLoading(false);
-                setMessage(error.message);
-                <Notification message={message} status="error" setToastMessage={setMessage} />;
-                console.error('Error submitting form:', error);
+                toast({
+                    title: error.message,
+                    status: 'error',
+                    duration: 3000,
+                    isClosable: true,
+                    position: 'top',
+                });
             }
         }
     };
@@ -120,26 +134,29 @@ const StudentForm: React.FC<StudentFormProps> = ({
             setIsLoading(true);
             const response = await axios.delete(
                 `${import.meta.env.VITE_REACT_URL}students/${student?._id}`,
-                {
-                    headers,
-                }
+                { headers: getHeaders() }
             );
 
             onCloseForm();
-            setMessage(response?.data.message);
-            <Notification
-                message={response?.data.message}
-                status="success"
-                setToastMessage={setMessage}
-            />;
+            toast({
+                title: response?.data.msg,
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+                position: 'top',
+            });
             setNeedUpdate(true);
             setIsLoading(false);
         } catch (error) {
             if (error instanceof Error) {
                 setIsLoading(false);
-                setMessage(error.message);
-                <Notification message={message} status="error" setToastMessage={setMessage} />;
-                console.error('Error deleting product:', error);
+                toast({
+                    title: error.message,
+                    status: 'error',
+                    duration: 3000,
+                    isClosable: true,
+                    position: 'top',
+                });
             }
         }
     };
@@ -223,11 +240,22 @@ const StudentForm: React.FC<StudentFormProps> = ({
                                     </ModalBody>
 
                                     <ModalFooter>
-                                        <Button colorScheme="yellow" mr={3} type="submit">
+                                        <Button
+                                            bg={theme.dashboardButtons.buttonYellow.bg}
+                                            fontSize={theme.dashboardButtons.fontSize}
+                                            fontWeight={theme.dashboardButtons.fontWeight}
+                                            mr={3}
+                                            type="submit"
+                                            isDisabled={
+                                                !formik.dirty || !formik.isValid || isLoading
+                                            }
+                                        >
                                             Save
                                         </Button>
                                         <Button
-                                            backgroundColor="#59D3C8"
+                                            fontSize={theme.dashboardButtons.fontSize}
+                                            fontWeight={theme.dashboardButtons.fontWeight}
+                                            bg={theme.dashboardButtons.buttonTeal.bg}
                                             mr={3}
                                             onClick={() => {
                                                 setSelectedImage(null);
