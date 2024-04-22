@@ -234,7 +234,7 @@ const TutorProfilePage: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const handleSubmit = async (values: TutorRequest, actions: FormikHelpers<TutorRequest>) => {
+    const handleSubmit = async (values: TutorRequest) => {
         let imageUrl;
 
         if (selectedImage) {
@@ -345,8 +345,6 @@ const TutorProfilePage: React.FC = () => {
                         setSelectedImage(null);
                         dispatch({ type: 'SET_TUTOR', payload: data.tutor });
                         setIsEditing(false);
-                        setInitialValues(data.tutor);
-                        actions.resetForm();
                         onClose();
                         return;
                     }
@@ -808,9 +806,6 @@ const TutorProfilePage: React.FC = () => {
                     {<Overlay />}
                     <ModalContent>
                         <ModalHeader>{ModalActionMessage}</ModalHeader>
-                        <ModalBody>
-                            <Text>TutorUp</Text>
-                        </ModalBody>
                     </ModalContent>
                 </Modal>
             ) : (
