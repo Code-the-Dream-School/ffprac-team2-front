@@ -34,9 +34,9 @@ const MemberCard: React.FC<Member> = ({ name, role, image, description }) => {
     };
     return (
         <Card
-            maxW="md"
-            overflowY="scroll"
-            fontSize={{ base: '16px', lg: '18px' }}
+            maxW="300px" 
+            borderRadius="10px"
+            fontSize={{ base: '11px', lg: '12px' }}
             margin="1rem"
             minH={'300px'}
         >
@@ -58,6 +58,7 @@ const MemberCard: React.FC<Member> = ({ name, role, image, description }) => {
                         onClick={() => setIsExpanded(!isExpanded)}
                         variant="link"
                         color="blue.500"
+                        fontSize={{ base: '10px', lg: '11px' }}
                     >
                         {isExpanded ? 'See less' : 'See more...'}
                     </Button>

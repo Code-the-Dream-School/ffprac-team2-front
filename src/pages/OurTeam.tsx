@@ -24,8 +24,8 @@ const OurTeamPage: React.FC = () => {
             name: 'Alena',
             role: 'Front End Developer',
             image: '',
-            description:
-                'Lorem ipsum dolor sit amet,consectetur adipiscing elit, Lorem ipsum dolor sit amet,consectetur adipiscing elit, sed do eiusmod tempor incididunnim ad minim veniam, quis nost quip ex ea commodo consequat',
+            description: "I'm a dynamic professional with a background in Quality Assurance, Data Analytics, and Customer Support. Now, I'm enthusiastically diving into web development with a clear goal in mind - to become a skilled Front-end Developer and UI Engineer. I'm passionate about creating seamless user experiences that make a positive impact. Beyond coding, I find joy in various hobbies. Exploring hiking trails and enjoying nature's beauty keeps me grounded and inspired. Additionally, I enjoy practicing Pilates to stay focused and maintain mental clarity while tackling coding challenges."       
+                
         },
         {
             name: 'Natalia',
@@ -39,7 +39,8 @@ const OurTeamPage: React.FC = () => {
             role: 'Front End Developer',
             image: '',
             description:
-                'Lorem ipsum dolor sit amet,consectetur adipiscing elit, Lorem ipsum dolor sit amet,consectetur adipiscing elit, sed do eiusmod tempor incididunnim ad minim veniam, sed do eiusmod tempor incididunnim ad minim veniam, quis nost quip ex ea commodo consequat',
+                "I’m a passionate front end developer. I love crafting user interfaces while writing efficient and understandable code through constant learning and improvement. When I'm not coding, I enjoy hiking with my family and friends, which helps me clear my head and approach problems with a fresh perspective."
+                
         },
         {
             name: 'Team Mentors',
@@ -50,11 +51,11 @@ const OurTeamPage: React.FC = () => {
     ];
 
     return (
-        <Box fontSize={{ base: '16px', lg: '18px' }} marginBottom="2rem">
-            <Heading as="h1" fontSize={{ base: '24px', lg: '32px' }} textAlign={'center'}>
+        <Box fontSize={{ base: '11px', lg: '12px' }} marginBottom="2rem">
+            <Heading as="h1" fontSize={{ base: 'lg', lg: '2xl' }} textAlign={'center'}>
                 Our Team
             </Heading>
-            <SimpleGrid columns={[1, 2, 2, 3]}>
+            <SimpleGrid columns={[1, 2, 2, 3]} spacing="4">
                 {team.map((member, index) => (
                     <MemberCard
                         key={index}
