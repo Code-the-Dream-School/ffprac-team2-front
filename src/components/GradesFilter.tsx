@@ -31,9 +31,7 @@ const GradesFilter: React.FC<GradesFilterProps> = ({ onSelectGrades }) => {
                     fontSize="14px"
                     h="30px"
                     fontWeight="700"
-                    rightIcon={
-                        showGrades? <Icon as={FiChevronUp} /> : <Icon as={FiChevronDown} />
-                    }
+                    rightIcon={showGrades ? <Icon as={FiChevronUp} /> : <Icon as={FiChevronDown} />}
                 >
                     Grades
                 </Button>

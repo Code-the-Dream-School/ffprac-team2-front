@@ -119,7 +119,7 @@ const TutorSearchPage: React.FC = () => {
     // };
 
     return (
-        <Box  mt="20px" w="full">
+        <Box mt="20px" w="full">
             <Grid
                 templateColumns={{ base: '1fr', md: '1fr 3fr', xl: '1fr 3fr' }}
                 gap={{ base: 1, md: 2 }}

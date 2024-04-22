@@ -135,7 +135,6 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
                                 </Flex>
                             </Box>
                         </Box>
-
                     </Stack>
                     <Text mt="4" w="100%" h="65px" fontSize={theme.dashboardButtons.fontSize}>
                         {tutor.about}
