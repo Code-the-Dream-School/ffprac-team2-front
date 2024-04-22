@@ -94,9 +94,6 @@ export interface TutorRequest {
     SocialStudies: string[];
     Science: string[];
 }
-export interface AuthPageProps {
-    activeTab: 'register' | 'login';
-}
 
 export interface User {
     firstName: string;

@@ -16,7 +16,7 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<Layout />}>
                     <Route index element={<LandingPage />} />
-                    <Route path="/auth" element={<AuthPage activeTab={'login'} />} />
+                    <Route path="/auth" element={<AuthPage />} />
                     <Route path="/parentdashboard" element={<ParentDashboardPage />} />
                     <Route path="/tutorprofile" element={<TutorProfilePage />} />
                     <Route path="/tutorsearch" element={<TutorSearchPage />} />

@@ -9,12 +9,16 @@ import {
     Box,
     useBreakpointValue,
 } from '@chakra-ui/react';
+import { useLocation } from 'react-router-dom';
 
 import RegistrationForm from '../components/RegistrationForm';
 import LoginForm from '../components/LoginForm';
-import { AuthPageProps } from '../models/interfaces';
 
-const AuthPage: React.FC<AuthPageProps> = ({ activeTab }) => {
+const AuthPage: React.FC = () => {
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const activeTab = searchParams.get('activeTab') || 'login';
+
     const defaultIndex = activeTab === 'register' ? 0 : 1;
     const tabLength = useBreakpointValue({ base: '300px', md: '350px' });
     const tabHeight = useBreakpointValue({ base: '50px', md: '60px' });
@@ -26,6 +30,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ activeTab }) => {
                     defaultIndex={defaultIndex}
                     marginTop={14}
                     marginBottom={4}
+                    isLazy
                 >
                     <TabList
                         bg="#D9D9D9"
