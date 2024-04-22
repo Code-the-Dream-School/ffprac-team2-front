@@ -19,10 +19,11 @@ import React, { useState } from 'react';
 import { Student, StudentRequest } from '../models/interfaces';
 import axios from 'axios';
 import { studentSchema } from '../validationSchemas';
-import { headers } from '../util';
+import { getHeaders } from '../util';
 import AlertPopUp from './AlertPopUp';
 import UploadImage from './UploadImage';
 import AppLoader from './AppLoader';
+import { useGlobal } from '../context/useGlobal';
 
 interface StudentFormProps {
     isOpenForm: boolean;
@@ -47,6 +48,7 @@ const StudentForm: React.FC<StudentFormProps> = ({
     const [selectedImage, setSelectedImage] = useState<Blob | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const toast = useToast();
+    const { dispatch } = useGlobal();
 
     const handleSubmit = async (values: StudentRequest, actions: FormikHelpers<StudentRequest>) => {
         let imageUrl;
@@ -66,10 +68,10 @@ const StudentForm: React.FC<StudentFormProps> = ({
                     setIsLoading(false);
                     toast({
                         title: error.message,
-                        status: 'success',
+                        status: 'error',
                         duration: 3000,
                         isClosable: true,
-                        // onCloseComplete: () => setToastMessage(''),
+                        position: 'top',
                     });
                 }
             }
@@ -87,18 +89,18 @@ const StudentForm: React.FC<StudentFormProps> = ({
                 response = await axios.post(
                     `${import.meta.env.VITE_REACT_URL}students`,
                     newStudent,
-                    { headers }
+                    { headers: getHeaders() }
                 );
+                dispatch({ type: 'SET_STUDENTS', payload: response.data.student });
             } else {
                 setIsLoading(true);
                 response = await axios.patch(
                     `${import.meta.env.VITE_REACT_URL}students/${student?._id}`,
                     newStudent,
-                    { headers }
+                    { headers: getHeaders() }
                 );
+                dispatch({ type: 'UPDATE_STUDENTS', payload: response.data.student });
             }
-            const studentData = response?.data;
-            console.log(studentData);
             actions.resetForm();
             onCloseForm();
             setSelectedImage(null);
@@ -109,7 +111,7 @@ const StudentForm: React.FC<StudentFormProps> = ({
                 status: 'success',
                 duration: 3000,
                 isClosable: true,
-                // onCloseComplete: () => setToastMessage(''),
+                position: 'top',
             });
             setNeedUpdate(true);
         } catch (error) {
@@ -117,12 +119,11 @@ const StudentForm: React.FC<StudentFormProps> = ({
                 setIsLoading(false);
                 toast({
                     title: error.message,
-                    status: 'success',
+                    status: 'error',
                     duration: 3000,
                     isClosable: true,
-                    // onCloseComplete: () => setToastMessage(''),
+                    position: 'top',
                 });
-                console.error('Error submitting form:', error);
             }
         }
     };
@@ -132,9 +133,7 @@ const StudentForm: React.FC<StudentFormProps> = ({
             setIsLoading(true);
             const response = await axios.delete(
                 `${import.meta.env.VITE_REACT_URL}students/${student?._id}`,
-                {
-                    headers,
-                }
+                { headers: getHeaders() }
             );
 
             onCloseForm();
@@ -143,7 +142,7 @@ const StudentForm: React.FC<StudentFormProps> = ({
                 status: 'success',
                 duration: 3000,
                 isClosable: true,
-                // onCloseComplete: () => setToastMessage(''),
+                position: 'top',
             });
             setNeedUpdate(true);
             setIsLoading(false);
@@ -152,12 +151,11 @@ const StudentForm: React.FC<StudentFormProps> = ({
                 setIsLoading(false);
                 toast({
                     title: error.message,
-                    status: 'success',
+                    status: 'error',
                     duration: 3000,
                     isClosable: true,
-                    // onCloseComplete: () => setToastMessage(''),
+                    position: 'top',
                 });
-                console.error('Error deleting product:', error);
             }
         }
     };
@@ -241,7 +239,14 @@ const StudentForm: React.FC<StudentFormProps> = ({
                                     </ModalBody>
 
                                     <ModalFooter>
-                                        <Button colorScheme="yellow" mr={3} type="submit">
+                                        <Button
+                                            colorScheme="yellow"
+                                            mr={3}
+                                            type="submit"
+                                            isDisabled={
+                                                !formik.dirty || !formik.isValid || isLoading
+                                            }
+                                        >
                                             Save
                                         </Button>
                                         <Button

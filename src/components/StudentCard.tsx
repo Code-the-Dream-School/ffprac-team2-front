@@ -17,14 +17,17 @@ import {
     CardFooter,
     Stack,
     useDisclosure,
+    useToast,
 } from '@chakra-ui/react';
 import avatar from '../assets/avatar.png';
 import { EditIcon, CalendarIcon, EmailIcon } from '@chakra-ui/icons';
 import StudentForm from './StudentForm';
-import { headers } from '../util';
+
 import axios from 'axios';
 import AlertPopUp from './AlertPopUp';
 import AppLoader from './AppLoader';
+import { getHeaders } from '../util';
+import { useGlobal } from '../context/useGlobal';
 
 interface StudentCardProps {
     student: Student;
@@ -34,6 +37,8 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const profileImage = student.image ? student.image : avatar;
     const [isLoading, setIsLoading] = useState(false);
+    const { dispatch } = useGlobal();
+    const toast = useToast();
 
     const handleDeleteTutor = async (tutorId: string, subject: string) => {
         try {
@@ -41,14 +46,29 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => 
             const response = await axios.patch(
                 `${import.meta.env.VITE_REACT_URL}students/${student?._id}`,
                 { tutorToRemove: { tutorId, subject } },
-                { headers }
+                { headers: getHeaders() }
             );
+            dispatch({ type: 'SET_STUDENTS', payload: response?.data.student });
             setNeedUpdate(true);
             setIsLoading(false);
-            console.log(response);
+            toast({
+                title: response?.data.msg,
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+                position: 'top',
+            });
         } catch (error) {
-            setIsLoading(false);
-            console.error(error);
+            if (error instanceof Error) {
+                setIsLoading(false);
+                toast({
+                    title: error.message,
+                    status: 'error',
+                    duration: 3000,
+                    isClosable: true,
+                    position: 'top',
+                });
+            }
         }
     };
 
@@ -69,7 +89,7 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => 
                 w={{ base: '100%', sm: '30%' }}
             >
                 <Avatar size={{ base: 'xl', md: '2xl' }} name={student.name} src={profileImage} />
-                <Stack direction={{ base: 'row', sm: 'column' }}>
+                <Stack direction={{ base: 'column', sm: 'column' }} ml={{ base: '10px', sm: '0' }}>
                     <Heading as="h4" size="md">
                         {student.name}
                     </Heading>
@@ -98,14 +118,14 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => 
                                 student.tutorInfo?.length > 0 &&
                                 student.tutorInfo?.map((element) => (
                                     <Tr key={element.tutorId + element.subject}>
-                                        <Td fontSize="md" px={{ base: '0', sm: '4' }}>
+                                        <Td fontSize="md" p={{ base: '0', sm: '0' }}>
                                             {element.tutorName}
                                         </Td>
-                                        <Td fontSize="md" px={{ base: '0', sm: '4' }}>
+                                        <Td fontSize="md" p={{ base: '0', sm: '0' }}>
                                             {element.subject}
                                         </Td>
-                                        <Td px={{ base: '0', sm: '0' }}>
-                                            <Flex gap={{ base: '1', md: '4' }}>
+                                        <Td p={{ base: '0', sm: '0' }}>
+                                            <Flex gap={{ base: '0', md: '4' }}>
                                                 <Button backgroundColor="white">
                                                     <CalendarIcon w="15px" h="15px" />
                                                 </Button>
