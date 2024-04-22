@@ -12,7 +12,6 @@ import {
     AccordionPanel,
     AccordionIcon,
 } from '@chakra-ui/react';
-import { theme } from '../util/theme';
 
 const AboutPage: React.FC = () => {
     return (
@@ -70,10 +69,7 @@ const AboutPage: React.FC = () => {
             <Accordion allowMultiple allowToggle marginTop={{ base: '2rem', lg: '3rem' }}>
                 <AccordionItem>
                     <h3>
-                        <AccordionButton
-                            _expanded={{ bg: theme.colors.customWhite }}
-                            borderRadius="10px"
-                        >
+                        <AccordionButton>
                             <Box
                                 as="span"
                                 fontSize={{ base: 'md', lg: 'lg' }}
@@ -106,10 +102,7 @@ const AboutPage: React.FC = () => {
                 </AccordionItem>
                 <AccordionItem>
                     <h3>
-                        <AccordionButton
-                            _expanded={{ bg: theme.colors.customWhite }}
-                            borderRadius="10px"
-                        >
+                        <AccordionButton>
                             <Box
                                 as="span"
                                 fontSize={{ base: 'md', lg: 'lg' }}
