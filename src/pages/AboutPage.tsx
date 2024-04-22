@@ -66,7 +66,7 @@ const AboutPage: React.FC = () => {
                 </ListItem>
             </UnorderedList>
 
-            <Accordion allowMultiple allowToggle marginTop={{ base: '2rem', lg: '3rem' }}>
+            <Accordion allowMultiple  marginTop={{ base: '2rem', lg: '3rem' }}>
                 <AccordionItem>
                     <h3>
                         <AccordionButton>
