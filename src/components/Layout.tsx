@@ -8,7 +8,7 @@ import backgroundImage from '../assets/new_bg.jpg';
 
 const Layout: React.FC = () => {
     const location = useLocation();
-    const isHomePage = location.pathname === '/';
+    const isHomePage = location.pathname === '/' || location.pathname === '/notFound';
     const sizeHeader = { maxWidth: '1440px', margin: '0 auto' };
     const contentStyle = {
         maxWidth: isHomePage ? 'full' : '1440px',
@@ -24,7 +24,6 @@ const Layout: React.FC = () => {
             <Flex direction="column" w="full" className="main-content" position="relative">
                 {isHomePage && (
                     <Box
-                        as="body"
                         w="full"
                         h="full"
                         bgImage={`url(${backgroundImage})`}

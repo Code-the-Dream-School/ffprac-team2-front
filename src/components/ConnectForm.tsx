@@ -14,15 +14,17 @@ import {
     ModalOverlay,
     Select,
     Text,
+    useToast,
 } from '@chakra-ui/react';
 import { Field, Formik, FormikHelpers } from 'formik';
 import { Tutor, TutorConnectionRequest } from '../models/interfaces';
 import { connectSchema } from '../validationSchemas';
 import axios from 'axios';
-import { headers } from '../util';
+import { getHeaders } from '../util';
 import { useGlobal } from '../context/useGlobal';
 import { useNavigate } from 'react-router-dom';
 import AppLoader from './AppLoader';
+import { theme } from '../util/theme';
 
 interface ConnectFormProps {
     isOpen: boolean;
@@ -45,10 +47,11 @@ const initialValues: InitialValues = {
 type SelectChangeEvent = React.ChangeEvent<HTMLSelectElement>;
 
 const ConnectForm: React.FC<ConnectFormProps> = ({ isOpen, onClose, tutor }) => {
-    const { students } = useGlobal();
+    const { students, dispatch } = useGlobal();
     const [isOptionSelected, setIsOptionSelected] = useState(false);
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
+    const toast = useToast();
 
     const fieldsToDisplay: (keyof Tutor)[] = [
         'MathSubject',
@@ -74,19 +77,33 @@ const ConnectForm: React.FC<ConnectFormProps> = ({ isOpen, onClose, tutor }) => 
             const response = await axios.patch(
                 `${import.meta.env.VITE_REACT_URL}students/${values.studentId}`,
                 { tutorInfo: [connectionData] },
-                { headers }
+                { headers: getHeaders() }
             );
             const studentData = response?.data;
-            console.log(values);
-            console.log(studentData);
+            dispatch({ type: 'UPDATE_STUDENTS', payload: studentData.student });
+            toast({
+                title: response?.data.msg,
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+                position: 'top',
+            });
             actions.resetForm();
             setIsOptionSelected(false);
             setIsLoading(false);
             onClose();
-            navigate('/parent-dashboard');
+            navigate('/parentdashboard');
         } catch (error) {
-            setIsLoading(false);
-            console.error('Error submitting form:', error);
+            if (error instanceof Error) {
+                setIsLoading(false);
+                toast({
+                    title: error.message,
+                    status: 'error',
+                    duration: 3000,
+                    isClosable: true,
+                    position: 'top',
+                });
+            }
         }
     };
 
@@ -219,6 +236,12 @@ const ConnectForm: React.FC<ConnectFormProps> = ({ isOpen, onClose, tutor }) => 
                                                             </option>
                                                         ))}
                                                     </Field>
+                                                    {formik.errors.subject &&
+                                                        formik.touched.subject && (
+                                                            <FormErrorMessage>
+                                                                {formik.errors.subject}
+                                                            </FormErrorMessage>
+                                                        )}
                                                 </FormControl>
                                             );
                                         }
@@ -227,11 +250,20 @@ const ConnectForm: React.FC<ConnectFormProps> = ({ isOpen, onClose, tutor }) => 
                                 </ModalBody>
 
                                 <ModalFooter>
-                                    <Button type="submit" colorScheme="yellow" mr={3}>
+                                    <Button
+                                        type="submit"
+                                        bg={theme.dashboardButtons.buttonYellow.bg}
+                                        fontSize={theme.dashboardButtons.fontSize}
+                                        fontWeight={theme.dashboardButtons.fontWeight}
+                                        mr={3}
+                                        isDisabled={!formik.dirty || !formik.isValid}
+                                    >
                                         Connect
                                     </Button>
                                     <Button
-                                        backgroundColor="#59D3C8"
+                                        fontSize={theme.dashboardButtons.fontSize}
+                                        fontWeight={theme.dashboardButtons.fontWeight}
+                                        bg={theme.dashboardButtons.buttonTeal.bg}
                                         mr={3}
                                         onClick={() => {
                                             onClose();

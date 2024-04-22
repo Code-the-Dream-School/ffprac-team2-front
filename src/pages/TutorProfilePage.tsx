@@ -197,6 +197,7 @@ const TutorProfilePage: React.FC = () => {
                         setInitialValues(data.tutor);
                         dispatch({ type: 'SET_TUTOR', payload: data.tutor });
                         setIsLoading(false);
+                        setIsEditing(false);
                         // setMessage(response?.data.message);
                     } else {
                         throw new Error('Tutor update failed');
@@ -292,6 +293,7 @@ const TutorProfilePage: React.FC = () => {
                     if (status === 200) {
                         setSelectedImage(null);
                         dispatch({ type: 'SET_TUTOR', payload: data.tutor });
+                        setInitialValues(data.tutor);
                         setIsLoading(false);
                         setIsEditing(false);
                         toast({
@@ -343,6 +345,7 @@ const TutorProfilePage: React.FC = () => {
                         setSelectedImage(null);
                         dispatch({ type: 'SET_TUTOR', payload: data.tutor });
                         setIsEditing(false);
+                        setInitialValues(data.tutor);
                         actions.resetForm();
                         onClose();
                         return;

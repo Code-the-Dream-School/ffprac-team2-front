@@ -78,9 +78,9 @@ const LoginForm: React.FC = () => {
                     dispatch({ type: 'SET_IS_LOGGED_IN', payload: true });
 
                     if (role === 'parent') {
-                        navigate('/parent-dashboard');
+                        navigate('/parentdashboard');
                     } else {
-                        navigate('/tutor-profile');
+                        navigate('/tutorprofile');
                     }
                 } catch (error) {
                     setStatus('failed');
