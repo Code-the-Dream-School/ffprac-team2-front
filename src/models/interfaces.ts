@@ -22,6 +22,8 @@ export interface TutorStudents {
     email: string;
     subject: string;
     availability: string;
+    image: string;
+    grade: string;
 }
 export interface StudentRequest {
     name: string;
@@ -93,9 +95,6 @@ export interface TutorRequest {
     English: string[];
     SocialStudies: string[];
     Science: string[];
-}
-export interface AuthPageProps {
-    activeTab: 'register' | 'login';
 }
 
 export interface User {

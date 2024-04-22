@@ -11,7 +11,8 @@ type FooterProps = {
 
 const Footer: React.FC<FooterProps> = ({ sizeHeader }) => {
     const currentYear = new Date().getFullYear();
-    const fontSize = useBreakpointValue({ base: '16px', md: '20px' });
+    const fontSize = useBreakpointValue({ base: '12px', md: '14px' });
+    const copyrightFontSize = useBreakpointValue({ base: '10px', md: '12px' });
     const headerStyles = {
         maxWidth: sizeHeader.maxWidth,
         margin: sizeHeader.margin,
@@ -31,7 +32,7 @@ const Footer: React.FC<FooterProps> = ({ sizeHeader }) => {
                 padding={3}
             >
                 <Text
-                    fontSize="sm"
+                    fontSize={copyrightFontSize}
                     marginLeft={{ base: '0px', sm: '10px' }}
                 >{`@ ${currentYear} All Rights Reserved`}</Text>
                 <Flex

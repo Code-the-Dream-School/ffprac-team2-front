@@ -1,19 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     Stack,
     FormControl,
     FormLabel,
     Input,
+    InputGroup,
+    InputRightElement,
     Radio,
     RadioGroup,
     Button,
-    Box,
-    Spinner,
     FormErrorMessage,
     Tooltip,
     useBreakpointValue,
+    useToast,
 } from '@chakra-ui/react';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { Formik, Form, Field } from 'formik';
 import axios from 'axios';
 import { RegistrationFormData } from '../models/interfaces';
@@ -37,6 +39,9 @@ const tooltipStyle = {
 const RegistrationForm: React.FC = () => {
     const navigate = useNavigate();
     const { dispatch } = useGlobal();
+    const [isLoading, setIsLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const fieldLength = useBreakpointValue({ base: '300px', md: '350px' });
     const fieldHeight = useBreakpointValue({ base: '40px', md: '50px' });
     const inputStyle = {
@@ -61,13 +66,21 @@ const RegistrationForm: React.FC = () => {
         confirmPassword: '',
         role: '',
     };
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const toggleConfirmPasswordVisibility = () => {
+        setShowConfirmPassword(!showConfirmPassword);
+    };
+    const toast = useToast();
 
     return (
         <Formik
             initialValues={initialValues}
             validationSchema={registrationValidationSchema}
-            onSubmit={async (values, { setSubmitting, setStatus, setFieldError }) => {
-                setStatus('Processing');
+            onSubmit={async (values, { setSubmitting, setStatus }) => {
+                setIsLoading(true);
                 try {
                     const requestData = {
                         firstName: values.firstName,
@@ -102,12 +115,27 @@ const RegistrationForm: React.FC = () => {
                     } else {
                         navigate('/tutorprofile');
                     }
-                } catch (error) {
-                    console.error('Registration failed:', error);
+                    // eslint-disable-next-line
+                } catch (error: any) {
+                    if (error?.response?.data?.msg) {
+                        toast({
+                            title: error.response.data.msg,
+                            status: 'error',
+                            isClosable: true,
+                            position: 'top',
+                        });
+                    } else {
+                        toast({
+                            title: 'Registration failed. Please try again.',
+                            status: 'error',
+                            isClosable: true,
+                            position: 'top',
+                        });
+                    }
                     setStatus('failed');
-                    setFieldError('email', 'Registration failed. Please try again.');
                 } finally {
                     setSubmitting(false);
+                    setIsLoading(false);
                 }
             }}
         >
@@ -175,13 +203,27 @@ const RegistrationForm: React.FC = () => {
                             <FormLabel htmlFor="password" style={labelStyle}>
                                 Password
                             </FormLabel>
-                            <Field
-                                as={Input}
-                                type="password"
-                                id="password"
-                                name="password"
-                                style={inputStyle}
-                            />
+                            <InputGroup>
+                                <Field
+                                    as={Input}
+                                    pr="4.5rem"
+                                    type={showPassword ? 'text' : 'password'}
+                                    id="password"
+                                    name="password"
+                                    style={inputStyle}
+                                />
+                                <InputRightElement width="4.5rem">
+                                    <Button
+                                        h="1.75rem"
+                                        size="sm"
+                                        fontSize="20px"
+                                        onClick={togglePasswordVisibility}
+                                        style={{ backgroundColor: 'transparent' }}
+                                    >
+                                        {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                                    </Button>
+                                </InputRightElement>
+                            </InputGroup>
                             {formik.errors.password && formik.touched.password && (
                                 <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
                             )}
@@ -195,13 +237,27 @@ const RegistrationForm: React.FC = () => {
                             <FormLabel htmlFor="confirmPassword" style={labelStyle}>
                                 Confirm Password
                             </FormLabel>
-                            <Field
-                                as={Input}
-                                type="password"
-                                id="confirmPassword"
-                                name="confirmPassword"
-                                style={inputStyle}
-                            />
+                            <InputGroup>
+                                <Field
+                                    as={Input}
+                                    pr="4.5rem"
+                                    type={showConfirmPassword ? 'text' : 'password'}
+                                    name="confirmPassword"
+                                    id="confirmPassword"
+                                    style={inputStyle}
+                                />
+                                <InputRightElement width="4.5rem">
+                                    <Button
+                                        h="1.75rem"
+                                        size="sm"
+                                        fontSize="20px"
+                                        onClick={toggleConfirmPasswordVisibility}
+                                        style={{ backgroundColor: 'transparent' }}
+                                    >
+                                        {showConfirmPassword ? <ViewIcon /> : <ViewOffIcon />}
+                                    </Button>
+                                </InputRightElement>
+                            </InputGroup>
                             {formik.errors.confirmPassword && formik.touched.confirmPassword && (
                                 <FormErrorMessage>{formik.errors.confirmPassword}</FormErrorMessage>
                             )}
@@ -247,6 +303,8 @@ const RegistrationForm: React.FC = () => {
                                     }}
                                     flex="1"
                                     isDisabled={!formik.dirty || !formik.isValid}
+                                    isLoading={isLoading}
+                                    loadingText="Registering..."
                                 >
                                     Register
                                 </Button>
@@ -265,11 +323,6 @@ const RegistrationForm: React.FC = () => {
                                 Cancel
                             </Button>
                         </Stack>
-                        {formik.isSubmitting && (
-                            <Box textAlign="center">
-                                <Spinner size="sm" />
-                            </Box>
-                        )}
                     </Stack>
                 </Form>
             )}

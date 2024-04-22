@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Formik, Form, Field } from 'formik';
@@ -7,12 +7,13 @@ import {
     FormControl,
     FormLabel,
     Input,
+    InputGroup,
+    InputRightElement,
     Button,
     FormErrorMessage,
-    Box,
-    Spinner,
     useBreakpointValue,
 } from '@chakra-ui/react';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { LoginData } from '../models/interfaces';
 import { loginValidationSchema } from '../validationSchemas';
 import { useGlobal } from '../context/useGlobal';
@@ -25,6 +26,8 @@ const labelStyle = {
 const LoginForm: React.FC = () => {
     const navigate = useNavigate();
     const { dispatch } = useGlobal();
+    const [isLoading, setIsLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const fieldLength = useBreakpointValue({ base: '300px', md: '350px' });
     const fieldHeight = useBreakpointValue({ base: '40px', md: '50px' });
     const inputStyle = {
@@ -42,12 +45,16 @@ const LoginForm: React.FC = () => {
     };
 
     const initialValues: LoginData = { email: '', password: '' };
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
     return (
         <Formik
             initialValues={initialValues}
             validationSchema={loginValidationSchema}
             onSubmit={async (values, { setSubmitting, setStatus, setFieldError }) => {
-                setStatus('Submitting');
+                setIsLoading(true);
 
                 try {
                     const response = await axios.post(
@@ -76,11 +83,11 @@ const LoginForm: React.FC = () => {
                         navigate('/tutorprofile');
                     }
                 } catch (error) {
-                    console.error('Login failed:', error);
                     setStatus('failed');
                     setFieldError('password', 'Invalid email or password. Please try again.');
                 }
                 setSubmitting(false);
+                setIsLoading(false);
             }}
         >
             {(formik) => (
@@ -111,13 +118,27 @@ const LoginForm: React.FC = () => {
                             <FormLabel htmlFor="password" style={labelStyle}>
                                 Password
                             </FormLabel>
-                            <Field
-                                as={Input}
-                                type="password"
-                                id="password"
-                                name="password"
-                                style={inputStyle}
-                            />
+                            <InputGroup>
+                                <Field
+                                    as={Input}
+                                    pr="4.5rem"
+                                    type={showPassword ? 'text' : 'password'}
+                                    id="password"
+                                    name="password"
+                                    style={inputStyle}
+                                />
+                                <InputRightElement width="4.5rem">
+                                    <Button
+                                        h="1.75rem"
+                                        size="sm"
+                                        fontSize="20px"
+                                        onClick={togglePasswordVisibility}
+                                        style={{ backgroundColor: 'transparent' }}
+                                    >
+                                        {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                                    </Button>
+                                </InputRightElement>
+                            </InputGroup>
                             {formik.errors.password && formik.touched.password && (
                                 <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
                             )}
@@ -138,6 +159,8 @@ const LoginForm: React.FC = () => {
                                     color: 'black',
                                 }}
                                 flex="1"
+                                isLoading={isLoading}
+                                loadingText="Logging in..."
                             >
                                 Login
                             </Button>
@@ -154,11 +177,6 @@ const LoginForm: React.FC = () => {
                                 Cancel
                             </Button>
                         </Stack>
-                        {formik.status === 'Submitting' && (
-                            <Box textAlign="center">
-                                <Spinner size="sm" />
-                            </Box>
-                        )}
                     </Stack>
                 </Form>
             )}
