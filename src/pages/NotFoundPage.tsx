@@ -10,7 +10,7 @@ const NotFoundPage: React.FC = () => {
             align="center"
             justify="center"
             w="full"
-            h="86vh"
+            h="87vh"
             position="relative"
         >
             {/* Background Image */}
