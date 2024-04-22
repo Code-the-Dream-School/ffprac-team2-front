@@ -18,6 +18,7 @@ import {
 import ConnectForm from './ConnectForm';
 import React from 'react';
 import { Tutor } from '../models/interfaces';
+import { User } from '../models/interfaces';
 import iconEducation from '../assets/experience.png';
 import iconExperience from '../assets/education.png';
 import { theme } from '../util/theme';
@@ -35,7 +36,9 @@ export interface TutorCardProps {
 
 const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { isLoggedIn } = useGlobal();
+    const { isLoggedIn, user } = useGlobal();
+
+    const userRole = (user as User)?.role;
     const toast = useToast();
 
     const handleSendEmail = () => {
@@ -92,14 +95,18 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
                         >
                             Send email
                         </Button>
-                        {isLoggedIn && (
+                        {isLoggedIn && userRole !== 'tutor' && (
                             <>
                                 <Button
                                     variant="solid"
                                     bg={theme.dashboardButtons.buttonTeal.bg}
                                     mt={{ base: '10px', md: '0' }}
                                     mx={{ base: '30px', md: '20px', sm: '10px' }}
-                                    size={useBreakpointValue({ base: 'sm', md: 'md', lg: 'lg' })}
+                                    size={useBreakpointValue({
+                                        base: 'sm',
+                                        md: 'md',
+                                        lg: 'lg',
+                                    })}
                                     height={theme.dashboardButtons.height}
                                     fontSize={theme.dashboardButtons.fontSize}
                                     fontWeight={theme.dashboardButtons.fontWeight}
