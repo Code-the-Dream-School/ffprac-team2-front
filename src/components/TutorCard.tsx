@@ -21,6 +21,8 @@ import { Tutor } from '../models/interfaces';
 import iconEducation from '../assets/experience.png';
 import iconExperience from '../assets/education.png';
 import { theme } from '../util/theme';
+import { useGlobal } from '../context/useGlobal';
+import { useToast } from '@chakra-ui/react';
 
 const customAvatarStyle = {
     width: '90px',
@@ -33,7 +35,21 @@ export interface TutorCardProps {
 
 const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isLoggedIn } = useGlobal();
+    const toast = useToast();
+
     const handleSendEmail = () => {
+        if (!isLoggedIn) {
+            toast({
+                title: 'Authentication Required',
+                description: 'Please register or login to send an email to tutor.',
+                status: 'warning',
+                duration: 3000,
+                position: 'top',
+                isClosable: true,
+            });
+            return;
+        }
         const recipientEmail = tutor.userId?.email;
         const subject = encodeURIComponent('Tutoring inquiry');
         const body = encodeURIComponent('');
@@ -76,19 +92,24 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
                         >
                             Send email
                         </Button>
-                        <Button
-                            variant="solid"
-                            bg={theme.dashboardButtons.buttonTeal.bg}
-                            mt={{ base: '10px', md: '0' }}
-                            mx={{ base: '30px', md: '20px', sm: '10px' }}
-                            size={useBreakpointValue({ base: 'sm', md: 'md', lg: 'lg' })}
-                            height={theme.dashboardButtons.height}
-                            fontSize={theme.dashboardButtons.fontSize}
-                            fontWeight={theme.dashboardButtons.fontWeight}
-                            onClick={onOpen}
-                        >
-                            Connect with me
-                        </Button>
+                        {isLoggedIn && (
+                            <>
+                                <Button
+                                    variant="solid"
+                                    bg={theme.dashboardButtons.buttonTeal.bg}
+                                    mt={{ base: '10px', md: '0' }}
+                                    mx={{ base: '30px', md: '20px', sm: '10px' }}
+                                    size={useBreakpointValue({ base: 'sm', md: 'md', lg: 'lg' })}
+                                    height={theme.dashboardButtons.height}
+                                    fontSize={theme.dashboardButtons.fontSize}
+                                    fontWeight={theme.dashboardButtons.fontWeight}
+                                    onClick={onOpen}
+                                    isDisabled={!isLoggedIn}
+                                >
+                                    Connect with me
+                                </Button>
+                            </>
+                        )}
                         <ConnectForm isOpen={isOpen} onClose={onClose} tutor={tutor} />
                     </ButtonGroup>
                 </Flex>
