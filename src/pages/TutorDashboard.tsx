@@ -8,7 +8,7 @@ import TableSearch from '../components/TableSearch';
 import { TutorStudents } from '../models/interfaces';
 import TutorTable from '../components/TutorTable';
 import axios from 'axios';
-import { headers } from '../util/index';
+import { getHeaders } from '../util';
 import { theme } from '../util/theme';
 
 const TutorDashboard: React.FC = () => {
@@ -25,7 +25,7 @@ const TutorDashboard: React.FC = () => {
             try {
                 const res = await axios.get(
                     `${import.meta.env.VITE_REACT_URL}students/my-students`,
-                    { headers }
+                    { headers: getHeaders() }
                 );
                 setStudents(res.data.students);
                 setLoading(false);

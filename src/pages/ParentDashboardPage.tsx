@@ -5,9 +5,10 @@ import { Student } from '../models/interfaces';
 import StudentCard from '../components/StudentCard';
 import StudentForm from '../components/StudentForm';
 import { useGlobal } from '../context/useGlobal';
-import { headers } from '../util';
+import { getHeaders } from '../util';
 import AppLoader from '../components/AppLoader';
 import axios from 'axios';
+import { theme } from '../util/theme';
 
 const ParentDashboardPage: React.FC = () => {
     const [errMsg, setErrMsg] = useState<string | null>(null);
@@ -21,7 +22,7 @@ const ParentDashboardPage: React.FC = () => {
             if (students?.length <= 0 || needUpdate || isLoading) {
                 try {
                     const res = await axios.get(`${import.meta.env.VITE_REACT_URL}students`, {
-                        headers,
+                        headers: getHeaders(),
                     });
                     const data = await res.data;
                     dispatch({ type: 'SET_STUDENTS', payload: data.students });
@@ -38,12 +39,13 @@ const ParentDashboardPage: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [needUpdate]);
     return (
-        <Flex direction="column" justify="flex-end" w="full" mb="20px">
+        <Flex direction="column" justify="flex-end" w="full" my="20px">
             <Stack spacing={4} direction="row" align="center" justify="end" w="full" display="flex">
                 <Button
                     leftIcon={<AddIcon />}
-                    colorScheme="yellow"
-                    size="lg"
+                    bg={theme.dashboardButtons.buttonYellow.bg}
+                    fontSize={theme.dashboardButtons.fontSize}
+                    fontWeight={theme.dashboardButtons.fontWeight}
                     variant="solid"
                     onClick={onOpen}
                 >
