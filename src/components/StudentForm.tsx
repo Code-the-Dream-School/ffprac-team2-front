@@ -24,6 +24,7 @@ import AlertPopUp from './AlertPopUp';
 import UploadImage from './UploadImage';
 import AppLoader from './AppLoader';
 import { useGlobal } from '../context/useGlobal';
+import { theme } from '../util/theme';
 
 interface StudentFormProps {
     isOpenForm: boolean;
@@ -240,7 +241,9 @@ const StudentForm: React.FC<StudentFormProps> = ({
 
                                     <ModalFooter>
                                         <Button
-                                            colorScheme="yellow"
+                                            bg={theme.dashboardButtons.buttonYellow.bg}
+                                            fontSize={theme.dashboardButtons.fontSize}
+                                            fontWeight={theme.dashboardButtons.fontWeight}
                                             mr={3}
                                             type="submit"
                                             isDisabled={
@@ -250,7 +253,9 @@ const StudentForm: React.FC<StudentFormProps> = ({
                                             Save
                                         </Button>
                                         <Button
-                                            backgroundColor="#59D3C8"
+                                            fontSize={theme.dashboardButtons.fontSize}
+                                            fontWeight={theme.dashboardButtons.fontWeight}
+                                            bg={theme.dashboardButtons.buttonTeal.bg}
                                             mr={3}
                                             onClick={() => {
                                                 setSelectedImage(null);

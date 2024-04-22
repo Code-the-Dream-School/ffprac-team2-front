@@ -28,6 +28,7 @@ import AlertPopUp from './AlertPopUp';
 import AppLoader from './AppLoader';
 import { getHeaders } from '../util';
 import { useGlobal } from '../context/useGlobal';
+import { theme } from '../util/theme';
 
 interface StudentCardProps {
     student: Student;
@@ -156,8 +157,9 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => 
                 <CardFooter display={'flex'} alignItems={'flex-end'} justifyContent={'flex-end'}>
                     <Button
                         leftIcon={<EditIcon />}
-                        backgroundColor="#59D3C8"
-                        size="lg"
+                        fontSize={theme.dashboardButtons.fontSize}
+                        fontWeight={theme.dashboardButtons.fontWeight}
+                        bg={theme.dashboardButtons.buttonTeal.bg}
                         variant="solid"
                         color="black"
                         onClick={onOpen}

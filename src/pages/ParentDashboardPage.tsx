@@ -8,6 +8,7 @@ import { useGlobal } from '../context/useGlobal';
 import { getHeaders } from '../util';
 import AppLoader from '../components/AppLoader';
 import axios from 'axios';
+import { theme } from '../util/theme';
 
 const ParentDashboardPage: React.FC = () => {
     const [errMsg, setErrMsg] = useState<string | null>(null);
@@ -42,8 +43,9 @@ const ParentDashboardPage: React.FC = () => {
             <Stack spacing={4} direction="row" align="center" justify="end" w="full" display="flex">
                 <Button
                     leftIcon={<AddIcon />}
-                    colorScheme="yellow"
-                    size="lg"
+                    bg={theme.dashboardButtons.buttonYellow.bg}
+                    fontSize={theme.dashboardButtons.fontSize}
+                    fontWeight={theme.dashboardButtons.fontWeight}
                     variant="solid"
                     onClick={onOpen}
                 >

@@ -24,6 +24,7 @@ import { getHeaders } from '../util';
 import { useGlobal } from '../context/useGlobal';
 import { useNavigate } from 'react-router-dom';
 import AppLoader from './AppLoader';
+import { theme } from '../util/theme';
 
 interface ConnectFormProps {
     isOpen: boolean;
@@ -251,14 +252,18 @@ const ConnectForm: React.FC<ConnectFormProps> = ({ isOpen, onClose, tutor }) => 
                                 <ModalFooter>
                                     <Button
                                         type="submit"
-                                        colorScheme="yellow"
+                                        bg={theme.dashboardButtons.buttonYellow.bg}
+                                        fontSize={theme.dashboardButtons.fontSize}
+                                        fontWeight={theme.dashboardButtons.fontWeight}
                                         mr={3}
                                         isDisabled={!formik.dirty || !formik.isValid}
                                     >
                                         Connect
                                     </Button>
                                     <Button
-                                        backgroundColor="#59D3C8"
+                                        fontSize={theme.dashboardButtons.fontSize}
+                                        fontWeight={theme.dashboardButtons.fontWeight}
+                                        bg={theme.dashboardButtons.buttonTeal.bg}
                                         mr={3}
                                         onClick={() => {
                                             onClose();

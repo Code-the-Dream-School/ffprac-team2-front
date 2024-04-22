@@ -28,7 +28,7 @@ const LandingPage: React.FC = () => {
                     textAlign="center"
                     fontWeight="bold"
                     mt={{ base: '1rem', sm: '0.5rem' }}
-                    mb={{ base: '5rem', sm: '1rem' }}
+                    mb={{ base: '5rem', sm: '7rem' }}
                     sx={{
                         textShadow: '2px 2px 4px rgba(0, 0, 0, 0.4)',
                     }}
@@ -38,7 +38,7 @@ const LandingPage: React.FC = () => {
                 <ButtonGroup
                     width={{ base: '100%', sm: '350px' }}
                     gap="2rem"
-                    margin="0 auto"
+                    margin="4rem auto 0"
                     display="flex"
                     alignItems="center"
                     flexDirection="column"
