@@ -1,25 +1,26 @@
-import React, { useEffect, useRef } from 'react';
 import {
     Avatar,
     Box,
-    Flex,
     Button,
-    Link,
+    Flex,
     IconButton,
-    useDisclosure,
-    VStack,
+    Link,
     Portal,
+    VStack,
+    useDisclosure,
 } from '@chakra-ui/react';
-import { HamburgerIcon } from '@chakra-ui/icons';
+import { IoCloseCircleOutline, IoLogOutSharp } from 'react-icons/io5';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { IoLogOutSharp, IoCloseCircleOutline } from 'react-icons/io5';
+import React, { useEffect, useRef } from 'react';
+
+import { HamburgerIcon } from '@chakra-ui/icons';
 import { useGlobal } from '../context/useGlobal';
 
 const Navigation: React.FC = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const navigate = useNavigate();
     const cancelRef = useRef<HTMLDivElement>(null);
-    const { dispatch } = useGlobal();
+    const { dispatch, tutor } = useGlobal();
 
     // Parse the userData
     const userDataString = localStorage.getItem('userData');
@@ -159,12 +160,12 @@ const Navigation: React.FC = () => {
                         <>
                             <Avatar
                                 as={NavLink}
-                                fontSize="10px"
+                                size="sm"
                                 to="/tutorprofile"
                                 bg="#D9D9D9"
                                 color="black"
                                 name={initials}
-                                src={userData.avatar}
+                                src={tutor?.avatar}
                                 boxSize="40px"
                             />
                         </>
@@ -172,7 +173,7 @@ const Navigation: React.FC = () => {
 
                     {isLoggedIn && (
                         <IconButton
-                            icon={<IoLogOutSharp size="30px" />}
+                            icon={<IoLogOutSharp size="25px" />}
                             onClick={handleLogout}
                             fontSize="12px"
                             fontWeight="bold"
@@ -266,21 +267,21 @@ const Navigation: React.FC = () => {
                                 <>
                                     <Avatar
                                         as={NavLink}
-                                        fontSize="10px"
+                                        size="sm"
                                         to="/tutorprofile"
                                         onClick={onClose}
                                         bg="#D9D9D9"
                                         color="black"
                                         boxSize="40px"
                                         name={initials}
-                                        src={userData.avatar}
+                                        src={tutor?.avatar}
                                     />
                                 </>
                             )}
                             {isLoggedIn ? (
                                 <Flex align="center" justify="center" ml="15px">
                                     <IconButton
-                                        icon={<IoLogOutSharp size="2rem" />}
+                                        icon={<IoLogOutSharp size="25px" />}
                                         onClick={handleLogout}
                                         variant="unstyled"
                                         aria-label="Logout"
