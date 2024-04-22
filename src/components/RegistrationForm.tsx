@@ -119,16 +119,14 @@ const RegistrationForm: React.FC = () => {
                 } catch (error: any) {
                     if (error?.response?.data?.msg) {
                         toast({
-                            title: 'Registration Error',
-                            description: error.response.data.msg,
+                            title: error.response.data.msg,
                             status: 'error',
                             isClosable: true,
                             position: 'top',
                         });
                     } else {
                         toast({
-                            title: 'Registration Error',
-                            description: 'Registration failed. Please try again.',
+                            title: 'Registration failed. Please try again.',
                             status: 'error',
                             isClosable: true,
                             position: 'top',
