@@ -118,7 +118,6 @@ const RegistrationForm: React.FC = () => {
                     // eslint-disable-next-line
                 } catch (error: any) {
                     if (error?.response?.data?.msg) {
-                        console.error(error);
                         toast({
                             title: 'Registration Error',
                             description: error.response.data.msg,
