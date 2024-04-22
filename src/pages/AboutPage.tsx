@@ -22,7 +22,7 @@ const AboutPage: React.FC = () => {
             marginRight={{ base: '1rem', lg: '10rem' }}
             marginBottom="2rem"
         >
-            <Heading as="h1" fontSize={{ base: 'lg', lg: 'xl' }}>
+            <Heading as="h1" fontSize={{ base: 'xl', lg: '2xl' }} >
                 Welcome to GetYourTutor!
             </Heading>
             <Text marginTop={{ base: '1.5rem', lg: '3.5rem' }}>
@@ -74,7 +74,7 @@ const AboutPage: React.FC = () => {
                 
             >
                 <AccordionItem>
-                    <h2>
+                    <h3>
                         <AccordionButton _expanded={{ bg: theme.colors.customWhite}} borderRadius="10px">
                             <Box
                                 as="span"
@@ -87,7 +87,7 @@ const AboutPage: React.FC = () => {
                             </Box>
                             <AccordionIcon />
                         </AccordionButton>
-                    </h2>
+                    </h3>
                     <AccordionPanel>
                         <OrderedList marginTop={{ base: '0.5rem', lg: '1rem' }}>
                             <ListItem>
@@ -108,7 +108,7 @@ const AboutPage: React.FC = () => {
 
                 </AccordionItem>
                 <AccordionItem>
-                    <h2>
+                    <h3>
                         <AccordionButton _expanded={{ bg: theme.colors.customWhite}} borderRadius="10px">
                             <Box
                                 as="span"
@@ -122,7 +122,7 @@ const AboutPage: React.FC = () => {
                             </Box>
                             <AccordionIcon />
                         </AccordionButton>
-                    </h2>
+                    </h3>
                     <AccordionPanel>
                         <OrderedList marginTop={{ base: '0.5rem', lg: '1rem' }}>
                             <ListItem>

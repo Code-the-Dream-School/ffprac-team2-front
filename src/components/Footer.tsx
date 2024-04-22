@@ -12,7 +12,7 @@ type FooterProps = {
 const Footer: React.FC<FooterProps> = ({ sizeHeader }) => {
     const currentYear = new Date().getFullYear();
     const fontSize = useBreakpointValue({ base: '12px', md: '14px' });
-    const copyrightFontSize = useBreakpointValue({ base: 'xs', md: 'sm' });
+    const copyrightFontSize = useBreakpointValue({ base: '10px', md: '12px' });
     const headerStyles = {
         maxWidth: sizeHeader.maxWidth,
         margin: sizeHeader.margin,
