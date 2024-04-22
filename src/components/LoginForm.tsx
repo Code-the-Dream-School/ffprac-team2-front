@@ -48,7 +48,7 @@ const LoginForm: React.FC = () => {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
-    
+
     return (
         <Formik
             initialValues={initialValues}
@@ -83,7 +83,6 @@ const LoginForm: React.FC = () => {
                         navigate('/tutor-profile');
                     }
                 } catch (error) {
-                    console.error('Login failed:', error);
                     setStatus('failed');
                     setFieldError('password', 'Invalid email or password. Please try again.');
                 }
@@ -136,7 +135,7 @@ const LoginForm: React.FC = () => {
                                         onClick={togglePasswordVisibility}
                                         style={{ backgroundColor: 'transparent' }}
                                     >
-                                        {showPassword ? <ViewIcon />: <ViewOffIcon />  }
+                                        {showPassword ? <ViewIcon /> : <ViewOffIcon />}
                                     </Button>
                                 </InputRightElement>
                             </InputGroup>
@@ -178,7 +177,6 @@ const LoginForm: React.FC = () => {
                                 Cancel
                             </Button>
                         </Stack>
-                        
                     </Stack>
                 </Form>
             )}

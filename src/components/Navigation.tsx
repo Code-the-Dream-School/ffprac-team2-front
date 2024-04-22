@@ -290,7 +290,7 @@ const Navigation: React.FC = () => {
                                     fontWeight="bold"
                                     height="30px"
                                     width="150px"
-                                    _hover={{ bg: 'grey.400' }}          
+                                    _hover={{ bg: 'grey.400' }}
                                     onClick={onClose}
                                 >
                                     Login

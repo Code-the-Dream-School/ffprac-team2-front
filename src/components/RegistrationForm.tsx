@@ -13,7 +13,7 @@ import {
     FormErrorMessage,
     Tooltip,
     useBreakpointValue,
-    useToast
+    useToast,
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { Formik, Form, Field } from 'formik';
@@ -79,7 +79,7 @@ const RegistrationForm: React.FC = () => {
         <Formik
             initialValues={initialValues}
             validationSchema={registrationValidationSchema}
-            onSubmit={async (values, { setSubmitting, setStatus, setFieldError }) => {
+            onSubmit={async (values, { setSubmitting, setStatus }) => {
                 setIsLoading(true);
                 try {
                     const requestData = {
@@ -115,8 +115,10 @@ const RegistrationForm: React.FC = () => {
                     } else {
                         navigate('/tutor-profile');
                     }
+                    // eslint-disable-next-line
                 } catch (error: any) {
-                    if (error.response && error.response.data && error.response.data.msg) {
+                    if (error?.response?.data?.msg) {
+                        console.error(error);
                         toast({
                             title: 'Registration Error',
                             description: error.response.data.msg,
@@ -134,7 +136,6 @@ const RegistrationForm: React.FC = () => {
                         });
                     }
                     setStatus('failed');
-
                 } finally {
                     setSubmitting(false);
                     setIsLoading(false);

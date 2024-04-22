@@ -14,7 +14,6 @@ import { useLocation } from 'react-router-dom';
 import RegistrationForm from '../components/RegistrationForm';
 import LoginForm from '../components/LoginForm';
 
-
 const AuthPage: React.FC = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);

@@ -21,11 +21,12 @@ const AboutPage: React.FC = () => {
             marginLeft={{ base: '1rem', lg: '10rem' }}
             marginRight={{ base: '1rem', lg: '10rem' }}
             marginBottom="2rem"
+            marginTop="1rem"
         >
-            <Heading as="h1" fontSize={{ base: 'xl', lg: '2xl' }} >
+            <Heading as="h1" fontSize={{ base: 'xl', lg: '2xl' }}>
                 Welcome to GetYourTutor!
             </Heading>
-            <Text marginTop={{ base: '1.5rem', lg: '3.5rem' }}>
+            <Text marginTop={{ base: '1.5rem', lg: '2.5rem' }}>
                 GetYourTutor is your go-to online platform designed to simplify the process of
                 connecting parents with expert tutors for online lessons tailored to their
                 children's needs. <br />
@@ -66,22 +67,19 @@ const AboutPage: React.FC = () => {
                 </ListItem>
             </UnorderedList>
 
-            <Accordion
-                allowMultiple
-                allowToggle
-                marginTop={{ base: '2rem', lg: '3rem' }}
-                
-                
-            >
+            <Accordion allowMultiple allowToggle marginTop={{ base: '2rem', lg: '3rem' }}>
                 <AccordionItem>
                     <h3>
-                        <AccordionButton _expanded={{ bg: theme.colors.customWhite}} borderRadius="10px">
+                        <AccordionButton
+                            _expanded={{ bg: theme.colors.customWhite }}
+                            borderRadius="10px"
+                        >
                             <Box
                                 as="span"
                                 fontSize={{ base: 'md', lg: 'lg' }}
-                                flex='1'
-                                textAlign='left'
-                                fontWeight={"bold"}
+                                flex="1"
+                                textAlign="left"
+                                fontWeight={'bold'}
                             >
                                 How to Get Started for Tutors
                             </Box>
@@ -91,33 +89,34 @@ const AboutPage: React.FC = () => {
                     <AccordionPanel>
                         <OrderedList marginTop={{ base: '0.5rem', lg: '1rem' }}>
                             <ListItem>
-                                Sign Up: Register as a tutor on our platform by providing your email.
+                                Sign Up: Register as a tutor on our platform by providing your
+                                email.
                             </ListItem>
                             <ListItem>
-                                Complete Your Profile: Fill out your profile with information about your
-                                qualifications, expertise, and availability.
+                                Complete Your Profile: Fill out your profile with information about
+                                your qualifications, expertise, and availability.
                             </ListItem>
                             <ListItem>
-                                That's it: Get connected with parents regarding their children's educational
-                                needs. Your profile will appear on our search dashboard, making it easy for
-                                parents to discover and connect with you.
+                                That's it: Get connected with parents regarding their children's
+                                educational needs. Your profile will appear on our search dashboard,
+                                making it easy for parents to discover and connect with you.
                             </ListItem>
                         </OrderedList>
-
                     </AccordionPanel>
-
                 </AccordionItem>
                 <AccordionItem>
                     <h3>
-                        <AccordionButton _expanded={{ bg: theme.colors.customWhite}} borderRadius="10px">
+                        <AccordionButton
+                            _expanded={{ bg: theme.colors.customWhite }}
+                            borderRadius="10px"
+                        >
                             <Box
                                 as="span"
                                 fontSize={{ base: 'md', lg: 'lg' }}
-                                flex='1'
-                                textAlign='left'
-                                fontWeight={"bold"}
+                                flex="1"
+                                textAlign="left"
+                                fontWeight={'bold'}
                             >
-
                                 How to Get Started for Parents
                             </Box>
                             <AccordionIcon />
@@ -126,25 +125,23 @@ const AboutPage: React.FC = () => {
                     <AccordionPanel>
                         <OrderedList marginTop={{ base: '0.5rem', lg: '1rem' }}>
                             <ListItem>
-                                Sign Up: Create an account and provide some basic information about your child's
-                                learning needs.
+                                Sign Up: Create an account and provide some basic information about
+                                your child's learning needs.
                             </ListItem>
                             <ListItem>
-                                Find a Tutor: Browse through our database of certified tutors and choose the one
-                                that best fits your child's requirements.
+                                Find a Tutor: Browse through our database of certified tutors and
+                                choose the one that best fits your child's requirements.
                             </ListItem>
                             <ListItem>
-                                Contact the Tutor: Send an email to the tutor to schedule a tutoring session at
-                                a time that works for you and your child.
+                                Contact the Tutor: Send an email to the tutor to schedule a tutoring
+                                session at a time that works for you and your child.
                             </ListItem>
                             <ListItem>
-                                Start Learning: Join the session and watch your child's confidence and skills
-                                grow with personalized tutoring from GetYourTutor!
+                                Start Learning: Join the session and watch your child's confidence
+                                and skills grow with personalized tutoring from GetYourTutor!
                             </ListItem>
                         </OrderedList>
-
                     </AccordionPanel>
-
                 </AccordionItem>
             </Accordion>
 
