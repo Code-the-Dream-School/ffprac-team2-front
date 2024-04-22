@@ -64,6 +64,8 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
         return tutor.availability.includes(day) ? 'green.400' : 'red.500';
     };
 
+    const breakpointValue = useBreakpointValue({ base: 'sm', md: 'md', lg: 'lg' });
+
     return (
         <Box w="100%">
             {/* <Box borderWidth='0px' borderRadius='md' boxShadow='md' ml='70'> */}
@@ -87,7 +89,7 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
                             mt={{ base: '10px', md: '0' }}
                             mx={{ base: '10px', md: '0', sm: '10px' }}
                             px={{ base: '30px', md: '20px', sm: '10px' }}
-                            size={useBreakpointValue({ base: 'sm', md: 'md', lg: 'lg' })}
+                            size={breakpointValue}
                             height={theme.dashboardButtons.height}
                             fontSize={theme.dashboardButtons.fontSize}
                             fontWeight={theme.dashboardButtons.fontWeight}
@@ -102,11 +104,7 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
                                     bg={theme.dashboardButtons.buttonTeal.bg}
                                     mt={{ base: '10px', md: '0' }}
                                     mx={{ base: '30px', md: '20px', sm: '10px' }}
-                                    size={useBreakpointValue({
-                                        base: 'sm',
-                                        md: 'md',
-                                        lg: 'lg',
-                                    })}
+                                    size={breakpointValue}
                                     height={theme.dashboardButtons.height}
                                     fontSize={theme.dashboardButtons.fontSize}
                                     fontWeight={theme.dashboardButtons.fontWeight}
