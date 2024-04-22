@@ -119,7 +119,7 @@ const TutorSearchPage: React.FC = () => {
     // };
 
     return (
-        <Box p="1" mt="20px" w="full">
+        <Box  mt="20px" w="full">
             <Grid
                 templateColumns={{ base: '1fr', md: '1fr 3fr', xl: '1fr 3fr' }}
                 gap={{ base: 1, md: 2 }}
@@ -145,7 +145,7 @@ const TutorSearchPage: React.FC = () => {
                     > */}
                 {/* /* OM: Still debating on the layout. Pls, don't remove. */}
                 <Grid
-                    gap="50px"
+                    gap="40px"
                     templateColumns={{
                         base: 'repeat(1, 1fr)',
                         sm: 'repeat(2, 1fr)',

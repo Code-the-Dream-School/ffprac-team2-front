@@ -15,17 +15,12 @@ import {
     useDisclosure,
 } from '@chakra-ui/react';
 
-import { CalendarIcon } from '@chakra-ui/icons';
 import ConnectForm from './ConnectForm';
 import React from 'react';
 import { Tutor } from '../models/interfaces';
 import iconEducation from '../assets/experience.png';
 import iconExperience from '../assets/education.png';
 import { theme } from '../util/theme';
-
-// import iconCalendar from '../assets/calendar.png';
-// import { EmailIcon } from '@chakra-ui/icons';
-// import { IconButton } from '@chakra-ui/react'
 
 const customAvatarStyle = {
     width: '90px',
@@ -49,15 +44,15 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
     const getButtonColor = (day: string) => {
         return tutor.availability.includes(day) ? 'green.400' : 'red.500';
     };
-    // console.log(tutor);
+
     return (
-        <Box  w="100%">
+        <Box w="100%">
             {/* <Box borderWidth='0px' borderRadius='md' boxShadow='md' ml='70'> */}
             <Card maxW={{ base: '90%', md: '380px' }} bg={theme.colors.customWhite}>
-                <Flex justify="flex-end" mb="4" mt="20px">
+                <Flex justify="flex-end" mb="1" mt="15px">
                     <ButtonGroup
-                        gap={{ base: '10px', md: '20px' }}
-                        display={{ base: 'grid', md: 'flex' }}
+                        gap={{ base: '5px', md: '10px' }}
+                        display={{ base: 'grid', sm: 'grid', md: 'grid' }}
                         gridTemplateColumns={{ base: '1fr', md: 'auto auto' }}
                     >
                         {/* <IconButton
@@ -70,7 +65,7 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
                         <Button
                             variant="solid"
                             bg={theme.dashboardButtons.buttonYellow.bg}
-                            mt={{ base: '10px', md: '0', sm: '10px' }}
+                            mt={{ base: '10px', md: '0' }}
                             mx={{ base: '10px', md: '0', sm: '10px' }}
                             px={{ base: '30px', md: '20px', sm: '10px' }}
                             size={useBreakpointValue({ base: 'sm', md: 'md', lg: 'lg' })}
@@ -84,7 +79,7 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
                         <Button
                             variant="solid"
                             bg={theme.dashboardButtons.buttonTeal.bg}
-                            mt={{ base: '15px', md: '0' }}
+                            mt={{ base: '10px', md: '0' }}
                             mx={{ base: '30px', md: '20px', sm: '10px' }}
                             size={useBreakpointValue({ base: 'sm', md: 'md', lg: 'lg' })}
                             height={theme.dashboardButtons.height}
@@ -101,15 +96,46 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
                     <Stack spacing="2" textAlign="center">
                         <Heading
                             size="xs"
-                            mb="8px"
+                            mb="2px"
                         >{`${tutor.userId.firstName} ${tutor.userId.lastName}`}</Heading>
-                        <Avatar
-                            borderRadius="full"
-                            boxSize="100px"
-                            mx="auto"
-                            style={customAvatarStyle}
-                            src={tutor.avatar}
-                        />
+
+                        <Box display="flex" alignItems="center">
+                            <Avatar
+                                borderRadius="full"
+                                boxSize="100px"
+                                style={customAvatarStyle}
+                                src={tutor.avatar}
+                            />
+                            <Box ml="3">
+                                <Flex direction="column">
+                                    <Flex align="center">
+                                        <Image
+                                            src={iconEducation}
+                                            alt="Education"
+                                            w="20px"
+                                            h="20px"
+                                            mr="2"
+                                        />
+                                        <Text fontSize={theme.styles.global.body.fontSize}>
+                                            {tutor.education}
+                                        </Text>
+                                    </Flex>
+                                    <Flex align="center">
+                                        <Image
+                                            src={iconExperience}
+                                            alt="Experience"
+                                            w="20px"
+                                            h="20px"
+                                            mr="2"
+                                        />
+                                        <Text fontSize={theme.styles.global.body.fontSize} mr="5">
+                                            {tutor.yearsOfExperience} years of teaching
+                                        </Text>
+                                    </Flex>
+                                </Flex>
+                            </Box>
+                        </Box>
+
                     </Stack>
                     <Text mt="4" w="100%" h="65px" fontSize={theme.dashboardButtons.fontSize}>
                         {tutor.about}
@@ -129,7 +155,7 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
                         <CardBody>
                             <Stack spacing="2" align="flex-start">
                                 <Stack spacing="2" align="flex-start">
-                                    <Flex justify="flex-start">
+                                    {/* <Flex justify="flex-start">
                                         <Image
                                             src={iconExperience}
                                             alt="Experience"
@@ -152,7 +178,7 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
                                         <Text fontSize={theme.styles.global.body.fontSize}>
                                             {tutor.yearsOfExperience} years of teaching
                                         </Text>
-                                    </Flex>
+                                    </Flex> */}
                                     <Text
                                         fontWeight={theme.dashboardButtons.fontWeight}
                                         fontSize={theme.styles.global.body.fontSize}
@@ -182,10 +208,11 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
                                     <Text h="15px">{tutor.grades.join(', ')}</Text>
                                 </Stack>
                                 <Stack spacing="4" align="flex-start">
-                                    <Flex align="start">
+                                    {/* <Flex align="start">
                                         <CalendarIcon w="15px" h="15px" />
-                                    </Flex>
+                                    </Flex> */}
                                     <Grid
+                                        mt="5px"
                                         templateColumns={{
                                             base: 'repeat(2, 1fr)',
                                             sm: 'repeat(4, 1fr)',
@@ -209,7 +236,7 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
                                                 bg={getButtonColor(day)}
                                                 m="0"
                                                 w="50%"
-                                                h="25px"
+                                                h="20px"
                                                 _hover={{ bg: getButtonColor(day) }}
                                             >
                                                 <Text
