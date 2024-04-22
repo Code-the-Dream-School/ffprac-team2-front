@@ -1,18 +1,16 @@
 import React from 'react';
-import { Box, Flex, useBreakpointValue } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import backgroundImage from '../assets/404NotFound.png';
 
 // Displays Page Not found
 const NotFoundPage: React.FC = () => {
-    const bgSize = useBreakpointValue({ base: '100% 100%', sm: 'cover' });
-
     return (
         <Flex
             direction="column"
             align="center"
             justify="center"
             w="full"
-            h="100vh"
+            h="86vh"
             position="relative"
         >
             {/* Background Image */}
@@ -20,7 +18,7 @@ const NotFoundPage: React.FC = () => {
                 w="full"
                 h="full"
                 bgImage={`url(${backgroundImage})`}
-                bgSize={bgSize}
+                bgSize="cover"
                 bgPos="center"
                 bgRepeat="no-repeat"
                 position="absolute"

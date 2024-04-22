@@ -13,11 +13,13 @@ import {
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { IoLogOutSharp, IoCloseCircleOutline } from 'react-icons/io5';
+import { useGlobal } from '../context/useGlobal';
 
 const Navigation: React.FC = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const navigate = useNavigate();
     const cancelRef = useRef<HTMLDivElement>(null);
+    const { dispatch } = useGlobal();
 
     // Parse the userData
     const userDataString = localStorage.getItem('userData');
@@ -25,10 +27,13 @@ const Navigation: React.FC = () => {
     const isLoggedIn = !!userData;
     const role = userData?.role;
     const initials = userData ? `${userData.firstName[0]} ${userData.lastName[0]}` : 'NN';
-    console.log(initials);
 
     const handleLogout = () => {
         localStorage.clear();
+        dispatch({ type: 'SET_USER', payload: null });
+        dispatch({ type: 'SET_IS_LOGGED_IN', payload: false });
+        dispatch({ type: 'SET_STUDENTS', payload: [] });
+        dispatch({ type: 'SET_TUTOR', payload: null });
         navigate('/');
     };
 
@@ -126,7 +131,7 @@ const Navigation: React.FC = () => {
                     {isLoggedIn && role === 'parent' && (
                         <Button
                             as={NavLink}
-                            to="/parent-dashboard"
+                            to="/parentdashboard"
                             fontSize="12px"
                             fontWeight="bold"
                             _hover={{ textDecoration: 'none', color: 'yellow.950' }}
@@ -154,7 +159,7 @@ const Navigation: React.FC = () => {
                             <Avatar
                                 as={NavLink}
                                 fontSize="10px"
-                                to="/tutor-profile"
+                                to="/tutorprofile"
                                 bg="#D9D9D9"
                                 color="black"
                                 name={initials}
@@ -233,7 +238,7 @@ const Navigation: React.FC = () => {
                                     fontSize="12px"
                                     fontWeight="bold"
                                     _hover={{ textDecoration: 'none' }}
-                                    to="/parent-dashboard"
+                                    to="/parentdashboard"
                                     onClick={onClose}
                                 >
                                     My Dashboard
@@ -257,7 +262,7 @@ const Navigation: React.FC = () => {
                                     <Avatar
                                         as={NavLink}
                                         fontSize="10px"
-                                        to="/tutor-profile"
+                                        to="/tutorprofile"
                                         onClick={onClose}
                                         bg="#D9D9D9"
                                         color="black"

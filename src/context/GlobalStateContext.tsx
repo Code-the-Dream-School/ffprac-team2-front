@@ -8,9 +8,10 @@ interface GlobalStateProviderProps {
 
 type Action =
     | { type: 'SET_STUDENTS'; payload: Student[] }
-    | { type: 'SET_USER'; payload: User }
+    | { type: 'UPDATE_STUDENTS'; payload: Student }
+    | { type: 'SET_USER'; payload: User | null }
     | { type: 'SET_IS_LOGGED_IN'; payload: boolean }
-    | { type: 'SET_TUTOR'; payload: Tutor };
+    | { type: 'SET_TUTOR'; payload: Tutor | null };
 
 export interface GlobalStateProps {
     students: Student[];
@@ -32,6 +33,17 @@ const reducer = (state: GlobalStateProps, action: Action): GlobalStateProps => {
     switch (action.type) {
         case 'SET_STUDENTS':
             return { ...state, students: action.payload };
+        case 'UPDATE_STUDENTS': {
+            const studentIndex = state.students.findIndex(
+                (student) => student._id === action.payload._id
+            );
+            if (studentIndex !== -1) {
+                const updatedStudents = [...state.students];
+                updatedStudents[studentIndex] = action.payload;
+                return { ...state, students: updatedStudents };
+            }
+            return state;
+        }
         case 'SET_USER':
             return { ...state, user: action.payload };
         case 'SET_IS_LOGGED_IN':

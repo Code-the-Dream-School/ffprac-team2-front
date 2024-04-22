@@ -10,7 +10,7 @@ const LandingPage: React.FC = () => {
     };
 
     return (
-        <Flex direction="column" align="center" justify="center" w="full" h="100vh">
+        <Flex direction="column" align="center" justify="center" w="full" h="86vh">
             <VStack spacing={8} align="stretch" w="full" maxW="768px" mx="auto" zIndex="1">
                 <Heading
                     as="h1"
