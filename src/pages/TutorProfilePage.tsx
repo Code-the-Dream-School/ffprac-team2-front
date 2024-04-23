@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Formik, FormikHelpers, Field, FieldProps } from 'formik';
+import { Formik, Field, FieldProps } from 'formik';
 import { tutorValidationSchema } from '../validationSchemas';
 import {
     Box,
@@ -19,9 +19,7 @@ import {
     ModalOverlay,
     ModalContent,
     ModalHeader,
-    ModalBody,
     Modal,
-    Text,
 } from '@chakra-ui/react';
 import { MultiSelect, Option, useMultiSelect } from 'chakra-multiselect';
 import { TutorRequest } from '../models/interfaces.ts';
