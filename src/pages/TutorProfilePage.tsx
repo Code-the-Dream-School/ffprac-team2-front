@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Formik, FormikHelpers, Field, FieldProps } from 'formik';
+import { Formik, Field, FieldProps } from 'formik';
 import { tutorValidationSchema } from '../validationSchemas';
 import {
     Box,
@@ -19,9 +19,7 @@ import {
     ModalOverlay,
     ModalContent,
     ModalHeader,
-    ModalBody,
     Modal,
-    Text,
 } from '@chakra-ui/react';
 import { MultiSelect, Option, useMultiSelect } from 'chakra-multiselect';
 import { TutorRequest } from '../models/interfaces.ts';
@@ -233,7 +231,7 @@ const TutorProfilePage: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const handleSubmit = async (values: TutorRequest, actions: FormikHelpers<TutorRequest>) => {
+    const handleSubmit = async (values: TutorRequest) => {
         let imageUrl;
 
         if (selectedImage) {
@@ -343,7 +341,6 @@ const TutorProfilePage: React.FC = () => {
                         setSelectedImage(null);
                         dispatch({ type: 'SET_TUTOR', payload: data.tutor });
                         setIsEditing(false);
-                        actions.resetForm();
                         onClose();
                         return;
                     }
