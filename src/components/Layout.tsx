@@ -8,11 +8,12 @@ import backgroundImage from '../assets/new_bg.jpg';
 
 const Layout: React.FC = () => {
     const location = useLocation();
-    const isHomePage = location.pathname === '/' || location.pathname === '/notFound';
+    const isHomePage = location.pathname === '/';
+    const notFoundPage = location.pathname === '/notFound';
     const sizeHeader = { maxWidth: '1440px', margin: '0 auto' };
     const contentStyle = {
-        maxWidth: isHomePage ? 'full' : '1440px',
-        margin: isHomePage ? '0 auto' : '0 auto',
+        maxWidth: isHomePage || notFoundPage ? 'full' : '1440px',
+        margin: isHomePage || notFoundPage ? '0 auto' : '0 auto',
         width: 'full',
         justifyContent: 'center',
         alignItems: 'center',
