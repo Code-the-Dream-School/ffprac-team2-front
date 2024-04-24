@@ -74,10 +74,11 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, setNeedUpdate }) => 
     };
 
     const handleSendEmail = async (tutorId: string) => {
-        const tutor = await axios.get(`${import.meta.env.VITE_REACT_URL}tutors/${tutorId}`, {
+        const response = await axios.get(`${import.meta.env.VITE_REACT_URL}tutors/${tutorId}`, {
             headers: getHeaders(),
         });
-        const recipientEmail = tutor.data.email;
+        const recipientEmail = response.data.tutor.userId.email;
+        console.log(recipientEmail);
         const subject = encodeURIComponent('Tutoring inquiry');
         const body = encodeURIComponent('');
 

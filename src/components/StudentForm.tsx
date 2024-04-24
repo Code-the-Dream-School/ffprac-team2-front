@@ -15,7 +15,7 @@ import {
     useToast,
 } from '@chakra-ui/react';
 import { Field, Formik, FormikHelpers } from 'formik';
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { Student, StudentRequest } from '../models/interfaces';
 import axios from 'axios';
 import { studentSchema } from '../validationSchemas';
@@ -50,6 +50,7 @@ const StudentForm: React.FC<StudentFormProps> = ({
     const [isLoading, setIsLoading] = useState(false);
     const toast = useToast();
     const { dispatch } = useGlobal();
+    const [formChanged, setFormChanged] = useState(false);
 
     const handleSubmit = async (values: StudentRequest, actions: FormikHelpers<StudentRequest>) => {
         let imageUrl;
@@ -105,6 +106,7 @@ const StudentForm: React.FC<StudentFormProps> = ({
             actions.resetForm();
             onCloseForm();
             setSelectedImage(null);
+            setFormChanged(false);
             setIsLoading(false);
 
             toast({
@@ -168,6 +170,7 @@ const StudentForm: React.FC<StudentFormProps> = ({
                     isOpen={isOpenForm}
                     onClose={() => {
                         setSelectedImage(null);
+                        setFormChanged(false);
                         onCloseForm();
                     }}
                     size="lg"
@@ -203,6 +206,12 @@ const StudentForm: React.FC<StudentFormProps> = ({
                                                 placeholder="Name"
                                                 backgroundColor="white"
                                                 name="name"
+                                                onChange={(
+                                                    event: ChangeEvent<HTMLInputElement>
+                                                ) => {
+                                                    formik.handleChange(event);
+                                                    setFormChanged(true);
+                                                }}
                                             />
                                             {formik.errors.name && formik.touched.name && (
                                                 <FormErrorMessage>
@@ -224,6 +233,12 @@ const StudentForm: React.FC<StudentFormProps> = ({
                                                 placeholder="Select option"
                                                 backgroundColor="white"
                                                 name="grade"
+                                                onChange={(
+                                                    event: ChangeEvent<HTMLInputElement>
+                                                ) => {
+                                                    formik.handleChange(event);
+                                                    setFormChanged(true);
+                                                }}
                                             >
                                                 <option value="K">K</option>
                                                 <option value="1">1</option>
@@ -257,7 +272,12 @@ const StudentForm: React.FC<StudentFormProps> = ({
                                             isDisabled={
                                                 title === 'Add Student'
                                                     ? !formik.dirty || !formik.isValid || isLoading
-                                                    : !selectedImage || !formik.isValid || isLoading
+                                                    : (!selectedImage &&
+                                                          !formik.dirty &&
+                                                          !formChanged &&
+                                                          Object.keys(formik.touched).length ===
+                                                              0) ||
+                                                      isLoading
                                             }
                                         >
                                             Save
@@ -269,6 +289,7 @@ const StudentForm: React.FC<StudentFormProps> = ({
                                             mr={3}
                                             onClick={() => {
                                                 setSelectedImage(null);
+                                                setFormChanged(false);
                                                 onCloseForm();
                                             }}
                                         >
