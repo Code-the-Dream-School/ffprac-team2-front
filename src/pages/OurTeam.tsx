@@ -16,7 +16,7 @@ import FanyImage from '../assets/members/Fany.png';
 import IrynaImage from '../assets/members/Iryna.jpeg';
 import OxanaImage from '../assets/members/Oxana.jpeg';
 import AlenaImage from '../assets/members/Alena.jpg';
-import NataliaImage from '../assets/members/Natalia.png';
+import NataliaImage from '../assets/members/Natalia_.png';
 import CTDLogo from '../assets/members/CTD.png';
 
 const MemberCard: React.FC<Member> = ({ name, role, image, description }) => {
@@ -83,7 +83,7 @@ const OurTeamPage: React.FC = () => {
             role: 'Design, Full Stack Developer',
             image: OxanaImage,
             description:
-                "As a Full Stack Developer with a photographer's heart and a passion for design, I've navigated projects from concept to execution. I seamlessly integrate functionality with visual charm, crafting a captivating user experience from start to finish. But beyond my technical skills, I thrive in collaborative environments. Engaged in numerous full stack projects, I enjoy taking on various responsibilities, relishing the opportunity to learn new stacks, and collaborating with diverse teams. This experience strengthens my knowledge and confidence along my journey to Software Development. In my free time, I cherish moments with my family, enjoy hiking, read books to discuss in my book club, and train for triathlons to maintain good physical shape and mental state."
+                "As a Full Stack Developer with a photographer's heart and a passion for design, I've navigated projects from concept to execution. I seamlessly integrate functionality with visual charm, crafting a captivating user experience from start to finish. But beyond my technical skills, I thrive in collaborative environments. Engaged in numerous full stack projects, I enjoy taking on various responsibilities, relishing the opportunity to learn new stacks, and collaborating with diverse teams. This experience strengthens my knowledge and confidence along my journey to Software Development. In my free time, I cherish moments with my family, enjoy hiking, read books to discuss in my book club, and train for triathlons to maintain good physical shape and mental state.",
         },
         {
             name: 'Iryna',
@@ -105,7 +105,7 @@ const OurTeamPage: React.FC = () => {
             role: 'Front End Developer',
             image: NataliaImage,
             description:
-                'Lorem ipsum dolor sit amet,consectetur adipiscing elit, Lorem ipsum dolor sit amet,Lorem ipsum dolor sit amet,consectetur adipiscing elit, sed do eiusmod tempor incididunnim ad minim veniam, quis nost quip ex ea commodo consequat',
+                "I'm a front-end developer with a background in DevOps, deeply passionate about creating user-centric designs. My daily routine revolves around coding, hiking, and continuously exploring new technologies. It's a simple rhythm: code, eat, hike, sleep, repeat!",
         },
         {
             name: 'Alena',
