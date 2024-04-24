@@ -125,7 +125,12 @@ const OurTeamPage: React.FC = () => {
 
     return (
         <Box fontSize={{ base: '11px', lg: '12px' }} marginBottom="2rem" marginTop="2rem">
-            <Heading as="h1" fontSize={{ base: 'lg', lg: '2xl' }} textAlign={'center'}>
+            <Heading
+                as="h1"
+                fontSize={{ base: 'lg', lg: '2xl' }}
+                textAlign={'center'}
+                marginBottom="1rem"
+            >
                 Our Team
             </Heading>
             <SimpleGrid columns={[1, 2, 2, 3]} spacing="6">
