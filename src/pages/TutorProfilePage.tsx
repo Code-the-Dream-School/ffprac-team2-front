@@ -59,7 +59,6 @@ const TutorProfilePage: React.FC = () => {
         yearsOfExperience: tutor?.yearsOfExperience || 1,
     });
     const tutorData: TutorRequest = {
-        //MOCK DATA FOR A MEANWHILE//
         availability: [
             'Monday',
             'Tuesday',
