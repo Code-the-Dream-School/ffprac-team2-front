@@ -342,6 +342,7 @@ const TutorProfilePage: React.FC = () => {
                         setSelectedImage(null);
                         dispatch({ type: 'SET_TUTOR', payload: data.tutor });
                         setIsEditing(false);
+                        setInitialValues(data.tutor);
                         onClose();
                         return;
                     }
