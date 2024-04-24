@@ -60,7 +60,7 @@ const TutorTable: React.FC<TutorTableProps> = ({
                         ))}
                         {filteredStudents.length === 0 && (
                             <Tr>
-                                <Td colSpan={5} textAlign="center">
+                                <Td colSpan={6} textAlign="center">
                                     No matching results found, try again
                                 </Td>
                             </Tr>
