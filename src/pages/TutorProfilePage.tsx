@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Formik, FormikHelpers, Field, FieldProps } from 'formik';
+import { Formik, Field, FieldProps } from 'formik';
 import { tutorValidationSchema } from '../validationSchemas';
 import {
     Box,
@@ -19,9 +19,7 @@ import {
     ModalOverlay,
     ModalContent,
     ModalHeader,
-    ModalBody,
     Modal,
-    Text,
 } from '@chakra-ui/react';
 import { MultiSelect, Option, useMultiSelect } from 'chakra-multiselect';
 import { TutorRequest } from '../models/interfaces.ts';
@@ -61,7 +59,6 @@ const TutorProfilePage: React.FC = () => {
         yearsOfExperience: tutor?.yearsOfExperience || 1,
     });
     const tutorData: TutorRequest = {
-        //MOCK DATA FOR A MEANWHILE//
         availability: [
             'Monday',
             'Tuesday',
@@ -214,6 +211,8 @@ const TutorProfilePage: React.FC = () => {
                                     isClosable: true,
                                     position: 'top',
                                     id: 'fillForm-toast',
+
+                                    duration: 3000,
                                 });
                             }
                         } else {
@@ -223,6 +222,8 @@ const TutorProfilePage: React.FC = () => {
                                 isClosable: true,
                                 position: 'top',
                                 id: 2,
+
+                                duration: 3000,
                             });
                         }
                         return;
@@ -234,7 +235,7 @@ const TutorProfilePage: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const handleSubmit = async (values: TutorRequest, actions: FormikHelpers<TutorRequest>) => {
+    const handleSubmit = async (values: TutorRequest) => {
         let imageUrl;
 
         if (selectedImage) {
@@ -258,6 +259,7 @@ const TutorProfilePage: React.FC = () => {
                         status: 'error',
                         isClosable: true,
                         position: 'top',
+                        duration: 3000,
                     });
                 }
             }
@@ -301,6 +303,7 @@ const TutorProfilePage: React.FC = () => {
                             status: 'success',
                             isClosable: true,
                             position: 'top',
+                            duration: 3000,
                         });
                     }
                     if (status !== 200) {
@@ -314,6 +317,7 @@ const TutorProfilePage: React.FC = () => {
                             status: 'error',
                             isClosable: true,
                             position: 'top',
+                            duration: 3000,
                         });
                     }
                     setIsLoading(false);
@@ -341,12 +345,12 @@ const TutorProfilePage: React.FC = () => {
                             isClosable: true,
                             position: 'top',
                             id: 3,
+                            duration: 3000,
                         });
                         setSelectedImage(null);
                         dispatch({ type: 'SET_TUTOR', payload: data.tutor });
                         setIsEditing(false);
                         setInitialValues(data.tutor);
-                        actions.resetForm();
                         onClose();
                         return;
                     }
@@ -359,6 +363,7 @@ const TutorProfilePage: React.FC = () => {
                             status: 'error',
                             isClosable: true,
                             position: 'top',
+                            duration: 3000,
                         });
                     }
                     return;
@@ -808,9 +813,6 @@ const TutorProfilePage: React.FC = () => {
                     {<Overlay />}
                     <ModalContent>
                         <ModalHeader>{ModalActionMessage}</ModalHeader>
-                        <ModalBody>
-                            <Text>TutorUp</Text>
-                        </ModalBody>
                     </ModalContent>
                 </Modal>
             ) : (
