@@ -4,7 +4,6 @@ import {
     Button,
     Flex,
     IconButton,
-    Link,
     Portal,
     VStack,
     useDisclosure,
@@ -105,15 +104,17 @@ const Navigation: React.FC = () => {
                     width="auto"
                     flexGrow={1}
                 >
-                    <Link
+                    <Button
                         as={NavLink}
                         to="/"
                         fontSize="12px"
                         fontWeight="bold"
-                        _hover={{ textDecoration: 'none', color: 'yellow.950' }}
+                        height="30px"
+                        _hover={{ bg: '#D9D9D9' }}
+                        bg="#E7E0D6"
                     >
                         Home
-                    </Link>
+                    </Button>
 
                     {isLoggedIn && role === 'tutor' && (
                         <>
@@ -122,7 +123,8 @@ const Navigation: React.FC = () => {
                                 to="/tutordashboard"
                                 fontSize="12px"
                                 fontWeight="bold"
-                                _hover={{ textDecoration: 'none', color: 'yellow.950' }}
+                                height="30px"
+                                _hover={{ bg: '#D9D9D9' }}
                                 bg="#E7E0D6"
                             >
                                 My Dashboard
@@ -136,7 +138,8 @@ const Navigation: React.FC = () => {
                             to="/parentdashboard"
                             fontSize="12px"
                             fontWeight="bold"
-                            _hover={{ textDecoration: 'none', color: 'yellow.950' }}
+                            height="30px"
+                            _hover={{ bg: '#D9D9D9' }}
                             bg="#E7E0D6"
                         >
                             My Dashboard
@@ -149,7 +152,7 @@ const Navigation: React.FC = () => {
                         fontSize="12px"
                         fontWeight="bold"
                         bg="#F4CD76"
-                        _hover={{ bg: '#F4CD76' }}
+                        _hover={{ bg: '#D9D9D9' }}
                         h="30px"
                         w="120px"
                     >
@@ -179,6 +182,8 @@ const Navigation: React.FC = () => {
                             fontWeight="bold"
                             variant="unstyled"
                             aria-label="Logout"
+                            _hover={{ transform: 'scale(1.2)' }}
+                            transition="transform 0.2s ease"
                         />
                     )}
 
@@ -189,7 +194,7 @@ const Navigation: React.FC = () => {
                             fontSize="12px"
                             fontWeight="bold"
                             bg="#59D3C8"
-                            _hover={{ bg: '#59D3C8' }}
+                            _hover={{ bg: '#D9D9D9' }}
                             size="navigation"
                         >
                             Login
@@ -213,42 +218,46 @@ const Navigation: React.FC = () => {
                         p={4}
                         onClick={onClose}
                     >
-                        <VStack spacing={4} bg="#E7E0D6" p={4} onClick={onClose}>
-                            <Link
+                        <VStack spacing={4} p={4} onClick={onClose}>
+                            <Button
                                 as={NavLink}
                                 fontSize="12px"
                                 fontWeight="bold"
-                                _hover={{ textDecoration: 'none' }}
+                                height="30px"
+                                bg="#E7E0D6"
+                                _hover={{ bg: '#D9D9D9' }}
                                 to="/"
                                 onClick={onClose}
                             >
                                 Home
-                            </Link>
+                            </Button>
 
                             {isLoggedIn && role === 'tutor' && (
-                                <Link
+                                <Button
                                     as={NavLink}
                                     fontSize="12px"
                                     fontWeight="bold"
-                                    _hover={{ textDecoration: 'none' }}
+                                    bg="#E7E0D6"
+                                    _hover={{ bg: '#D9D9D9' }}
                                     to="/tutordashboard"
                                     onClick={onClose}
                                 >
                                     My Dashboard
-                                </Link>
+                                </Button>
                             )}
 
                             {isLoggedIn && role === 'parent' && (
-                                <Link
+                                <Button
                                     as={NavLink}
                                     fontSize="12px"
                                     fontWeight="bold"
-                                    _hover={{ textDecoration: 'none' }}
+                                    bg="#E7E0D6"
+                                    _hover={{ bg: '#D9D9D9' }}
                                     to="/parentdashboard"
                                     onClick={onClose}
                                 >
                                     My Dashboard
-                                </Link>
+                                </Button>
                             )}
                             <Button
                                 as={NavLink}
@@ -258,7 +267,7 @@ const Navigation: React.FC = () => {
                                 bg="#F4CD76"
                                 height="30px"
                                 width="150px"
-                                _hover={{ bg: 'grey.400' }}
+                                _hover={{ bg: '#D9D9D9' }}
                                 onClick={onClose}
                             >
                                 Browse Tutors
@@ -285,6 +294,8 @@ const Navigation: React.FC = () => {
                                         onClick={handleLogout}
                                         variant="unstyled"
                                         aria-label="Logout"
+                                        _hover={{ transform: 'scale(1.2)' }}
+                                        transition="transform 0.2s ease"
                                     />
                                 </Flex>
                             ) : (
@@ -296,7 +307,7 @@ const Navigation: React.FC = () => {
                                     fontWeight="bold"
                                     height="30px"
                                     width="150px"
-                                    _hover={{ bg: 'grey.400' }}
+                                    _hover={{ bg: '#D9D9D9' }}
                                     onClick={onClose}
                                 >
                                     Login
