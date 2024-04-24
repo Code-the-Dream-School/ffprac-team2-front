@@ -211,6 +211,8 @@ const TutorProfilePage: React.FC = () => {
                                     isClosable: true,
                                     position: 'top',
                                     id: 'fillForm-toast',
+
+                                    duration: 3000,
                                 });
                             }
                         } else {
@@ -220,6 +222,8 @@ const TutorProfilePage: React.FC = () => {
                                 isClosable: true,
                                 position: 'top',
                                 id: 2,
+
+                                duration: 3000,
                             });
                         }
                         return;
@@ -255,6 +259,7 @@ const TutorProfilePage: React.FC = () => {
                         status: 'error',
                         isClosable: true,
                         position: 'top',
+                        duration: 3000,
                     });
                 }
             }
@@ -298,6 +303,7 @@ const TutorProfilePage: React.FC = () => {
                             status: 'success',
                             isClosable: true,
                             position: 'top',
+                            duration: 3000,
                         });
                     }
                     if (status !== 200) {
@@ -311,6 +317,7 @@ const TutorProfilePage: React.FC = () => {
                             status: 'error',
                             isClosable: true,
                             position: 'top',
+                            duration: 3000,
                         });
                     }
                     setIsLoading(false);
@@ -338,6 +345,7 @@ const TutorProfilePage: React.FC = () => {
                             isClosable: true,
                             position: 'top',
                             id: 3,
+                            duration: 3000,
                         });
                         setSelectedImage(null);
                         dispatch({ type: 'SET_TUTOR', payload: data.tutor });
@@ -355,6 +363,7 @@ const TutorProfilePage: React.FC = () => {
                             status: 'error',
                             isClosable: true,
                             position: 'top',
+                            duration: 3000,
                         });
                     }
                     return;
