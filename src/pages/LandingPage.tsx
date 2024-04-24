@@ -1,5 +1,6 @@
+import { Button, ButtonGroup, Flex, Heading, Text, VStack } from '@chakra-ui/react';
+
 import React from 'react';
-import { Button, ButtonGroup, Flex, VStack, Heading, Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
 const LandingPage: React.FC = () => {
@@ -51,6 +52,8 @@ const LandingPage: React.FC = () => {
                         maxWidth={{ base: '280px', sm: '350px' }}
                         fontWeight="bold"
                         onClick={toRegistration}
+                        bg="#59D3C8"
+                        _hover={{ bg: '#D9D9D9' }}
                     >
                         I'm a parent
                     </Button>
@@ -61,6 +64,8 @@ const LandingPage: React.FC = () => {
                         maxWidth={{ base: '280px', sm: '350px' }}
                         fontWeight="bold"
                         onClick={toRegistration}
+                        bg="#F4CD76"
+                        _hover={{ bg: '#D9D9D9' }}
                     >
                         I'm a tutor
                     </Button>

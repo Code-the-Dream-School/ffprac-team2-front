@@ -1,6 +1,7 @@
-import React from 'react';
+import { Box, Button, Flex, Text, useBreakpointValue } from '@chakra-ui/react';
+
 import { Link } from 'react-router-dom';
-import { Flex, Box, Text, useBreakpointValue } from '@chakra-ui/react';
+import React from 'react';
 
 type FooterProps = {
     sizeHeader: {
@@ -39,20 +40,44 @@ const Footer: React.FC<FooterProps> = ({ sizeHeader }) => {
                     marginBottom={{ base: '4px', md: '0' }}
                     direction={{ base: 'column', sm: 'row' }}
                 >
-                    <Link to="/about" style={linkStyle}>
-                        About
+                    <Link to="/about">
+                        <Button
+                            style={linkStyle}
+                            fontSize="12px"
+                            fontWeight="bold"
+                            height="30px"
+                            _hover={{ bg: '#FFFFFF' }}
+                            bg="#E7E0D6"
+                        >
+                            About
+                        </Button>
                     </Link>
-                    <Link to="/team" style={linkStyle}>
-                        Our Team
+                    <Link to="/team">
+                        <Button
+                            style={linkStyle}
+                            fontSize="12px"
+                            fontWeight="bold"
+                            height="30px"
+                            _hover={{ bg: '#FFFFFF' }}
+                            bg="#E7E0D6"
+                        >
+                            Our Team
+                        </Button>
                     </Link>
-                    <Link
-                        to="https://ffprac-team2-back.onrender.com/docs"
-                        style={linkStyle}
+                    <Button
+                        as="a"
+                        href="https://ffprac-team2-back.onrender.com/docs"
                         target="_blank"
                         rel="noopener noreferrer"
+                        style={linkStyle}
+                        fontSize={fontSize}
+                        fontWeight="bold"
+                        height="30px"
+                        _hover={{ bg: '#FFFFFF' }}
+                        bg="#E7E0D6"
                     >
                         API Documentation
-                    </Link>
+                    </Button>
                 </Flex>
             </Flex>
         </Box>
