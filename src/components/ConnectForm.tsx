@@ -61,6 +61,19 @@ const ConnectForm: React.FC<ConnectFormProps> = ({ isOpen, onClose, tutor }) => 
         'Science',
     ];
 
+    const getSubjectName = (fieldName: string): string => {
+        switch (fieldName) {
+            case 'MathSubject':
+                return 'Math';
+            case 'ForeignLanguages':
+                return 'Foreign Languages';
+            case 'SocialStudies':
+                return 'Social Studies';
+            default:
+                return fieldName;
+        }
+    };
+
     const handleSubmit = async (
         values: TutorConnectionRequest,
         actions: FormikHelpers<TutorConnectionRequest>
@@ -214,11 +227,11 @@ const ConnectForm: React.FC<ConnectFormProps> = ({ isOpen, onClose, tutor }) => 
                                             return (
                                                 <FormControl key={field} mt={4}>
                                                     <FormLabel fontSize="14px" fontWeight="400">
-                                                        {field === 'MathSubject' ? 'Math' : field}
+                                                        {getSubjectName(field)}
                                                     </FormLabel>
                                                     <Field
                                                         as={Select}
-                                                        placeholder={`Select ${field === 'MathSubject' ? 'Math' : field}`}
+                                                        placeholder={`Select ${getSubjectName(field)}`}
                                                         backgroundColor="white"
                                                         name={'subject'}
                                                         onChange={(event: SelectChangeEvent) => {
