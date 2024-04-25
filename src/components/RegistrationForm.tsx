@@ -121,6 +121,7 @@ const RegistrationForm: React.FC = () => {
                         toast({
                             title: error.response.data.msg,
                             status: 'error',
+                            duration: 3000,
                             isClosable: true,
                             position: 'top',
                         });
@@ -128,6 +129,7 @@ const RegistrationForm: React.FC = () => {
                         toast({
                             title: 'Registration failed. Please try again.',
                             status: 'error',
+                            duration: 3000,
                             isClosable: true,
                             position: 'top',
                         });
