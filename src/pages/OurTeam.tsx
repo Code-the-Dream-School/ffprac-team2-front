@@ -55,7 +55,9 @@ const MemberCard: React.FC<Member> = ({ name, role, image, description }) => {
                         <Heading size="sm" fontWeight="bold">
                             {name}
                         </Heading>
-                        <Text fontWeight="bold">{role}</Text>
+                        {role.split(', ').map((roleWord) => (
+                            <Text fontWeight="bold">{roleWord}</Text>
+                        ))}
                     </Box>
                 </Flex>
             </CardHeader>
@@ -80,7 +82,7 @@ const OurTeamPage: React.FC = () => {
     const team: Member[] = [
         {
             name: 'Oxana',
-            role: 'Design, Full Stack Developer',
+            role: 'Designer, Full Stack Developer',
             image: OxanaImage,
             description:
                 "As a Full Stack Developer with a photographer's heart and a passion for design, I've navigated projects from concept to execution. I seamlessly integrate functionality with visual charm, crafting a captivating user experience from start to finish. But beyond my technical skills, I thrive in collaborative environments. Engaged in numerous full stack projects, I enjoy taking on various responsibilities, relishing the opportunity to learn new stacks, and collaborating with diverse teams. This experience strengthens my knowledge and confidence along my journey to Software Development. In my free time, I cherish moments with my family, enjoy hiking, read books to discuss in my book club, and train for triathlons to maintain good physical shape and mental state.",
